@@ -1,0 +1,18 @@
+# Cache do Python
+**/__pycache__/
+
+# Cache do pytest
+.pytest_cache/
+
+# Ambiente virtual
+.venv/
+
+# Dados do navegador autenticado. NÃO REMOVER: contém dados sensíveis
+playright/.auth/
+
+# Informações secretas usadas dentro dos testes, como as credenciais para a autenticação.
+# Precisa ser implementado para cada dispositivo, e segue o modelo:
+# .seguro/
+#     credenciais.py
+# Mais sobre os arquivos no readme.
+seguro/
