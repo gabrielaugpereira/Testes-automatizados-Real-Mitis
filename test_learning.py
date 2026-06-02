@@ -1,23 +1,23 @@
 import re
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page, Browser, expect
+import pytest
 
 from seguro.credenciais import *
 
 # I love playwright
+
+@pytest.fixture(scope='function', autouse=True)
 def test_login(page: Page):
-    # Abre o navegador
+    # Abre a página
     page.goto('https://erp-qa.mitis.com.br/#/')
 
     # Informa o domínio
-    page.get_by_role("textbox", name="Domínio").click()
     page.get_by_role("textbox", name="Domínio").fill(DOMINIO)
 
     # Informa o nome
-    page.get_by_role("textbox", name="Domínio").press("Tab")
     page.get_by_role("textbox", name="Login").fill(LOGIN)
 
     # Informa a SENHA (esconder a senha)
-    page.get_by_role("textbox", name="Login").press("Tab")
     page.get_by_role("textbox", name="Senha").fill(SENHA)
 
     # Aperta para entrar
@@ -25,12 +25,12 @@ def test_login(page: Page):
 
     # Valida se entrou
     page.wait_for_url('https://erp-qa.mitis.com.br/#/in')
-    expect(page).to_have_url('https://erp-qa.mitis.com.br/#/in')
+    
 
 def test_criacao_produto(page: Page):
     # Entra na criação de produto
     page.get_by_role("banner").get_by_role("button").click()
-    page.get_by_role("button").nth(3).click()
+    page.get_by_label("2.PRODUTO").first.get_by_role("button").first.click()
 
     # ----- Aba de detalhamento -----
     # Descrição do produto
@@ -77,3 +77,57 @@ def test_criacao_produto(page: Page):
     
     # Validação
     expect(page.get_by_text("Produto salvo com sucesso!")).to_be_visible()
+
+
+def test_criacao_venda(page: Page):
+    # Entra na criação de venda
+    page.get_by_role("banner").get_by_role("button").click()
+    page.get_by_label("88.VENDAS").first.get_by_role("button").first.click()
+
+    # Informa o cliente
+    page.wait_for_timeout(1000)
+    page.get_by_role("button").nth(5).click()
+    page.get_by_text("109194 $.O.$ - FOMENTO").click()
+
+    # Fecha o popup
+    page.get_by_role("button", name="Não").click()
+
+    # Informa o vendedor
+    page.locator(".p-element.p-inputwrapper.p-autocomplete-clearable.ng-untouched > .w-100 > .p-element.p-ripple").click()
+    page.get_by_text("00106697000180").click()
+
+    # Informa o funil
+    page.locator(".p-element.p-inputwrapper.ng-untouched > .p-input-custom > .p-element.p-ripple").click()
+    page.get_by_text("- Vendas Inicio").click()
+
+    # Salva a venda
+    page.get_by_role("button", name=" Salvar").click()
+
+    # Valida se salvou
+    expect(page.get_by_text("Pedido salvo com sucesso!")).to_be_visible()
+
+
+
+
+
+# import re
+# from playwright.sync_api import Playwright, sync_playwright, expect
+
+
+# def run(playwright: Playwright) -> None:
+#     browser = playwright.chromium.launch(headless=False)
+#     context = browser.new_context()
+#     page = context.new_page()
+
+#     test_login(page)
+
+#     context = browser.new_context(storage_state="user.json")
+#     storage = context.storage_state(path="user.json")
+
+#     # ---------------------
+#     context.close()
+#     browser.close()
+
+
+# with sync_playwright() as playwright:
+#     run(playwright)
