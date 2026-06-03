@@ -1,7 +1,7 @@
 from playwright.sync_api import Browser, expect
 import random
 
-from helpers import goto_home_page
+from test_helpers import goto_home_page
 
 # Tenta criar um financeiro a pagar
 def test_criacao_financeiro_pagar(browser: Browser):

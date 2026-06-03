@@ -1,6 +1,6 @@
 from playwright.sync_api import Browser, expect
 
-from helpers import goto_home_page
+from test_helpers import goto_home_page
 
 # Tenta criar uma venda
 def test_criacao_venda(browser: Browser):

@@ -15,7 +15,7 @@ AUTH_PATH = os.path.join(ROOT_DIR, 'playwright/.auth/user.json')
 HOME_PAGE_URL = 'https://erp-qa.mitis.com.br/#/in'
 
 # Realiza o login no sistema, e salva os cookies para as próximas funções
-@pytest.fixture(scope='module', autouse=True)
+@pytest.fixture(autouse=True, scope='session')
 def test_login(browser: Browser):
     context = browser.new_context()
     page = context.new_page()
