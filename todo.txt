@@ -1,0 +1,2 @@
+Readme sobre page.pause
+Readme sobre trace viewer
