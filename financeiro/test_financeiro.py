@@ -3,6 +3,8 @@ import random
 
 from test_main import *
 
+"""Fluxo CRUD para financeiros a pagar e a receber"""
+
 # ======================================================
 # Criação de financeiro a pagar
 # ======================================================
@@ -100,23 +102,37 @@ def test_criacao_financeiro_receber(browser: Browser):
     expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
 
 # ======================================================
+# Atualização de financeiro a pagar
+# ======================================================
+def test_atualizacao_financeiro_pagar(browser: Browser):
+    raise NotImplementedError("Teste ainda não foi implementado")
+
+# ======================================================
+# Atualização de financeiro a receber
+# ======================================================
+def test_atualizacao_financeiro_pagar(browser: Browser):
+    raise NotImplementedError("Teste ainda não foi implementado")
+
+# ======================================================
 # Exclusão de financeiro
 # ======================================================
-# Não está sendo possível acessar o menu, por responsividade falha
-# def test_exclusao_financeiro(browser: Browser):
-#     # Abre o navegador
-#     page = goto_home_page(browser)
+'''Não está sendo possível acessar o menu, por responsividade falha'''
+def test_exclusao_financeiro(browser: Browser):
+    raise NotImplementedError("Teste ainda não foi implementado")
 
-#     # Entra na criação de um financeiro
-#     pesquisar_rotina(page, "568.FINANCEIRO")
+    # Abre o navegador
+    page = goto_home_page(browser)
 
-#     # Seleciona o financeiro e clica no menu mais
-#     page.get_by_text("ABERTO").first.click()
-#     page.get_by_title("Mais opções").click()
+    # Entra na criação de um financeiro
+    pesquisar_rotina(page, "568.FINANCEIRO")
 
-#     # Seleciona para excluir e confirma
+    # Seleciona o financeiro e clica no menu mais
+    page.get_by_text("ABERTO").first.click()
+    page.get_by_title("Mais opções").click()
+
+    # Seleciona para excluir e confirma
     
-#     page.get_by_role("button").get_by_text("Sim").click()
+    page.get_by_role("button").get_by_text("Sim").click()
 
-#     # Valida se financeiro foi excluído
-#     expect(page.get_by_text("Sucesso!")).to_be_visible()
+    # Valida se financeiro foi excluído
+    expect(page.get_by_text("Sucesso!")).to_be_visible()

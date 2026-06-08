@@ -3,6 +3,8 @@ import re
 
 from test_main import *
 
+"""Fluxo CRUD para produto"""
+
 # ======================================================
 # Criação de produto
 # ======================================================
@@ -58,6 +60,24 @@ def test_criacao_produto(browser: Browser):
     
     # Validação
     expect(page.get_by_text("Produto salvo com sucesso!")).to_be_visible()
+
+# ======================================================
+# Atualização de produto
+# ======================================================
+def test_atualizacao_produto(browser: Browser):
+    raise NotImplementedError("Teste ainda não foi implementado")
+
+# ======================================================
+# Atualização de produto
+# ======================================================
+def test_atualizacao_produto(browser: Browser):
+    raise NotImplementedError("Teste ainda não foi implementado")
+
+# ======================================================
+# Exclusão de produto
+# ======================================================
+def test_exclusao_produto(browser: Browser):
+    raise NotImplementedError("Teste ainda não foi implementado")
 
 # ======================================================
 # Exclusão de produto
