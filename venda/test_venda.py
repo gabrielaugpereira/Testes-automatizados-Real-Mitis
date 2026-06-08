@@ -1,19 +1,22 @@
-from playwright.sync_api import Browser, expect
+from playwright.sync_api import Browser, expect, Error
+import re
 
-from test_helpers import goto_home_page
+from test_main import *
 
-# Tenta criar uma venda
+# ======================================================
+# Criação de venda
+# ======================================================
 def test_criacao_venda(browser: Browser):
+    # Abre o navegador
     page = goto_home_page(browser)
 
     # Entra na criação de venda
-    page.get_by_role("banner").get_by_role("button").click()
-    page.get_by_label("88.VENDAS").first.get_by_role("button").first.click()
+    pesquisar_rotina(page, "88.VENDAS", criacao=True)
 
     # Informa o cliente
     page.wait_for_timeout(1000)
     page.get_by_role("button").nth(5).click()
-    page.get_by_text("109194 $.O.$ - FOMENTO").click()
+    page.get_by_text(re.compile(r"[0-9]{3}.[0-9]{3}.[0-9]{2}")).first.click()
 
     # Fecha o popup
     page.get_by_role("button", name="Não").click()
@@ -32,5 +35,38 @@ def test_criacao_venda(browser: Browser):
     # Valida se salvou
     expect(page.get_by_text("Pedido salvo com sucesso!")).to_be_visible()
 
-    # Fecha o navegador
-    page.close()
+# ======================================================
+# Exclusão de venda
+# ======================================================
+def test_exclusao_venda(browser: Browser):
+    # Abre o navegador
+    page = goto_home_page(browser)
+
+    # Entra na criação de venda
+    pesquisar_rotina(page, "88.VENDAS")
+    
+    # Encontra uma venda que pode ser excluída
+    elem = None
+    for i in range(3, 10):
+        page.get_by_role("cell", name="Nº Nota Fiscal").nth(i).dblclick()
+
+        elem = page.get_by_role("button", name=" Excluir")
+        if elem:
+            break
+        else:
+            pesquisar_rotina(page, "88.VENDAS")
+
+    else:
+        raise Error("Não foi possível encontrar uma venda passível de exclusão")
+
+    # Exclui a venda
+    elem.click()
+    page.get_by_role("button", name="Sim").click()
+
+    # Informa o motivo da exclusão
+    page.get_by_role("button").filter(has_text=re.compile(r"^$")).nth(4).click()
+    page.get_by_text("- TESTE DE PEDIDO").click()
+    page.get_by_role("dialog").get_by_role("button", name=" Salvar").click()
+
+    # Valida se venda foi excluída
+    expect(page.get_by_text("Novo orçamento")).to_be_visible()

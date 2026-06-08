@@ -1,4 +1,4 @@
-from playwright.sync_api import Browser, expect
+from playwright.sync_api import Browser, Page, expect
 import pytest
 import os
 
@@ -19,7 +19,7 @@ HOME_PAGE_URL = 'https://erp-qa.mitis.com.br/#/in'
 def test_login(browser: Browser):
     context = browser.new_context()
     page = context.new_page()
-
+    
     # Abre a página
     page.goto(HOME_PAGE_URL)
 
@@ -44,9 +44,30 @@ def test_login(browser: Browser):
     # Fecha o navegador
     page.close()
 
-# Modularização e reutilização de código, que retorna uma página nova, já autenticada, e na home page
+# Retorna uma página nova na home page, já autenticada e configurada
 def goto_home_page(browser: Browser):
     context = browser.new_context(storage_state=AUTH_PATH)
+
+    # Muda o tempo padrão de timeout
+    context.set_default_timeout(15000)
+
     page = context.new_page()
     page.goto(HOME_PAGE_URL)
+
+    page.wait_for_load_state()
+    page.wait_for_timeout(1000)
+
     return page
+
+# Pesquisa a rotina a partir do código da rotina e/ou nome da rotina. 
+# Se estiver no modo de criação, irá clicar no "mais", para criar um novo objeto
+def pesquisar_rotina(page: Page, nome: str, criacao: bool = False):
+    page.get_by_role("banner").get_by_role("button").click()
+
+    if not criacao:
+        page.get_by_label(nome).click()
+    else:
+        page.get_by_label(nome).first.get_by_role("button").first.click()
+
+    # Curto tempo de espera
+    page.wait_for_timeout(1000)

@@ -1,2 +1,7 @@
+PARA FAZER
+Login sendo realizado várias vezes
 Readme sobre page.pause
 Readme sobre trace viewer
+
+FEITO
+Reutilizar cookies anteriores

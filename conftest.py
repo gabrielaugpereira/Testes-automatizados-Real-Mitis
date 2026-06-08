@@ -1,1 +1,1 @@
-pytest_plugins = ["test_helpers"]
+pytest_plugins = ["test_main"]

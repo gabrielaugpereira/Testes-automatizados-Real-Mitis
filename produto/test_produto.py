@@ -1,16 +1,17 @@
 from playwright.sync_api import Browser, expect
 import re
 
-from test_helpers import goto_home_page
+from test_main import *
 
-# Tenta criar um produto
+# ======================================================
+# Criação de produto
+# ======================================================
 def test_criacao_produto(browser: Browser):
+    # Abre o navegador
     page = goto_home_page(browser)
 
     # Entra na criação de produto
-    page.get_by_role("banner").get_by_role("button").click()
-    # page.get_by_label("2.PRODUTO").first.get_by_role("button").first.click()
-    page.get_by_text("2.PRODUTO").click()
+    pesquisar_rotina(page, "2.PRODUTO", criacao=True)
 
     # ----- Aba de detalhamento -----
     # Descrição do produto
@@ -58,16 +59,14 @@ def test_criacao_produto(browser: Browser):
     # Validação
     expect(page.get_by_text("Produto salvo com sucesso!")).to_be_visible()
 
-    # Fecha o navegador
-    page.close()
-
-# Tenta excluir o primeiro produto da lista
+# ======================================================
+# Exclusão de produto
+# ======================================================
 def test_exclusao_produto(browser: Browser):
     page = goto_home_page(browser)
 
     # Entra na listagem de produtos
-    page.get_by_role("banner").get_by_role("button").click()
-    page.get_by_text("2.PRODUTO").click()
+    pesquisar_rotina(page, "2.PRODUTO")
 
     # Seleciona o primeiro
     page.locator(".btn.btn-light").first.click()
@@ -78,6 +77,3 @@ def test_exclusao_produto(browser: Browser):
 
     # Validação
     expect(page.get_by_text("Produto excluído com sucesso.")).to_be_visible()
-
-    # Fecha o navegador
-    page.close()
