@@ -112,7 +112,7 @@ def test_baixa_financeiro_pagar_interna(browser: Browser):
     # Abre o navegador
     page = goto_home_page(browser)
 
-    # Entra na criação de um financeiro
+    # Entra na listagem de financeiros
     pesquisar_rotina(page, "568.FINANCEIRO")
 
     # Escolhe uma conta vencida
@@ -143,14 +143,14 @@ def test_baixa_financeiro_pagar_externa(browser: Browser):
     pass
 
 # ======================================================
-# Exclusão de financeiro
+# Exclusão interna de financeiro
 # ======================================================
 # Exclui um financeiro a partir da exclusão de todas as suas parcelas
-def test_exclusao_financeiro_interna(browser: Browser):
+def test_exclusao_interna_financeiro(browser: Browser):
     # Abre o navegador
     page = goto_home_page(browser)
 
-    # Entra na criação de um financeiro
+    # Entra na listagem de financeiros
     pesquisar_rotina(page, "568.FINANCEIRO")
 
     # Seleciona o primeiro financeiro
@@ -175,15 +175,18 @@ def test_exclusao_financeiro_interna(browser: Browser):
         # Espera até que a página recarregue
         page.wait_for_selector(".btn-success")
 
+# ======================================================
+# Exclusão externa de financeiro
+# ======================================================
 '''Não está sendo possível acessar o menu, por responsividade falha'''
 # Exclusão realizada na tela de listagem de financeiros
-def test_exclusao_financeiro_externa(browser: Browser):
+def test_exclusao_externa_financeiro(browser: Browser):
     pass
 
     # Abre o navegador
     page = goto_home_page(browser)
 
-    # Entra na criação de um financeiro
+    # Entra na listagem de financeiros
     pesquisar_rotina(page, "568.FINANCEIRO")
 
     # Seleciona o financeiro e clica no menu mais
