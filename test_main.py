@@ -2,7 +2,7 @@ from playwright.sync_api import Browser, Page, expect
 import pytest
 import os
 
-from seguro.credenciais import *
+from vault.credenciais import *
 
 # I love playwright
 
@@ -14,26 +14,31 @@ AUTH_PATH = os.path.join(ROOT_DIR, 'playwright/.auth/user.json')
 # A url da página principal do sistema
 HOME_PAGE_URL = 'https://erp-qa.mitis.com.br/#/in'
 
-# Realiza o login no sistema, e salva os cookies para as próximas funções
+# Realiza a autenticação no sistema.
+# Se os cookies da sessão anterior ainda forem válidos, autentica usando eles.
+# Senão, realiza login e salva os cookies
 @pytest.fixture(autouse=True, scope='session')
 def test_login(browser: Browser):
-    context = browser.new_context()
+    context = browser.new_context(storage_state=AUTH_PATH)
     page = context.new_page()
-    
+
     # Abre a página
     page.goto(HOME_PAGE_URL)
+    page.wait_for_timeout(800)
 
-    # Informa o domínio
-    page.get_by_role("textbox", name="Domínio").fill(DOMINIO)
+    # Realiza o login comum
+    if not page.is_visible("#logoEmpresa"):
+        # Informa o domínio
+        page.get_by_role("textbox", name="Domínio").fill(DOMINIO)
 
-    # Informa o nome
-    page.get_by_role("textbox", name="Login").fill(LOGIN)
+        # Informa o nome
+        page.get_by_role("textbox", name="Login").fill(LOGIN)
 
-    # Informa a SENHA (esconder a senha)
-    page.get_by_role("textbox", name="Senha").fill(SENHA)
+        # Informa a SENHA (esconder a senha)
+        page.get_by_role("textbox", name="Senha").fill(SENHA)
 
-    # Aperta para entrar
-    page.get_by_role("button", name="Entrar").click()
+        # Aperta para entrar
+        page.get_by_role("button", name="Entrar").click()
 
     # Valida se entrou
     expect(page).to_have_url(HOME_PAGE_URL, timeout=30000)

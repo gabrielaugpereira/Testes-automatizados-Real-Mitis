@@ -1,7 +1,11 @@
 PARA FAZER
+Fixtures locais para entrar em rotina
 Login sendo realizado várias vezes
 Readme sobre page.pause
 Readme sobre trace viewer
+
+EM TESTE
+Tentativa de pular login na primeira execução
 
 FEITO
 Reutilizar cookies anteriores

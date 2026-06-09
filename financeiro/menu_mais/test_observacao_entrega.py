@@ -5,6 +5,8 @@ from test_main import *
 
 """Fluxo CRUD para observação de entrega"""
 
+'''Relatar bugs com a table'''
+
 # Armazena a página que será usada pelos outros testes.
 # Seu valor inicial é colocado pelo "test_abrir_rotina_financeiro"
 class _ModuleVariables: 

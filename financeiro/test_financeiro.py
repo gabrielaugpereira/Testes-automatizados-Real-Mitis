@@ -102,23 +102,83 @@ def test_criacao_financeiro_receber(browser: Browser):
     expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
 
 # ======================================================
-# Atualização de financeiro a pagar
+# Baixa de financeiro
 # ======================================================
-def test_atualizacao_financeiro_pagar(browser: Browser):
-    raise NotImplementedError("Teste ainda não foi implementado")
+'''Baixa de financeiros baixados é permitida'''
+'''Atalhos da tela de financeiros não funcionando'''
+'''Quando altera-se a situação de uma parcela de "aberto" para "vencido", ou vice e versa, alteração não acontece. Mesma coisa com pago vencido'''
+# Baixa realizada na edição do financeiro
+def test_baixa_financeiro_pagar_interna(browser: Browser):
+    # Abre o navegador
+    page = goto_home_page(browser)
 
-# ======================================================
-# Atualização de financeiro a receber
-# ======================================================
-def test_atualizacao_financeiro_pagar(browser: Browser):
-    raise NotImplementedError("Teste ainda não foi implementado")
+    # Entra na criação de um financeiro
+    pesquisar_rotina(page, "568.FINANCEIRO")
+
+    # Escolhe uma conta vencida
+    page.get_by_text("VENCIDO").first.dblclick()
+
+    # Seleciona para editar a primeira parcela
+    page.get_by_title("Editar", exact=True).first.click()
+
+    # Seleciona a situação como pago
+    page.locator('select[name="situacao"]').select_option("4")
+
+    # Seleciona uma conta
+    page.locator("app-mts-conta-dropdown > .btn-group > .p-element.p-inputwrapper > .w-100 > .p-element.p-autocomplete-input").fill("BANCO")
+    page.get_by_text("BANCO C6").click()
+
+    # Apaga o caixa selecionado, para não dar o problema de o caixa estar fechado
+    page.locator("app-mts-caixa-paf-dropdown > .btn-group > .p-element.p-inputwrapper > .w-100 > timesicon > .p-autocomplete-clear-icon > path").click()
+
+    # Salva as alterações
+    page.get_by_role("button", name=" Salvar").click()
+
+    # Valida se alterações foram recebidas
+    expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
+
+'''Não está sendo possível acessar o menu, por responsividade falha'''
+# Baixa realizada na tela de listagem de financeiros
+def test_baixa_financeiro_pagar_externa(browser: Browser):
+    pass
 
 # ======================================================
 # Exclusão de financeiro
 # ======================================================
+# Exclui um financeiro a partir da exclusão de todas as suas parcelas
+def test_exclusao_financeiro_interna(browser: Browser):
+    # Abre o navegador
+    page = goto_home_page(browser)
+
+    # Entra na criação de um financeiro
+    pesquisar_rotina(page, "568.FINANCEIRO")
+
+    # Seleciona o primeiro financeiro
+    page.locator(".btn.btn-light").first.click()
+
+    # Espera até que o botão de excluir apareça
+    page.wait_for_selector(".pi-trash")
+
+    # Exclui as parcelas do financeiro
+    while page.is_visible(".pi-trash"):
+        page.get_by_title("Excluir").first.click()
+
+        # Confirma a exclusão
+        page.get_by_role("button", name="Sim").click()
+
+        # Valida se parcela foi excluída
+        expect(page.get_by_text("Registro excluído com sucesso!")).to_be_visible()
+
+        # Recarrega a página, para atualizar as informações
+        page.reload()
+
+        # Espera até que a página recarregue
+        page.wait_for_selector(".btn-success")
+
 '''Não está sendo possível acessar o menu, por responsividade falha'''
-def test_exclusao_financeiro(browser: Browser):
-    raise NotImplementedError("Teste ainda não foi implementado")
+# Exclusão realizada na tela de listagem de financeiros
+def test_exclusao_financeiro_externa(browser: Browser):
+    pass
 
     # Abre o navegador
     page = goto_home_page(browser)
