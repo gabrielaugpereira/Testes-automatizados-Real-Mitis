@@ -1,5 +1,6 @@
 from playwright.sync_api import Browser, Page, expect
 import pytest
+import random
 
 from test_main import *
 
@@ -7,11 +8,13 @@ from test_main import *
 Estava implementando, porém achei melhor focar em testes mais relevantes
 '''
 
-# Após o fixture, a página ficará disponível para todos os testes
 class _ModuleVariables:
+    # Torna a página acessível para todos os testes, para dar continuidade
     page: Page = None
 
-# Entra na rotina e disponibilida a página
+
+"""Fixtures"""
+# Entra na rotina e disponibiliza a página
 @pytest.fixture(scope='module', autouse=True)
 def test_entra_rotina_financeiro(browser: Browser): 
     # Abre o navegador
@@ -20,24 +23,29 @@ def test_entra_rotina_financeiro(browser: Browser):
     # Entra na listagem de financeiros
     pesquisar_rotina(page, "568.FINANCEIRO")
 
+    page.wait_for_url("https://erp-qa.mitis.com.br/#/in/financeiro/pesquisa/568/390/financeiro/0")
+
     _ModuleVariables.page = page
 
-# Seleciona três financeiros e entra no menu mais
-@pytest.fixture()
-def test_seleciona_financeiros():
+
+# Entra na rotina, seleciona dois financeiros de situações diferentes e entra no menu mais
+def seleciona_financeiros() -> Page:
     page = _ModuleVariables.page
 
-    # Seleciona 3 financeiros do tipo vencido
-    page.get_by_role("cell", name="VENCIDO").first.click(modifiers=["ControlOrMeta"])
-    page.get_by_role("cell", name="VENCIDO").nth(1).click(modifiers=["ControlOrMeta"])
-    page.get_by_role("cell", name="VENCIDO").nth(2).click(modifiers=["ControlOrMeta"])
+    # Seleciona 1 financeiro do tipo vencido e 1 do tipo aberto
+    page.get_by_text("VENCIDO").first.click(modifiers=["ControlOrMeta"])
+    page.get_by_text("ABERTO").first.click(modifiers=["ControlOrMeta"])
 
     # Entra no menu mais e escolhe a alteração em lote
     page.get_by_title("Mais opções").click()
     page.locator("a").filter(has_text="Alterar em lote").click()
 
+
+"""Testes"""
 # Altera o valor dos financeiros para outro pré definido
 def test_novo_valor():
+    seleciona_financeiros()
+
     page = _ModuleVariables.page
 
     # Seleciona a alteração do valor
@@ -54,8 +62,11 @@ def test_novo_valor():
     # Valida se houve a alteração
     expect(page.get_by_text("Sucesso!")).to_be_visible()
     
+
 # Incrementa o valor dos financeiros em valor pré definido 
 def test_incrementar_valor(): 
+    seleciona_financeiros()
+
     page = _ModuleVariables.page
 
     # Seleciona o incremento do valor
@@ -73,8 +84,11 @@ def test_incrementar_valor():
     # Valida se houve a alteração
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
+
 # Decrementa o valor dos financeiros em valor pré definido 
 def test_decrementar_valor(): 
+    seleciona_financeiros()
+
     page = _ModuleVariables.page
 
     # Seleciona o decremento do valor
@@ -97,14 +111,22 @@ def test_decrementar_valor():
     # Valida se houve a alteração
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
-def test_nova_data(): 
+
+# Altera a data de vencimento dos financeiros
+def test_nova_data():
+    seleciona_financeiros()
+
     page = _ModuleVariables.page
 
     # Seleciona a alteração da data
     page.get_by_role("checkbox", name="Alterar data vencimento").check()
 
-    # Insere uma nova data passada
-    page.locator("input[name=\"data\"]").fill("2000-01-01")
+    # Insere uma nova data. 
+    # A condição serve apenas para evitar de consumir todos os financeiros de uma situação
+    if random.choice([True, False]):
+        page.locator("input[name=\"data\"]").fill("2100-01-01")
+    else:
+        page.locator("input[name=\"data\"]").fill("2000-01-01")
 
     # Confirma a alteração
     page.get_by_role("button", name=" Confirmar").click()
@@ -113,8 +135,12 @@ def test_nova_data():
     # Valida se houve a alteração
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
+
 '''Erro na mensagem de confirmação, por conta do input de data vazio'''
-def test_incrementar_dias(): 
+# Incrementa dias na data de vencimento dos financeiros
+def test_incrementar_dias():
+    seleciona_financeiros()
+
     page = _ModuleVariables.page
 
     # Seleciona o incremento de dias
@@ -132,7 +158,11 @@ def test_incrementar_dias():
     # Valida se houve a alteração
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
-def test_decrementar_dias(): 
+
+# Decrementa dias na data de vencimento dos financeiros
+def test_decrementar_dias():
+    seleciona_financeiros()
+
     page = _ModuleVariables.page
 
     # Seleciona o decremento de dias
@@ -151,4 +181,58 @@ def test_decrementar_dias():
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
 
-'''Futuramente testar também os filtros'''
+'''Cada vez que você fecha a confirmação e abre de novo, a quantidade de financeiros disponíveis
+para alteração é incrementada pela quantidade real de financeiros disponível'''
+# Seleciona duas contas, uma aberta e outra vencida, e usando o filtro, altera somente a aberta
+def test_filtro_situacao_aberto():
+    seleciona_financeiros()
+
+    page = _ModuleVariables.page
+
+    # Seleciona o incremento do valor
+    page.get_by_role("checkbox", name="Alterar valor vencimento").check()
+    page.get_by_role("cell", name="Novo valor").get_by_role("combobox").select_option("1: 2")
+
+    # Desmarca as parcelas vencidas
+    page.get_by_role("checkbox", name="Parcelas vencidas").uncheck()
+
+    # Confirma a alteração
+    page.get_by_role("button", name=" Confirmar").click()
+
+    # Valida se o filtro funcionou
+    expect(page.locator("#swal2-html-container")).to_contain_text("1 conta(s) válida(s) para alteração. Deseja prosseguir?")
+
+    # Finaliza a confirmação
+    page.get_by_role("button", name="Sim").click()
+
+    # Valida se houve a alteração
+    expect(page.get_by_text("Sucesso!")).to_be_visible()
+
+
+# Seleciona duas contas, uma aberta e outra vencida, e usando o filtro, altera somente a vencida
+def test_filtro_situacao_vencido():
+    seleciona_financeiros()
+
+    page = _ModuleVariables.page
+
+    # Seleciona o incremento do valor
+    page.get_by_role("checkbox", name="Alterar valor vencimento").check()
+    page.get_by_role("cell", name="Novo valor").get_by_role("combobox").select_option("1: 2")
+
+    # Desmarca as parcelas abertas
+    page.get_by_role("checkbox", name="Parcelas em aberto").uncheck()
+
+    # Confirma a alteração
+    page.get_by_role("button", name=" Confirmar").click()
+
+    # Valida se o filtro funcionou
+    expect(page.locator("#swal2-html-container")).to_contain_text("1 conta(s) válida(s) para alteração. Deseja prosseguir?")
+
+    # Finaliza a confirmação
+    page.get_by_role("button", name="Sim").click()
+
+    # Valida se houve a alteração
+    expect(page.get_by_text("Sucesso!")).to_be_visible()
+
+
+'''Implementar teste do filtro de número de parcela'''

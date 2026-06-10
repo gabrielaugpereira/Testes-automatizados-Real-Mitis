@@ -5,9 +5,10 @@ from test_main import *
 
 """Fluxo CRUD para financeiros a pagar e a receber"""
 
-# ======================================================
+'''Ambas as criações de financeiro estão tendendo ao preenchimento mínimo de informações. 
+Preferencialmente mudar isso'''
+
 # Criação de financeiro a pagar
-# ======================================================
 def test_criacao_financeiro_pagar(browser: Browser):
     # Abre o navegador
     page = goto_home_page(browser)
@@ -58,9 +59,10 @@ def test_criacao_financeiro_pagar(browser: Browser):
     # Valida se foi criado
     expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
 
-# ======================================================
+
+'''Depois de criado, o número do pedido deveria ser informado na linha reservada para isso.
+Porém, quando você acessa o financeiro, a linha não mostra valor algum'''
 # Criação de financeiro a receber
-# ======================================================
 def test_criacao_financeiro_receber(browser: Browser):
     # Abre o navegador
     page = goto_home_page(browser)
@@ -80,13 +82,36 @@ def test_criacao_financeiro_receber(browser: Browser):
     page.get_by_role("button").nth(5).click()
     page.get_by_text("109194 $.O.$ - FOMENTO").click()
 
+    # Escolhe uma empresa
+    page.get_by_role("button").nth(7).click()
+    page.get_by_text("EMPRESA HOMOLOGACAO").click()
+
     # Informa um número de documento
     page.get_by_role("textbox", name="Número do Documento").click()
     page.get_by_role("textbox", name="Número do Documento").fill(str(random.randint(100000000000, 999999999999)))
 
     page.get_by_role("textbox", name="Complemento").click()
     page.get_by_role("textbox", name="Complemento").fill(str(random.randint(10000, 99999)))
+
+    # Escolhe um tipo de documento para a nota fiscal
+    page.get_by_role("button").nth(9).click()
+    page.get_by_text("EMPRESA 02").click()
     
+    # Insere o valor do contrato
+    page.get_by_role("textbox", name="0,00").nth(1).click()
+    page.get_by_role("textbox").nth(4).fill("1")
+    page.get_by_role("textbox").nth(4).press("Tab")
+
+    # Insere a data de emissão
+    page.locator("input[name=\"dataEmissao\"]").click()
+    page.locator("input[name=\"dataEmissao\"]").press("ControlOrMeta+a")
+    page.locator("input[name=\"dataEmissao\"]").fill("01/01/2000")
+
+    # Insere a data de entrada/saída
+    page.locator("input[name=\"dataEntradaSaida\"]").click()
+    page.locator("input[name=\"dataEntradaSaida\"]").press("ControlOrMeta+a")
+    page.locator("input[name=\"dataEntradaSaida\"]").fill("01/01/2100")
+
     # Seleciona uma forma de pagamento
     page.locator("app-mts-forma-pagamento-dropdown > .btn-group > .p-element.p-inputwrapper > .w-100 > .p-element.p-ripple").click()
     page.get_by_text("A VISTA - DINHEIRO - 1").click()
@@ -101,13 +126,11 @@ def test_criacao_financeiro_receber(browser: Browser):
     # Valida se foi criado
     expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
 
-# ======================================================
-# Baixa de financeiro
-# ======================================================
+
 '''Baixa de financeiros baixados é permitida'''
 '''Atalhos da tela de financeiros não funcionando'''
 '''Quando altera-se a situação de uma parcela de "aberto" para "vencido", ou vice e versa, alteração não acontece. Mesma coisa com pago vencido'''
-# Baixa realizada na edição do financeiro
+# Baixa de financeiro pela tela de edição dele
 def test_baixa_financeiro_pagar_interna(browser: Browser):
     # Abre o navegador
     page = goto_home_page(browser)
@@ -137,15 +160,14 @@ def test_baixa_financeiro_pagar_interna(browser: Browser):
     # Valida se alterações foram recebidas
     expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
 
+
 '''Não está sendo possível acessar o menu, por responsividade falha'''
-# Baixa realizada na tela de listagem de financeiros
+# Baixa de financeiro pela tela de listagem de financeiros
 def test_baixa_financeiro_pagar_externa(browser: Browser):
     pass
 
-# ======================================================
-# Exclusão interna de financeiro
-# ======================================================
-# Exclui um financeiro a partir da exclusão de todas as suas parcelas
+
+# Exclusão de financeiro a partir da exclusão de todas as suas parcelas
 def test_exclusao_interna_financeiro(browser: Browser):
     # Abre o navegador
     page = goto_home_page(browser)
@@ -175,11 +197,9 @@ def test_exclusao_interna_financeiro(browser: Browser):
         # Espera até que a página recarregue
         page.wait_for_selector(".btn-success")
 
-# ======================================================
-# Exclusão externa de financeiro
-# ======================================================
+
 '''Não está sendo possível acessar o menu, por responsividade falha'''
-# Exclusão realizada na tela de listagem de financeiros
+# Exclusão de finceiro pela tela de listagem de financeiros
 def test_exclusao_externa_financeiro(browser: Browser):
     pass
 

@@ -6,14 +6,22 @@ from vault.credenciais import *
 
 # I love playwright
 
+# Exceções personalizadas
+class AuthenticationError(BaseException): pass
+
 # O caminho do diretório raíz do projeto
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 # O caminho do arquivo dos cookies de autenticação
 AUTH_PATH = os.path.join(ROOT_DIR, 'playwright/.auth/user.json')
 
 # A url da página principal do sistema
-HOME_PAGE_URL = 'https://erp-qa.mitis.com.br/#/in'
+AUTH_URL = 'https://erp-qa.mitis.com.br/#/'
+HOME_PAGE_URL = AUTH_URL + 'in'
 
+'''Usuário excedeu o número de "tentivas" de acesso'''
+'''Novos submits de login, após o primeiro ter dado erro, não apagam a mensagem de erro, a menos
+que ele próprio tenha mensagem de erro'''
+'''Vários dos usuários válidos não entram, mas nenhuma mensagem aparece'''
 # Realiza a autenticação no sistema.
 # Se os cookies da sessão anterior ainda forem válidos, autentica usando eles.
 # Senão, realiza login e salva os cookies
@@ -24,10 +32,11 @@ def test_login(browser: Browser):
 
     # Abre a página
     page.goto(HOME_PAGE_URL)
-    page.wait_for_timeout(800)
-
+    
     # Realiza o login comum
-    if not page.is_visible("#logoEmpresa"):
+    try:
+        page.wait_for_url(AUTH_URL, timeout=15000)
+
         # Informa o domínio
         page.get_by_role("textbox", name="Domínio").fill(DOMINIO)
 
@@ -39,9 +48,18 @@ def test_login(browser: Browser):
 
         # Aperta para entrar
         page.get_by_role("button", name="Entrar").click()
+    except: 
+        # Login não necessário
+        pass
 
     # Valida se entrou
-    expect(page).to_have_url(HOME_PAGE_URL, timeout=30000)
+    expect(page).to_have_url(HOME_PAGE_URL, timeout=10000)
+
+    # Erro na autenticação
+    '''try:
+        elem = page.locator(".text-center.aviso")
+        raise AuthenticationError("Erro na autenticação: " + elem.inner_text())
+    except: pass'''
 
     # Salva os cookies da autenticação
     context.storage_state(path="playwright/.auth/user.json")
