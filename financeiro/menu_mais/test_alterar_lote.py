@@ -33,8 +33,8 @@ def seleciona_financeiros() -> Page:
     page = _ModuleVariables.page
 
     # Seleciona 1 financeiro do tipo vencido e 1 do tipo aberto
-    page.get_by_text("VENCIDO").first.click(modifiers=["ControlOrMeta"])
-    page.get_by_text("ABERTO").first.click(modifiers=["ControlOrMeta"])
+    page.get_by_text("VENCIDO", exact=True).first.click(modifiers=["ControlOrMeta"])
+    page.get_by_text("ABERTO", exact=True).first.click(modifiers=["ControlOrMeta"])
 
     # Entra no menu mais e escolhe a alteração em lote
     page.get_by_title("Mais opções").click()

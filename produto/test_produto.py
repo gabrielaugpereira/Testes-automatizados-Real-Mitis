@@ -1,4 +1,4 @@
-from playwright.sync_api import Browser, expect
+from playwright.sync_api import Browser, expect, Error
 import re
 
 from test_main import *
@@ -68,12 +68,6 @@ def test_atualizacao_produto(browser: Browser):
     raise NotImplementedError("Teste ainda não foi implementado")
 
 # ======================================================
-# Atualização de produto
-# ======================================================
-def test_atualizacao_produto(browser: Browser):
-    raise NotImplementedError("Teste ainda não foi implementado")
-
-# ======================================================
 # Exclusão de produto
 # ======================================================
 def test_exclusao_produto(browser: Browser):
@@ -83,6 +77,8 @@ def test_exclusao_produto(browser: Browser):
 # Exclusão de produto
 # ======================================================
 def test_exclusao_produto(browser: Browser):
+    raise Error("Teste com falha")
+
     page = goto_home_page(browser)
 
     # Entra na listagem de produtos

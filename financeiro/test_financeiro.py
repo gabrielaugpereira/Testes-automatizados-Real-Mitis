@@ -1,4 +1,4 @@
-from playwright.sync_api import Browser, expect
+from playwright.sync_api import Browser, expect, Error
 import random
 
 from test_main import *
@@ -12,7 +12,6 @@ Preferencialmente mudar isso'''
 def test_criacao_financeiro_pagar(browser: Browser):
     # Abre o navegador
     page = goto_home_page(browser)
-
     # Entra na criação de financeiro
     pesquisar_rotina(page, "568.FINANCEIRO", criacao=True)
 
@@ -148,7 +147,7 @@ def test_baixa_financeiro_pagar_interna(browser: Browser):
     page.locator('select[name="situacao"]').select_option("4")
 
     # Seleciona uma conta
-    page.locator("app-mts-conta-dropdown > .btn-group > .p-element.p-inputwrapper > .w-100 > .p-element.p-autocomplete-input").fill("BANCO")
+    page.get_by_role("tr").nth(14).get_by_role("button").first.click()
     page.get_by_text("BANCO C6").click()
 
     # Apaga o caixa selecionado, para não dar o problema de o caixa estar fechado
@@ -164,7 +163,7 @@ def test_baixa_financeiro_pagar_interna(browser: Browser):
 '''Não está sendo possível acessar o menu, por responsividade falha'''
 # Baixa de financeiro pela tela de listagem de financeiros
 def test_baixa_financeiro_pagar_externa(browser: Browser):
-    pass
+    raise NotImplementedError("Teste não implementado")
 
 
 # Exclusão de financeiro a partir da exclusão de todas as suas parcelas
@@ -201,7 +200,7 @@ def test_exclusao_interna_financeiro(browser: Browser):
 '''Não está sendo possível acessar o menu, por responsividade falha'''
 # Exclusão de finceiro pela tela de listagem de financeiros
 def test_exclusao_externa_financeiro(browser: Browser):
-    pass
+    raise Error("Falha no Real")
 
     # Abre o navegador
     page = goto_home_page(browser)

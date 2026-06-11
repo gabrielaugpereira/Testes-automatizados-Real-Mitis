@@ -7,7 +7,7 @@ Teste para alterar senha, e outros semelhantes
 Implementar testes de valores inválidos para campos
 
 EM TESTE
-Tentativa de pular login na primeira execução
 
 FEITO
+Tentativa de pular login na primeira execução
 Reutilizar cookies anteriores
