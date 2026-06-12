@@ -8,10 +8,7 @@ from test_main import *
 # ======================================================
 # Criação de venda
 # ======================================================
-def test_criacao_venda(browser: Browser):
-    # Abre o navegador
-    page = goto_home_page(browser)
-
+def test_criacao_venda(page: Page):
     # Entra na criação de venda
     pesquisar_rotina(page, "88.VENDAS", criacao=True)
 
@@ -40,10 +37,7 @@ def test_criacao_venda(browser: Browser):
 # ======================================================
 # Exclusão de venda
 # ======================================================
-def test_exclusao_venda(browser: Browser):
-    # Abre o navegador
-    page = goto_home_page(browser)
-
+def test_exclusao_venda(page: Page):
     # Entra na criação de venda
     pesquisar_rotina(page, "88.VENDAS")
     

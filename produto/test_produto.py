@@ -8,9 +8,7 @@ from test_main import *
 # ======================================================
 # Criação de produto
 # ======================================================
-def test_criacao_produto(browser: Browser):
-    # Abre o navegador
-    page = goto_home_page(browser)
+def test_criacao_produto(page: Page):
 
     # Entra na criação de produto
     pesquisar_rotina(page, "2.PRODUTO", criacao=True)
@@ -64,22 +62,20 @@ def test_criacao_produto(browser: Browser):
 # ======================================================
 # Atualização de produto
 # ======================================================
-def test_atualizacao_produto(browser: Browser):
+def test_atualizacao_produto(page: Page):
     raise NotImplementedError("Teste ainda não foi implementado")
 
 # ======================================================
 # Exclusão de produto
 # ======================================================
-def test_exclusao_produto(browser: Browser):
+def test_exclusao_produto(page: Page):
     raise NotImplementedError("Teste ainda não foi implementado")
 
 # ======================================================
 # Exclusão de produto
 # ======================================================
-def test_exclusao_produto(browser: Browser):
+def test_exclusao_produto(page: Page):
     raise Error("Teste com falha")
-
-    page = goto_home_page(browser)
 
     # Entra na listagem de produtos
     pesquisar_rotina(page, "2.PRODUTO")

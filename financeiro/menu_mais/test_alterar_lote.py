@@ -16,10 +16,7 @@ class _ModuleVariables:
 """Fixtures"""
 # Entra na rotina e disponibiliza a página
 @pytest.fixture(scope='module', autouse=True)
-def test_entra_rotina_financeiro(browser: Browser): 
-    # Abre o navegador
-    page = goto_home_page(browser)
-
+def test_entra_rotina_financeiro(page: Page): 
     # Entra na listagem de financeiros
     pesquisar_rotina(page, "568.FINANCEIRO")
 

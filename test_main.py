@@ -1,4 +1,4 @@
-from playwright.sync_api import Browser, Page, expect
+from playwright.sync_api import Browser, Page, Playwright, expect
 import pytest
 import os
 
@@ -21,6 +21,19 @@ AUTH_PATH = os.path.join(ROOT_DIR, 'playwright/.auth/user.json')
 AUTH_URL = 'https://erp-qa.mitis.com.br/#/'
 HOME_PAGE_URL = AUTH_URL + 'in'
 
+@pytest.fixture(scope="session")
+def browser_type_launch_args():
+    return {
+        "headless": False,
+    }
+
+@pytest.fixture(autouse=True, scope='session')
+def test_inicio(playwright: Playwright):
+    browser = playwright.firefox.launch (
+            headless=False, 
+            args=['--start-maximized']
+        )
+
 '''Usuário excedeu o número de "tentivas" de acesso'''
 '''Novos submits de login, após o primeiro ter dado erro, não apagam a mensagem de erro, a menos
 que ele próprio tenha mensagem de erro'''
@@ -28,15 +41,14 @@ que ele próprio tenha mensagem de erro'''
 # Realiza a autenticação no sistema.
 # Se os cookies da sessão anterior ainda forem válidos, autentica usando eles.
 # Senão, realiza login e salva os cookies
-@pytest.fixture(autouse=True, scope='session')
-def test_login(browser: Browser):
-    return
 
+@pytest.fixture(autouse=True, scope='session')
+def login(browser: Browser):
     # Garante que o caminho do arquivo de autenticação existe
     if not os.path.exists(AUTH_PATH):
         # Caminho não existe, e arquivo é criado
         open(AUTH_PATH, 'w')
-        context = browser.new_context()
+        context = browser.new_context(no_viewport=True)
 
     else:
         # Caminho existe, então o conteúdo do arquivo é carregado
@@ -83,6 +95,7 @@ def test_login(browser: Browser):
     page.close()
 
 # Retorna uma página nova na home page, já autenticada e configurada
+@pytest.fixture(autouse=True, scope='function')
 def goto_home_page(browser: Browser):
     context = browser.new_context(storage_state=AUTH_PATH)
 
@@ -94,8 +107,6 @@ def goto_home_page(browser: Browser):
 
     page.wait_for_load_state()
     page.wait_for_timeout(500)
-
-    return page
 
 # Pesquisa a rotina a partir do código da rotina e/ou nome da rotina. 
 # Se estiver no modo de criação, irá clicar no "mais", para criar um novo objeto

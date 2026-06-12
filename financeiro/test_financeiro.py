@@ -9,9 +9,7 @@ from test_main import *
 Preferencialmente mudar isso'''
 
 # Criação de financeiro a pagar
-def test_criacao_financeiro_pagar(browser: Browser):
-    # Abre o navegador
-    page = goto_home_page(browser)
+def test_criacao_financeiro_pagar(page: Page):
     # Entra na criação de financeiro
     pesquisar_rotina(page, "568.FINANCEIRO", criacao=True)
 
@@ -62,10 +60,7 @@ def test_criacao_financeiro_pagar(browser: Browser):
 '''Depois de criado, o número do pedido deveria ser informado na linha reservada para isso.
 Porém, quando você acessa o financeiro, a linha não mostra valor algum'''
 # Criação de financeiro a receber
-def test_criacao_financeiro_receber(browser: Browser):
-    # Abre o navegador
-    page = goto_home_page(browser)
-
+def test_criacao_financeiro_receber(page: Page):
     # Entra na criação de um financeiro
     pesquisar_rotina(page, "568.FINANCEIRO", criacao=True)
 
@@ -130,10 +125,7 @@ def test_criacao_financeiro_receber(browser: Browser):
 '''Atalhos da tela de financeiros não funcionando'''
 '''Quando altera-se a situação de uma parcela de "aberto" para "vencido", ou vice e versa, alteração não acontece. Mesma coisa com pago vencido'''
 # Baixa de financeiro pela tela de edição dele
-def test_baixa_financeiro_pagar_interna(browser: Browser):
-    # Abre o navegador
-    page = goto_home_page(browser)
-
+def test_baixa_financeiro_pagar_interna(page: Page):
     # Entra na listagem de financeiros
     pesquisar_rotina(page, "568.FINANCEIRO")
 
@@ -162,15 +154,12 @@ def test_baixa_financeiro_pagar_interna(browser: Browser):
 
 '''Não está sendo possível acessar o menu, por responsividade falha'''
 # Baixa de financeiro pela tela de listagem de financeiros
-def test_baixa_financeiro_pagar_externa(browser: Browser):
+def test_baixa_financeiro_pagar_externa(page: Page):
     raise NotImplementedError("Teste não implementado")
 
 
 # Exclusão de financeiro a partir da exclusão de todas as suas parcelas
-def test_exclusao_interna_financeiro(browser: Browser):
-    # Abre o navegador
-    page = goto_home_page(browser)
-
+def test_exclusao_interna_financeiro(page: Page):
     # Entra na listagem de financeiros
     pesquisar_rotina(page, "568.FINANCEIRO")
 
@@ -199,11 +188,8 @@ def test_exclusao_interna_financeiro(browser: Browser):
 
 '''Não está sendo possível acessar o menu, por responsividade falha'''
 # Exclusão de finceiro pela tela de listagem de financeiros
-def test_exclusao_externa_financeiro(browser: Browser):
+def test_exclusao_externa_financeiro(page: Page):
     raise Error("Falha no Real")
-
-    # Abre o navegador
-    page = goto_home_page(browser)
 
     # Entra na listagem de financeiros
     pesquisar_rotina(page, "568.FINANCEIRO")

@@ -16,9 +16,7 @@ class _ModuleVariables:
 # Preparação para os testes
 # ======================================================
 @pytest.fixture(scope="module", autouse=True)
-def test_abrir_rotina_financeiro(browser: Browser):
-    # Abre o navegador
-    page = goto_home_page(browser)
+def test_abrir_rotina_financeiro(page: Page):
 
     # Entra na criação de financeiro
     pesquisar_rotina(page, "568.FINANCEIRO")
@@ -35,9 +33,7 @@ def test_abrir_rotina_financeiro(browser: Browser):
 # ======================================================
 # Criação de observação
 # ======================================================
-def test_criar_obs():
-    page = _ModuleVariables.page
-
+def test_criar_obs(page: Page):
     # Insere conteúdo da observação
     page.get_by_role("textbox", name="Texto da observação").click()
     page.get_by_role("textbox", name="Texto da observação").fill("Teste automatizado - GAP")
@@ -48,18 +44,14 @@ def test_criar_obs():
 # ======================================================
 # Leitura de observação
 # ======================================================
-def test_ler_obs():
-    page = _ModuleVariables.page
-
+def test_ler_obs(page: Page):
     # Valida se observação foi criada
     expect(page.get_by_role("cell", name="Teste automatizado - GAP")).to_be_visible()
 
 # ======================================================
 # Atualização de observação
 # ======================================================
-def test_atualizar_obs():
-    page = _ModuleVariables.page
-
+def test_atualizar_obs(page: Page):
     # Edita e salva conteúdo da observação
     page.get_by_title("Editar").click()
     page.get_by_role("textbox", name="Texto da observação").fill("Teste automatizado editado - GAP")
@@ -71,9 +63,7 @@ def test_atualizar_obs():
 # ======================================================
 # Remoção de observação
 # ======================================================
-def test_remover_obs():
-    page = _ModuleVariables.page
-
+def test_remover_obs(page: Page):
     # Remove a observação
     page.get_by_title("Remover").click()
 

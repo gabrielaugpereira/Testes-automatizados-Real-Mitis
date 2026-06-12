@@ -1,10 +1,12 @@
 PARA FAZER
 Fixtures locais para entrar em rotina
 Login sendo realizado várias vezes
-Readme sobre page.pause
-Readme sobre trace viewer
 Teste para alterar senha, e outros semelhantes
 Implementar testes de valores inválidos para campos
+Device emulation
+Many browsers
+Maximizar navegador
+Readme
 
 EM TESTE
 
