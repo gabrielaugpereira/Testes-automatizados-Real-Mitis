@@ -1,5 +1,6 @@
 from playwright.sync_api import Browser, expect, Error
 import random
+import re
 
 from test_main import *
 
@@ -17,17 +18,20 @@ def test_criacao_financeiro_pagar(browser: Browser):
 
     # Escreve uma descrição
     page.wait_for_timeout(800)
+    descricao = "Teste automatizado - GAP"
     page.get_by_text("Adicionar descrição").click()
-    page.get_by_role("textbox", name="Descrição do lançamento").fill("Teste automatizado - GAP")
+    page.get_by_role("textbox", name="Descrição do lançamento").fill(descricao)
     page.get_by_role("heading", name="Lançamento Teste automatizado").get_by_role("button").click()
+    
+    expect(page.locator("app-financeiro-cadastro")).to_contain_text(descricao)
 
     # Escolhe um fornecedor
     page.get_by_role("button").nth(5).click()
-    page.get_by_text("791 25.991.826 WASHINGTON").click()
+    page.get_by_text(re.compile("[0-9]{2}.[0-9]{3}.[0-9]{3}")).first.click()
 
     # Informa um número de documento
     page.get_by_role("textbox", name="Número do Documento").click()
-    page.get_by_role("textbox", name="Número do Documento").fill(str(random.randint(100000000000, 999999999999)))
+    page.get_by_role("textbox", name="Número do Documento").fill(str(random.randint(10 ** 11, 10 ** 12 - 1)))
 
     page.get_by_role("textbox", name="Complemento").click()
     page.get_by_role("textbox", name="Complemento").fill(str(random.randint(10000, 99999)))
@@ -68,18 +72,20 @@ def test_criacao_financeiro_receber(browser: Browser):
 
     # Entra na criação de um financeiro
     pesquisar_rotina(page, "568.FINANCEIRO", criacao=True)
+    page.wait_for_timeout(700)
 
     # Informa que é um financeiro a receber
     page.get_by_role("radio", name="Receber").check()
 
     # Escreve uma descrição
+    descricao = "Teste automatizado - GAP"
     page.get_by_text("Adicionar descrição").click()
-    page.get_by_role("textbox", name="Descrição do lançamento").fill("Teste automatizado - GAP")
+    page.get_by_role("textbox", name="Descrição do lançamento").fill(descricao)
     page.get_by_role("heading", name="Lançamento Teste automatizado").get_by_role("button").click()
 
     # Escolhe um cliente
     page.get_by_role("button").nth(5).click()
-    page.get_by_text("109194 $.O.$ - FOMENTO").click()
+    page.get_by_text(re.compile("[0-9]{2}.[0-9]{3}.[0-9]{3}")).first.click()
 
     # Escolhe uma empresa
     page.get_by_role("button").nth(7).click()
@@ -87,7 +93,7 @@ def test_criacao_financeiro_receber(browser: Browser):
 
     # Informa um número de documento
     page.get_by_role("textbox", name="Número do Documento").click()
-    page.get_by_role("textbox", name="Número do Documento").fill(str(random.randint(100000000000, 999999999999)))
+    page.get_by_role("textbox", name="Número do Documento").fill(str(random.randint(10 ** 11, 10 ** 12 - 1)))
 
     page.get_by_role("textbox", name="Complemento").click()
     page.get_by_role("textbox", name="Complemento").fill(str(random.randint(10000, 99999)))
@@ -147,7 +153,7 @@ def test_baixa_financeiro_pagar_interna(browser: Browser):
     page.locator('select[name="situacao"]').select_option("4")
 
     # Seleciona uma conta
-    page.get_by_role("tr").nth(14).get_by_role("button").first.click()
+    page.get_by_role("button").nth(23).click()
     page.get_by_text("BANCO C6").click()
 
     # Apaga o caixa selecionado, para não dar o problema de o caixa estar fechado

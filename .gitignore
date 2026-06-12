@@ -8,7 +8,7 @@
 .venv/
 
 # Dados do navegador autenticado. NÃO REMOVER: contém dados sensíveis
-playwright/.auth/
+playwright/.auth
 
 # Informações sensíveis usadas dentro dos testes, como as credenciais para a autenticação.
 # Precisa ser implementado para cada dispositivo, e segue o modelo:

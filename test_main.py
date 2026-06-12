@@ -1,4 +1,4 @@
-from playwright.sync_api import Browser, Page, expect
+from playwright.sync_api import Browser, Page, Playwright, expect
 import pytest
 import os
 
@@ -21,6 +21,12 @@ AUTH_PATH = os.path.join(ROOT_DIR, 'playwright/.auth/user.json')
 AUTH_URL = 'https://erp-qa.mitis.com.br/#/'
 HOME_PAGE_URL = AUTH_URL + 'in'
 
+@pytest.fixture(scope="session")
+def browser_type_launch_args():
+    return {
+        "headless": False,
+    }
+
 '''Usuário excedeu o número de "tentivas" de acesso'''
 '''Novos submits de login, após o primeiro ter dado erro, não apagam a mensagem de erro, a menos
 que ele próprio tenha mensagem de erro'''
@@ -30,8 +36,6 @@ que ele próprio tenha mensagem de erro'''
 # Senão, realiza login e salva os cookies
 @pytest.fixture(autouse=True, scope='session')
 def test_login(browser: Browser):
-    return
-
     # Garante que o caminho do arquivo de autenticação existe
     if not os.path.exists(AUTH_PATH):
         # Caminho não existe, e arquivo é criado
@@ -47,9 +51,15 @@ def test_login(browser: Browser):
     # Abre a página
     page.goto(HOME_PAGE_URL)
     
-    # Realiza o login comum
+    
     try:
-        page.wait_for_url(HOME_PAGE_URL, timeout=10000)
+        page.wait_for_timeout(1000)
+        page.wait_for_url(HOME_PAGE_URL, timeout=6500)
+
+        # Login não necessário
+    
+    except: 
+        # Realiza o login comum
 
         # Informa o domínio
         page.get_by_role("textbox", name="Domínio").fill(DOMINIO)
@@ -62,11 +72,7 @@ def test_login(browser: Browser):
 
         # Aperta para entrar
         page.get_by_role("button", name="Entrar").click()
-
-    except: 
-        # Login não necessário
-        pass
-
+        
     # Valida se entrou
     expect(page).to_have_url(HOME_PAGE_URL, timeout=15000)
 
