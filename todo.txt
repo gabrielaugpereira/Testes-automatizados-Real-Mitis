@@ -1,4 +1,7 @@
 PARA FAZER
+Estava mexendo com a edição de financeiro
+
+'''Não está sendo possível mudar a foto de perfil'''
 Fixtures locais para entrar em rotina
 Login sendo realizado várias vezes
 Teste para alterar senha, e outros semelhantes
@@ -7,6 +10,11 @@ Device emulation
 Many browsers
 Maximizar navegador
 Readme
+--slowmo
+--device
+--video
+--screenshot
+Padronizar docs em """
 
 EM TESTE
 

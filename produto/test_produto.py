@@ -7,7 +7,7 @@ from test_main import *
 """Fluxo CRUD para produto"""
 
 
-# Criação de produto
+"""Criação de produto"""
 def test_criacao_produto(browser: Browser):
     # Abre o navegador
     page = goto_home_page(browser)
@@ -73,7 +73,7 @@ def test_criacao_produto(browser: Browser):
     expect(page.get_by_text("Produto salvo com sucesso!")).to_be_visible()
 
 
-# Outra criação de produto. Como alguns campos são excludentes, serve para testar todos os campos.
+"""Outra criação de produto. Como alguns campos são excludentes, serve para testar todos os campos"""
 def test_criacao_produto2(browser: Browser):
     # Abre o navegador
     page = goto_home_page(browser)
@@ -135,12 +135,13 @@ def test_criacao_produto2(browser: Browser):
     expect(page.get_by_text("Produto salvo com sucesso!")).to_be_visible()
 
 
-# Atualização de produto
+"""Atualização de produto"""
 def test_atualizacao_produto(browser: Browser):
     raise NotImplementedError("Teste ainda não foi implementado")
 
 
-# Exclusão de produto
+'''Está excluindo os produtos importantes do sistema'''
+"""Exclusão de produto"""
 def test_exclusao_produto(browser: Browser):
     page = goto_home_page(browser)
 

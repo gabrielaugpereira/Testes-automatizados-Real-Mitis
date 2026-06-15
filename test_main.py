@@ -1,40 +1,23 @@
-from playwright.sync_api import Browser, Page, Playwright, expect
+from playwright.sync_api import Browser, Page, expect
 import pytest
 import os
 
+from conftest import AUTH_PATH, HOME_PAGE_URL
 from vault.credenciais import *
 
 # I love playwright
 
-# Exceções personalizadas
+"""Exceções personalizadas"""
 class AuthenticationError(BaseException): pass
 
-# Keywords personalizadas
+"""Keywords personalizadas"""
 '''def try_wait_for'''
 
-# O caminho do diretório raíz do projeto
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-# O caminho do arquivo dos cookies de autenticação
-AUTH_PATH = os.path.join(ROOT_DIR, 'playwright/.auth/user.json')
-
-# A url da página principal do sistema
-AUTH_URL = 'https://erp-qa.mitis.com.br/#/'
-HOME_PAGE_URL = AUTH_URL + 'in'
-
-@pytest.fixture(scope="session")
-def browser_type_launch_args():
-    return {
-        "headless": False,
-    }
-
-'''Usuário excedeu o número de "tentivas" de acesso'''
-'''Novos submits de login, após o primeiro ter dado erro, não apagam a mensagem de erro, a menos
-que ele próprio tenha mensagem de erro'''
-'''Vários dos usuários válidos não entram, mas nenhuma mensagem aparece'''
-# Realiza a autenticação no sistema.
-# Se os cookies da sessão anterior ainda forem válidos, autentica usando eles.
-# Senão, realiza login e salva os cookies
-
+"""
+Realiza a autenticação no sistema.
+Se os cookies da sessão anterior ainda forem válidos, autentica usando eles.
+Senão, realiza login e salva os cookies
+"""
 @pytest.fixture(autouse=True, scope='session')
 def test_login(browser: Browser):
     # Garante que o caminho do arquivo de autenticação existe
@@ -77,21 +60,14 @@ def test_login(browser: Browser):
     # Valida se entrou
     expect(page).to_have_url(HOME_PAGE_URL, timeout=15000)
 
-    # Erro na autenticação
-    '''try:
-        elem = page.locator(".text-center.aviso")
-        raise AuthenticationError("Erro na autenticação: " + elem.inner_text())
-    except: pass'''
-
     # Salva os cookies da autenticação
     context.storage_state(path="playwright/.auth/user.json")
 
     # Fecha o navegador
     page.close()
 
-# Retorna uma página nova na home page, já autenticada e configurada
-@pytest.fixture(autouse=True, scope='function')
-def goto_home_page(browser: Browser):
+"""Retorna uma página nova na home page, já autenticada e configurada"""
+def goto_home_page(browser: Browser) -> Page:
     context = browser.new_context(storage_state=AUTH_PATH)
 
     # Muda o tempo padrão de timeout
@@ -103,9 +79,13 @@ def goto_home_page(browser: Browser):
     page.wait_for_load_state()
     page.wait_for_timeout(500)
 
-# Pesquisa a rotina a partir do código da rotina e/ou nome da rotina. 
-# Se estiver no modo de criação, irá clicar no "mais", para criar um novo objeto
-def pesquisar_rotina(page: Page, nome: str, criacao: bool = False):
+    return page
+
+"""
+Pesquisa a rotina a partir do código da rotina e/ou nome da rotina. 
+Se estiver no modo de criação, irá clicar no botão "mais", para criar um novo objeto
+"""
+def pesquisar_rotina(page: Page, nome: str, criacao: bool = False) -> None:
     page.get_by_role("combobox", name="Pesquisar rotina").click()
 
     if not criacao:
@@ -115,3 +95,12 @@ def pesquisar_rotina(page: Page, nome: str, criacao: bool = False):
 
     # Curto tempo de espera
     page.wait_for_timeout(500)
+
+"""
+Chega até a home page, autenticada e configurada, e pesquisa a rotina.
+É a união de duas funções auxiliares
+"""
+def home_page_e_rotina(browser: Browser, nome: str, criacao: bool = False) -> Page:
+    page = goto_home_page(browser)
+    pesquisar_rotina(page, nome, criacao)
+    return page

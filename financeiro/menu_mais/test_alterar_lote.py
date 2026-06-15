@@ -14,7 +14,7 @@ class _ModuleVariables:
 
 
 """Fixtures"""
-# Entra na rotina e disponibiliza a página
+"""Entra na rotina e disponibiliza a página"""
 @pytest.fixture(scope='module', autouse=True)
 def test_entra_rotina_financeiro(page: Page): 
     # Entra na listagem de financeiros
