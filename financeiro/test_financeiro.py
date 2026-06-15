@@ -218,20 +218,20 @@ def test_edicao_financeiro_receber(browser: Browser):
     page.get_by_text("12", exact=True).first.click()
 
     # Muda o valor de vencimento
-    page.locator("#inputValorOriginal input").first.click()
-    page.locator("#inputValorOriginal input").first.fill("200")
+    page.get_by_text("Data vencimento").locator("xpath=ancestor::tr").locator("td").last.locator("input").click()
+    page.get_by_text("Data vencimento").locator("xpath=ancestor::tr").locator("td").last.locator("input").fill("200")
 
     # Preenche o valor de acréscimo
-    page.pause()
-    page.get_by_text("Acrésc($)").locator("xpath=ancestor::tr").locator("td").nth(1).click()
-    page.get_by_text("Acrésc($)").locator("xpath=ancestor::tr").locator("td").nth(1).fill("20")
+    page.get_by_text("Acrésc($)").locator("xpath=ancestor::tr").locator("td").nth(1).locator("input").click()
+    page.get_by_text("Acrésc($)").locator("xpath=ancestor::tr").locator("td").nth(1).locator("input").fill("20")
 
     # Valida o valor final
-    expect(page.get_by_text("Valor final").locator("xpath=ancestor::tr").locator("td").last).to_have_value("220,00")
+    expect(page.get_by_text("Valor final").locator("xpath=ancestor::tr").locator("td").last.locator("input")).to_have_value("220,00")
 
     # Preenche Desc($) Vencimento
     page.get_by_role("button", name=" Exibir mais detalhes").click()
-    page.locator("#inputValorDesconto > .w-100").fill("40")
+    page.get_by_text("Desc($) vencimento").locator("xpath=ancestor::tr").locator("td").last.locator("input").click()
+    page.get_by_text("Desc($) vencimento").locator("xpath=ancestor::tr").locator("td").last.locator("input").fill("40")
 
     # Preenche juros e multa
     page.locator("#inputJuros > .w-100").fill("80")
