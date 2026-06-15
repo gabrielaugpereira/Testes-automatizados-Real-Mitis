@@ -27,13 +27,6 @@ def browser_type_launch_args():
         "headless": False,
     }
 
-@pytest.fixture(autouse=True, scope='session')
-def test_inicio(playwright: Playwright):
-    browser = playwright.firefox.launch (
-            headless=False, 
-            args=['--start-maximized']
-        )
-
 '''Usuário excedeu o número de "tentivas" de acesso'''
 '''Novos submits de login, após o primeiro ter dado erro, não apagam a mensagem de erro, a menos
 que ele próprio tenha mensagem de erro'''
@@ -43,7 +36,7 @@ que ele próprio tenha mensagem de erro'''
 # Senão, realiza login e salva os cookies
 
 @pytest.fixture(autouse=True, scope='session')
-def login(browser: Browser):
+def test_login(browser: Browser):
     # Garante que o caminho do arquivo de autenticação existe
     if not os.path.exists(AUTH_PATH):
         # Caminho não existe, e arquivo é criado
@@ -59,9 +52,15 @@ def login(browser: Browser):
     # Abre a página
     page.goto(HOME_PAGE_URL)
     
-    # Realiza o login comum
+    
     try:
-        page.wait_for_url(HOME_PAGE_URL, timeout=10000)
+        page.wait_for_timeout(1000)
+        page.wait_for_url(HOME_PAGE_URL, timeout=6500)
+
+        # Login não necessário
+    
+    except: 
+        # Realiza o login comum
 
         # Informa o domínio
         page.get_by_role("textbox", name="Domínio").fill(DOMINIO)
@@ -74,11 +73,7 @@ def login(browser: Browser):
 
         # Aperta para entrar
         page.get_by_role("button", name="Entrar").click()
-
-    except: 
-        # Login não necessário
-        pass
-
+        
     # Valida se entrou
     expect(page).to_have_url(HOME_PAGE_URL, timeout=15000)
 
