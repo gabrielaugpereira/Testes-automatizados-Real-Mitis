@@ -7,6 +7,10 @@ from test_main import *
 """Fluxo CRUD para produto"""
 
 
+# ================================================
+# Operações de criação
+# ================================================
+
 """Criação de produto"""
 def test_criacao_produto(browser: Browser):
     # Abre o navegador
@@ -142,18 +146,29 @@ def test_criacao_produto2(browser: Browser):
     page.close()
 
 
+# ================================================
+# Operações de edição
+# ================================================
+
 """Atualização de produto"""
 def test_atualizacao_produto(browser: Browser):
     raise NotImplementedError("Teste ainda não foi implementado")
 
 
-'''Está excluindo os produtos importantes do sistema'''
+# ================================================
+# Operações de exclusão
+# ================================================
+
 """Exclusão de produto"""
 def test_exclusao_produto(browser: Browser):
     page = new_page(browser)
 
     # Entra na listagem de produtos
     pesquisar_rotina(page, "2.PRODUTO")
+
+    # Ordena pelo código interno, para pegar o último
+    page.get_by_role("columnheader", name="Cód. Interno").click()
+    page.get_by_role("columnheader", name="Cód. Interno").click()
 
     # Seleciona o primeiro
     page.locator(".btn.btn-light").first.click()
