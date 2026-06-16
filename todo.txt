@@ -1,23 +1,22 @@
-PARA FAZER
-Estava mexendo com a edição de financeiro
-
+ALTA PRIORIDADE
+Olhar relatório de estágio
+Adicionar o prefixo sem ser test_
+Padronizar docs em """
 '''Não está sendo possível mudar a foto de perfil'''
+Implementar close page
+Melhorar velocidade dos testes de alterar em lote
+
+MEDIA PRIORIDADE
 Fixtures locais para entrar em rotina
-Login sendo realizado várias vezes
-Teste para alterar senha, e outros semelhantes
-Implementar testes de valores inválidos para campos
 Device emulation
 Many browsers
 Maximizar navegador
+
+BAIXA PRIORIDADE
 Readme
 --slowmo
 --device
 --video
 --screenshot
-Padronizar docs em """
-
-EM TESTE
-
-FEITO
-Tentativa de pular login na primeira execução
-Reutilizar cookies anteriores
+Teste para alterar senha, e outros semelhantes
+Implementar testes de valores inválidos para campos

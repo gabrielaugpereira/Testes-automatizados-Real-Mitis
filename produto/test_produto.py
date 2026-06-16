@@ -10,14 +10,14 @@ from test_main import *
 """Criação de produto"""
 def test_criacao_produto(browser: Browser):
     # Abre o navegador
-    page = goto_home_page(browser)
+    page = new_page(browser)
 
     # Entra na criação de produto
     pesquisar_rotina(page, "2.PRODUTO", criacao=True)
 
     # Insere um id customizado
     page.locator("#codProd").click()
-    page.locator("#codProd").fill(str(random.randint(10 ** 10, 10 ** 11 - 1)))
+    page.locator("#codProd").fill(str(random.randint(10 ** 7, 10 ** 8 - 1)))
 
     # Descrição do produto
     page.locator("#dscProd").click()
@@ -72,18 +72,22 @@ def test_criacao_produto(browser: Browser):
     # Validação
     expect(page.get_by_text("Produto salvo com sucesso!")).to_be_visible()
 
+    # Fecha a página
+    page.close()
+
 
 """Outra criação de produto. Como alguns campos são excludentes, serve para testar todos os campos"""
 def test_criacao_produto2(browser: Browser):
     # Abre o navegador
-    page = goto_home_page(browser)
+    page = new_page(browser)
 
     # Entra na criação de produto
     pesquisar_rotina(page, "2.PRODUTO", criacao=True)
 
     # Insere um id customizado
+    # Id máximo no momento de escrita do código: 34244829
     page.locator("#codProd").click()
-    page.locator("#codProd").fill(str(random.randint(10 ** 10, 10 ** 11 - 1)))
+    page.locator("#codProd").fill(str(random.randint(10**8, 3.5*(10**8))))
 
     # Descrição do produto
     page.locator("#dscProd").click()
@@ -134,6 +138,9 @@ def test_criacao_produto2(browser: Browser):
     # Validação
     expect(page.get_by_text("Produto salvo com sucesso!")).to_be_visible()
 
+    # Fecha a página
+    page.close()
+
 
 """Atualização de produto"""
 def test_atualizacao_produto(browser: Browser):
@@ -143,7 +150,7 @@ def test_atualizacao_produto(browser: Browser):
 '''Está excluindo os produtos importantes do sistema'''
 """Exclusão de produto"""
 def test_exclusao_produto(browser: Browser):
-    page = goto_home_page(browser)
+    page = new_page(browser)
 
     # Entra na listagem de produtos
     pesquisar_rotina(page, "2.PRODUTO")
@@ -157,3 +164,6 @@ def test_exclusao_produto(browser: Browser):
 
     # Validação
     expect(page.get_by_text("Produto excluído com sucesso.")).to_be_visible()
+
+    # Fecha a página
+    page.close()

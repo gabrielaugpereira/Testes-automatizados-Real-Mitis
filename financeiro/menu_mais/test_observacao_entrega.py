@@ -7,16 +7,14 @@ from test_main import *
 
 '''Relatar bugs com a table'''
 
-# Armazena a página que será usada pelos outros testes.
-# Seu valor inicial é colocado pelo "test_abrir_rotina_financeiro"
-class _ModuleVariables: 
+"""Mantém a página disponível para todos os testes"""
+class _ModuleVariables:
     page: Page = None
 
-# ======================================================
-# Preparação para os testes
-# ======================================================
-@pytest.fixture(scope="module", autouse=True)
-def test_abrir_rotina_financeiro(page: Page):
+"""Preparação para os testes"""
+@pytest.fixture(scope='module', autouse=True)
+def abrir_tela_observacoes(browser: Browser):
+    page = new_page(browser)
 
     # Entra na criação de financeiro
     pesquisar_rotina(page, "568.FINANCEIRO")
@@ -28,12 +26,19 @@ def test_abrir_rotina_financeiro(page: Page):
     page.get_by_title("Mais opções").click()
     page.locator("a").filter(has_text="Obs. entrega (F9)").click()
 
+    # Disponibiliza a página para todos
     _ModuleVariables.page = page
 
-# ======================================================
-# Criação de observação
-# ======================================================
-def test_criar_obs(page: Page):
+    yield
+
+    # Garante que a página seja fechada
+    _ModuleVariables.page.close()
+
+
+"""Criação de observação"""
+def test_criar_obs():
+    page = _ModuleVariables.page
+
     # Insere conteúdo da observação
     page.get_by_role("textbox", name="Texto da observação").click()
     page.get_by_role("textbox", name="Texto da observação").fill("Teste automatizado - GAP")
@@ -41,17 +46,19 @@ def test_criar_obs(page: Page):
     # Adiciona a observação
     page.get_by_role("button", name=" Adicionar").click()
 
-# ======================================================
-# Leitura de observação
-# ======================================================
-def test_ler_obs(page: Page):
+
+"""Leitura de observação"""
+def test_ler_obs():
+    page = _ModuleVariables.page
+
     # Valida se observação foi criada
     expect(page.get_by_role("cell", name="Teste automatizado - GAP")).to_be_visible()
 
-# ======================================================
-# Atualização de observação
-# ======================================================
-def test_atualizar_obs(page: Page):
+
+"""Atualização de observação"""
+def test_atualizar_obs():
+    page = _ModuleVariables.page
+
     # Edita e salva conteúdo da observação
     page.get_by_title("Editar").click()
     page.get_by_role("textbox", name="Texto da observação").fill("Teste automatizado editado - GAP")
@@ -60,10 +67,11 @@ def test_atualizar_obs(page: Page):
     # Valida se conteúdo foi alterado
     expect(page.get_by_role("cell", name="Teste automatizado editado - GAP")).to_be_visible()
 
-# ======================================================
-# Remoção de observação
-# ======================================================
-def test_remover_obs(page: Page):
+
+"""Remoção de observação"""
+def test_remover_obs():
+    page = _ModuleVariables.page
+
     # Remove a observação
     page.get_by_title("Remover").click()
 

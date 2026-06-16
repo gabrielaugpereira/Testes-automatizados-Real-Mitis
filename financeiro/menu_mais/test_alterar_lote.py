@@ -4,30 +4,29 @@ import random
 
 from test_main import *
 
-'''
-Estava implementando, porém achei melhor focar em testes mais relevantes
-'''
 
+"""Mantém a page disponível para todos os testes"""
 class _ModuleVariables:
-    # Torna a página acessível para todos os testes, para dar continuidade
     page: Page = None
 
-
-"""Fixtures"""
-"""Entra na rotina e disponibiliza a página"""
+"""Entra na rotina de financeiro e disponibiliza a page"""
 @pytest.fixture(scope='module', autouse=True)
-def test_entra_rotina_financeiro(page: Page): 
-    # Entra na listagem de financeiros
-    pesquisar_rotina(page, "568.FINANCEIRO")
-
-    page.wait_for_url("https://erp-qa.mitis.com.br/#/in/financeiro/pesquisa/568/390/financeiro/0")
-
+def entra_rotina_financeiro(browser: Browser):
+    page = new_page(browser)
     _ModuleVariables.page = page
+    
+    pesquisar_rotina(page, "FINANCEIRO")
 
+    yield
 
-# Entra na rotina, seleciona dois financeiros de situações diferentes e entra no menu mais
-def seleciona_financeiros() -> Page:
-    page = _ModuleVariables.page
+    # Garante que a página seja fechada
+    _ModuleVariables.page.close()
+
+"""
+Entra na rotina, seleciona dois financeiros de situações diferentes, 
+entra no menu mais e retorna a page
+"""
+def seleciona_financeiros(page: Page):
 
     # Seleciona 1 financeiro do tipo vencido e 1 do tipo aberto
     page.get_by_text("VENCIDO", exact=True).first.click(modifiers=["ControlOrMeta"])
@@ -38,12 +37,10 @@ def seleciona_financeiros() -> Page:
     page.locator("a").filter(has_text="Alterar em lote").click()
 
 
-"""Testes"""
-# Altera o valor dos financeiros para outro pré definido
+"""Altera o valor dos financeiros para outros pré definido"""
 def test_novo_valor():
-    seleciona_financeiros()
-
     page = _ModuleVariables.page
+    seleciona_financeiros(page)
 
     # Seleciona a alteração do valor
     page.get_by_role("checkbox", name="Alterar valor vencimento").check()
@@ -60,11 +57,10 @@ def test_novo_valor():
     expect(page.get_by_text("Sucesso!")).to_be_visible()
     
 
-# Incrementa o valor dos financeiros em valor pré definido 
-def test_incrementar_valor(): 
-    seleciona_financeiros()
-
+"""Incrementa o valor dos financeiros em valor pré definido"""
+def test_incrementar_valor():
     page = _ModuleVariables.page
+    seleciona_financeiros(page)
 
     # Seleciona o incremento do valor
     page.get_by_role("checkbox", name="Alterar valor vencimento").check()
@@ -82,11 +78,10 @@ def test_incrementar_valor():
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
 
-# Decrementa o valor dos financeiros em valor pré definido 
+"""Decrementa o valor dos financeiros em valor pré definido""" 
 def test_decrementar_valor(): 
-    seleciona_financeiros()
-
     page = _ModuleVariables.page
+    seleciona_financeiros(page)
 
     # Seleciona o decremento do valor
     page.get_by_role("checkbox", name="Alterar valor vencimento").check()
@@ -109,11 +104,10 @@ def test_decrementar_valor():
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
 
-# Altera a data de vencimento dos financeiros
+"""Altera a data de vencimento dos financeiros"""
 def test_nova_data():
-    seleciona_financeiros()
-
     page = _ModuleVariables.page
+    seleciona_financeiros(page)
 
     # Seleciona a alteração da data
     page.get_by_role("checkbox", name="Alterar data vencimento").check()
@@ -134,11 +128,10 @@ def test_nova_data():
 
 
 '''Erro na mensagem de confirmação, por conta do input de data vazio'''
-# Incrementa dias na data de vencimento dos financeiros
+"""Incrementa dias na data de vencimento dos financeiros"""
 def test_incrementar_dias():
-    seleciona_financeiros()
-
     page = _ModuleVariables.page
+    seleciona_financeiros(page)
 
     # Seleciona o incremento de dias
     page.get_by_role("checkbox", name="Alterar data vencimento").check()
@@ -156,11 +149,10 @@ def test_incrementar_dias():
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
 
-# Decrementa dias na data de vencimento dos financeiros
+"""Decrementa dias na data de vencimento dos financeiros"""
 def test_decrementar_dias():
-    seleciona_financeiros()
-
     page = _ModuleVariables.page
+    seleciona_financeiros(page)
 
     # Seleciona o decremento de dias
     page.get_by_role("checkbox", name="Alterar data vencimento").check()
@@ -180,11 +172,10 @@ def test_decrementar_dias():
 
 '''Cada vez que você fecha a confirmação e abre de novo, a quantidade de financeiros disponíveis
 para alteração é incrementada pela quantidade real de financeiros disponível'''
-# Seleciona duas contas, uma aberta e outra vencida, e usando o filtro, altera somente a aberta
+"""Seleciona duas contas, uma aberta e outra vencida, e usando o filtro, altera somente a aberta"""
 def test_filtro_situacao_aberto():
-    seleciona_financeiros()
-
     page = _ModuleVariables.page
+    seleciona_financeiros(page)
 
     # Seleciona o incremento do valor
     page.get_by_role("checkbox", name="Alterar valor vencimento").check()
@@ -206,11 +197,10 @@ def test_filtro_situacao_aberto():
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
 
-# Seleciona duas contas, uma aberta e outra vencida, e usando o filtro, altera somente a vencida
+"""Seleciona duas contas, uma aberta e outra vencida, e usando o filtro, altera somente a vencida"""
 def test_filtro_situacao_vencido():
-    seleciona_financeiros()
-
     page = _ModuleVariables.page
+    seleciona_financeiros(page)
 
     # Seleciona o incremento do valor
     page.get_by_role("checkbox", name="Alterar valor vencimento").check()

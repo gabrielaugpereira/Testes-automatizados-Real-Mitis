@@ -5,10 +5,10 @@ from test_main import *
 
 '''CRUD'''
 
-# ======================================================
-# Criação de venda
-# ======================================================
-def test_criacao_venda(page: Page):
+"""Criação de venda"""
+def test_criacao_venda(browser: Browser):
+    page = new_page(browser)
+    
     # Entra na criação de venda
     pesquisar_rotina(page, "88.VENDAS", criacao=True)
 
@@ -34,10 +34,14 @@ def test_criacao_venda(page: Page):
     # Valida se salvou
     expect(page.get_by_text("Pedido salvo com sucesso!")).to_be_visible()
 
-# ======================================================
-# Exclusão de venda
-# ======================================================
-def test_exclusao_venda(page: Page):
+    # Fecha a página
+    page.close()
+
+
+"""Exclusão de venda"""
+def test_exclusao_venda(browser: Browser):
+    page = new_page(browser)
+    
     # Entra na criação de venda
     pesquisar_rotina(page, "88.VENDAS")
     
@@ -66,3 +70,6 @@ def test_exclusao_venda(page: Page):
 
     # Valida se venda foi excluída
     expect(page.get_by_text("Novo orçamento")).to_be_visible()
+
+    # Fecha a página
+    page.close()

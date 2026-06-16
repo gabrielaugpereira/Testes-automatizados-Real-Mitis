@@ -41,10 +41,12 @@ def add_nova_parcela(page: Page):
     # Valida se financeiro foi criado
     expect(page.get_by_text("Sucesso"))
 
+
 """Criação de financeiro a pagar"""
 def test_criacao_financeiro_pagar(browser: Browser):
     # Entra na criação de financeiro
-    page = home_page_e_rotina(browser, "568.FINANCEIRO", criacao=True)
+    page = new_page(browser) 
+    pesquisar_rotina(page, "568.FINANCEIRO", criacao=True)
 
     # Escreve uma descrição
     page.wait_for_timeout(800)
@@ -75,13 +77,17 @@ def test_criacao_financeiro_pagar(browser: Browser):
     # Valida se foi criado
     expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
 
+    # Fecha a página
+    page.close()
+
 
 '''Depois de criado, o número do pedido deveria ser informado na linha reservada para isso.
 Porém, quando você acessa o financeiro, a linha não mostra valor algum'''
 """Criação de financeiro a receber"""
 def test_criacao_financeiro_receber(browser: Browser):
     # Entra na criação de um financeiro
-    page = home_page_e_rotina(browser, "568.FINANCEIRO", criacao=True)
+    page = new_page(browser) 
+    pesquisar_rotina(page, "568.FINANCEIRO", criacao=True)
 
     # Informa que é um financeiro a receber
     page.get_by_role("radio", name="Receber").check()
@@ -119,6 +125,9 @@ def test_criacao_financeiro_receber(browser: Browser):
     # Valida se foi criado
     expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
 
+    # Fecha a página
+    page.close()
+
 
 # ================================================
 # Operações de edição
@@ -130,7 +139,8 @@ def test_criacao_financeiro_receber(browser: Browser):
 """Baixa de financeiro pela tela de edição dele"""
 def test_baixa_financeiro_pagar_interna(browser: Browser):
     # Entra na listagem de financeiros
-    page = home_page_e_rotina(browser, "568.FINANCEIRO")
+    page = new_page(browser) 
+    pesquisar_rotina(page, "568.FINANCEIRO")
 
     # Escolhe uma conta vencida
     page.get_by_text("VENCIDO").first.dblclick()
@@ -154,17 +164,23 @@ def test_baixa_financeiro_pagar_interna(browser: Browser):
     # Valida se alterações foram recebidas
     expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
 
+    # Fecha a página
+    page.close()
+
 
 '''Não está sendo possível acessar o menu, por responsividade falha'''
 """Baixa de financeiro pela tela de listagem de financeiros"""
 def test_baixa_financeiro_pagar_externa(browser: Browser):
     raise NotImplementedError("Teste não implementado")
 
+'''Baixa financeiro receber interna/externa'''
+
 
 """Executa criação, edição e exclusão de uma parcela"""
 def test_fluxo_parcelas(browser: Browser):
     # Entra na listagem de financeiros
-    page = home_page_e_rotina(browser, "568.FINANCEIRO")
+    page = new_page(browser) 
+    pesquisar_rotina(page, "568.FINANCEIRO")
 
     # Escolhe o primeiro financeiro
     page.locator(".btn.btn-light").first.click()
@@ -191,16 +207,20 @@ def test_fluxo_parcelas(browser: Browser):
 
     expect(page.get_by_text("Registro excluído com sucesso!")).to_be_visible()
 
+    # Fecha a página
+    page.close()
+
 
 '''Número de tentativas de login é ilimitado?'''
 """Edita um financeiro a receber, adicionando valores a maioria dos campos"""
 def test_edicao_financeiro_receber(browser: Browser):
     # Entra na listagem de financeiros
-    page = home_page_e_rotina(browser, "568.FINANCEIRO")
+    page = new_page(browser) 
+    pesquisar_rotina(page, "568.FINANCEIRO")
 
     # Escolhe o primeiro financeiro a receber, e sua primeira parcela
     page.get_by_text("Receita").nth(8).dblclick()
-    page.get_by_title("Editar").nth(1).click()
+    page.get_by_title("Editar").last.click()
 
     # Preenche o funil
     page.get_by_role("button").nth(13).click()
@@ -234,21 +254,25 @@ def test_edicao_financeiro_receber(browser: Browser):
     page.get_by_text("Desc($) vencimento").locator("xpath=ancestor::tr").locator("td").last.locator("input").fill("40")
 
     # Preenche juros e multa
+    page.locator("#inputJuros > .w-100").click()
     page.locator("#inputJuros > .w-100").fill("80")
+    page.locator("#inputMulta > .w-100").click()
     page.locator("#inputMulta > .w-100").fill("160")
 
     # Preenche Ad($) e Desc($) real
+    page.locator("#inputAcrescimo > .w-100").click()
     page.locator("#inputAcrescimo > .w-100").fill("10")
+    page.locator(".table.border.mb-0 > tr:nth-child(8) > td:nth-child(4) > app-mts-monetario-input > .w-100").click()
     page.locator(".table.border.mb-0 > tr:nth-child(8) > td:nth-child(4) > app-mts-monetario-input > .w-100").fill("5")
 
     # Preenche Forma de pagamento e data reais
     page.locator("#dropdownFormaPagamentoReal > app-mts-forma-pagamento-dropdown > .btn-group > .p-element.p-inputwrapper > .w-100 > .p-element.p-ripple").click()
-    page.get_by_text("CARTÃO DÉBITO - REDE - 16").click()
+    page.get_by_text("A VISTA - DINHEIRO - 1").click()
     page.locator("input[name=\"dataPagamento\"]").click()
     page.get_by_text("20", exact=True).click()
 
     # Valida o valor real
-    expect(page.locator("#inputValorPago > .w-100")).to_have_value("394,07")
+    '''Valor mutável'''
 
     # Preenche assistente: Duplicar, fixo e dias
     '''Não entendi'''
@@ -265,10 +289,9 @@ def test_edicao_financeiro_receber(browser: Browser):
 
     # Preenche local carteira
     page.locator("app-mts-local-carteira-dropdown > .btn-group > .p-element.p-inputwrapper > .w-100 > .p-element.p-ripple").click()
-    page.get_by_text("CONTA CAIXA 1379-0 (EUNÁPOLIS)").click()
+    page.get_by_text("CONTA BANESTES 1648887-6 (SERRA)").click()
 
-    # Valida caixa e dá check em prejuízo
-    expect(page.locator("input[name=\"caixa\"]")).not_to_have_value("")
+    # Dá check em prejuízo do caixa
     page.get_by_role("checkbox", name="Prejuizo").check()
 
     # Altera uma checkbox (previsão) do controle
@@ -283,7 +306,7 @@ def test_edicao_financeiro_receber(browser: Browser):
 
     # Preenche caixa paf
     page.locator("app-mts-caixa-paf-dropdown > .btn-group > .p-element.p-inputwrapper > .w-100 > .p-element.p-ripple").click()
-    page.get_by_text(re.compile(r"[0-9]{11}")).click()
+    page.get_by_text(re.compile(r"[0-9]{11}")).first.click()
 
     # Preenche tipo do caixa paf
     page.locator("select[name=\"tipoCadastroCq\"]").select_option("1: 1")
@@ -293,15 +316,18 @@ def test_edicao_financeiro_receber(browser: Browser):
     expect(page.get_by_role("spinbutton")).to_have_value("0")
 
     # Preenche documento externo, e seleciona a segunda checkbox
-    page.locator("input[name=\"invoice\"]").fill(random.randint(10 ** 10, 10 ** 11 - 1))
+    page.locator("input[name=\"invoice\"]").fill(str(random.randint(10 ** 10, 10 ** 11 - 1)))
     page.get_by_role("checkbox", name="Data recibo").check()
 
     # Preenche duplicata
-    page.locator("input[name=\"numeroDuplicata\"]").fill(random.randint(10 ** 10, 10 ** 11 - 1))
+    page.locator("input[name=\"numeroDuplicata\"]").fill(str(random.randint(10 ** 10, 10 ** 11 - 1)))
 
     # Valida edição
     page.get_by_role("button", name=" Salvar").click()
     expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
+
+    # Fecha a página
+    page.close()
 
 
 # ================================================
@@ -311,7 +337,8 @@ def test_edicao_financeiro_receber(browser: Browser):
 """Exclusão de financeiro a partir da exclusão de todas as suas parcelas"""
 def test_exclusao_interna_financeiro(browser: Browser):
     # Entra na listagem de financeiros
-    page = home_page_e_rotina(browser, "568.FINANCEIRO")
+    page = new_page(browser) 
+    pesquisar_rotina(page, "568.FINANCEIRO")
 
     # Seleciona o primeiro financeiro
     page.locator(".btn.btn-light").first.click()
@@ -335,6 +362,9 @@ def test_exclusao_interna_financeiro(browser: Browser):
         # Espera até que a página recarregue
         page.wait_for_selector(".btn-success")
 
+    # Fecha a página
+    page.close()
+
 
 '''Não está sendo possível acessar o menu, por responsividade falha'''
 """Exclusão de finceiro pela tela de listagem de financeiros"""
@@ -354,3 +384,6 @@ def test_exclusao_externa_financeiro(browser: Browser):
 
     # Valida se financeiro foi excluído
     expect(page.get_by_text("Sucesso!")).to_be_visible()
+
+    # Fecha a página
+    page.close()

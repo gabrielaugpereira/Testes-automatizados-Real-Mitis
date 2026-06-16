@@ -10,16 +10,13 @@ from vault.credenciais import *
 """Exceções personalizadas"""
 class AuthenticationError(BaseException): pass
 
-"""Keywords personalizadas"""
-'''def try_wait_for'''
-
 """
 Realiza a autenticação no sistema.
 Se os cookies da sessão anterior ainda forem válidos, autentica usando eles.
 Senão, realiza login e salva os cookies
 """
 @pytest.fixture(autouse=True, scope='session')
-def test_login(browser: Browser):
+def login(browser: Browser):
     # Garante que o caminho do arquivo de autenticação existe
     if not os.path.exists(AUTH_PATH):
         # Caminho não existe, e arquivo é criado
@@ -31,10 +28,7 @@ def test_login(browser: Browser):
         context = browser.new_context(storage_state=AUTH_PATH)
 
     page = context.new_page()
-
-    # Abre a página
     page.goto(HOME_PAGE_URL)
-    
     
     try:
         page.wait_for_timeout(1000)
@@ -66,8 +60,9 @@ def test_login(browser: Browser):
     # Fecha o navegador
     page.close()
 
+
 """Retorna uma página nova na home page, já autenticada e configurada"""
-def goto_home_page(browser: Browser) -> Page:
+def new_page(browser: Browser) -> Page:
     context = browser.new_context(storage_state=AUTH_PATH)
 
     # Muda o tempo padrão de timeout
@@ -81,11 +76,12 @@ def goto_home_page(browser: Browser) -> Page:
 
     return page
 
+
 """
 Pesquisa a rotina a partir do código da rotina e/ou nome da rotina. 
 Se estiver no modo de criação, irá clicar no botão "mais", para criar um novo objeto
 """
-def pesquisar_rotina(page: Page, nome: str, criacao: bool = False) -> None:
+def pesquisar_rotina(page: Page, nome: str, *_, criacao: bool = False) -> None:
     page.get_by_role("combobox", name="Pesquisar rotina").click()
 
     if not criacao:
@@ -95,12 +91,3 @@ def pesquisar_rotina(page: Page, nome: str, criacao: bool = False) -> None:
 
     # Curto tempo de espera
     page.wait_for_timeout(500)
-
-"""
-Chega até a home page, autenticada e configurada, e pesquisa a rotina.
-É a união de duas funções auxiliares
-"""
-def home_page_e_rotina(browser: Browser, nome: str, criacao: bool = False) -> Page:
-    page = goto_home_page(browser)
-    pesquisar_rotina(page, nome, criacao)
-    return page
