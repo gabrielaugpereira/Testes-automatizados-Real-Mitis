@@ -38,7 +38,7 @@ def seleciona_financeiros(page: Page):
 
 
 """Altera o valor dos financeiros para outros pré definido"""
-def test_novo_valor():
+def test_alterar_lote_novo_valor():
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -58,7 +58,7 @@ def test_novo_valor():
     
 
 """Incrementa o valor dos financeiros em valor pré definido"""
-def test_incrementar_valor():
+def test_alterar_lote_increm_valor():
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -79,7 +79,7 @@ def test_incrementar_valor():
 
 
 """Decrementa o valor dos financeiros em valor pré definido""" 
-def test_decrementar_valor(): 
+def test_alterar_lote_decrem_valor(): 
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -105,7 +105,7 @@ def test_decrementar_valor():
 
 
 """Altera a data de vencimento dos financeiros"""
-def test_nova_data():
+def test_alterar_lote_nova_data():
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -129,7 +129,7 @@ def test_nova_data():
 
 '''Erro na mensagem de confirmação, por conta do input de data vazio'''
 """Incrementa dias na data de vencimento dos financeiros"""
-def test_incrementar_dias():
+def test_alterar_lote_increm_dias():
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -150,7 +150,7 @@ def test_incrementar_dias():
 
 
 """Decrementa dias na data de vencimento dos financeiros"""
-def test_decrementar_dias():
+def test_alterar_lote_decrem_dias():
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -173,7 +173,7 @@ def test_decrementar_dias():
 '''Cada vez que você fecha a confirmação e abre de novo, a quantidade de financeiros disponíveis
 para alteração é incrementada pela quantidade real de financeiros disponível'''
 """Seleciona duas contas, uma aberta e outra vencida, e usando o filtro, altera somente a aberta"""
-def test_filtro_situacao_aberto():
+def test_alterar_lote_filtro_aberto():
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -198,7 +198,7 @@ def test_filtro_situacao_aberto():
 
 
 """Seleciona duas contas, uma aberta e outra vencida, e usando o filtro, altera somente a vencida"""
-def test_filtro_situacao_vencido():
+def test_alterar_lote_filtro_vencido():
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 

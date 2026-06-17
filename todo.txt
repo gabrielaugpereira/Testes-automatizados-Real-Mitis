@@ -1,6 +1,6 @@
 ALTA PRIORIDADE
-Olhar relatório de estágio
-Adicionar o prefixo sem ser test_
+Criar auxiliares de criação/edição/exclusão genéricos
+Adicionar o prefixo sem ser test_ (sendo fixture_, ou algo do tipo)
 Padronizar docs em """
 '''Não está sendo possível mudar a foto de perfil'''
 Implementar close page

@@ -2,7 +2,7 @@ from playwright.sync_api import Browser, Page, expect
 import pytest
 import os
 
-from conftest import AUTH_PATH, HOME_PAGE_URL
+from conftest import AUTH_PATH, HOME_PAGE_URL, DEFAULT_TIMEOUT
 from vault.credenciais import *
 
 # I love playwright
@@ -66,7 +66,7 @@ def new_page(browser: Browser) -> Page:
     context = browser.new_context(storage_state=AUTH_PATH)
 
     # Muda o tempo padrão de timeout
-    context.set_default_timeout(15000)
+    context.set_default_timeout(DEFAULT_TIMEOUT)
 
     page = context.new_page()
     page.goto(HOME_PAGE_URL)

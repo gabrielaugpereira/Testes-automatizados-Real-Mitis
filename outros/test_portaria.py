@@ -3,13 +3,13 @@ from playwright.sync_api import Browser, expect
 from test_main import *
 
 
-"""Cria um novo tipo de produto"""
-def test_criacao_tipo_produto(browser: Browser):
+"""Cria uma nova portaria"""
+def test_criacao_portaria(browser: Browser):
     # Abre o navegador
     page = new_page(browser)
 
     # Entra na criação de tipos de produto
-    pesquisar_rotina(page, "371.TIPO DE PRODUTO", criacao=True)
+    pesquisar_rotina(page, "324.PORTARIA DO PRODUTO", criacao=True)
     
     # Insere o nome do tipo
     page.locator("form").get_by_role("textbox").click()
@@ -28,13 +28,13 @@ def test_criacao_tipo_produto(browser: Browser):
     page.close()
 
 
-"""Edita um tipo de produto"""
-def test_edicao_tipo_produto(browser: Browser):
+"""Edita uma portaria"""
+def test_edicao_portaria(browser: Browser):
     # Abre o navegador
     page = new_page(browser)
 
     # Entra na criação de tipos de produto
-    pesquisar_rotina(page, "371.TIPO DE PRODUTO")
+    pesquisar_rotina(page, "324.PORTARIA DO PRODUTO")
 
     # Escolhe o último registro criado pela automatização
     page.get_by_role("cell", name="Teste automatizado").last.dblclick()
@@ -53,13 +53,13 @@ def test_edicao_tipo_produto(browser: Browser):
     page.close()
 
 
-"""Exclui um tipo de produto"""
-def test_exclusao_tipo_produto(browser: Browser):
+"""Exclui uma portaria"""
+def test_exclusao_portaria(browser: Browser):
     # Abre o navegador
     page = new_page(browser)
 
     # Entra na criação de tipos de produto
-    pesquisar_rotina(page, "371.TIPO DE PRODUTO")
+    pesquisar_rotina(page, "324.PORTARIA DO PRODUTO")
 
     # Escolhe o último registro criado pela automatização
     page.get_by_role("cell", name="Teste automatizado").last.dblclick()

@@ -11,6 +11,9 @@ AUTH_PATH = os.path.join(ROOT_DIR, 'playwright/.auth/user.json')
 AUTH_URL = 'https://erp-qa.mitis.com.br/#/'
 HOME_PAGE_URL = AUTH_URL + 'in'
 
+"""Timeout padrão"""
+DEFAULT_TIMEOUT = 30000
+
 """Módulos com testes que sempre devem ser executados"""
 pytest_plugins = ["test_main"]
 
