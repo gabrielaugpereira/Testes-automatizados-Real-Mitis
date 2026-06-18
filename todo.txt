@@ -1,20 +1,19 @@
 ALTA PRIORIDADE
 Adicionar o prefixo sem ser test_ (sendo fixture_, ou algo do tipo)
-'''Não está sendo possível mudar a foto de perfil'''
-Implementar close page
 
 MEDIA PRIORIDADE
+Colocar funções do test_main em auxiliares
 Fixtures locais para entrar em rotina
-Device emulation
+Device emulation --device
 Many browsers
 Maximizar navegador
+Teste para alterar senha, e outros semelhantes
+Implementar testes de valores inválidos para campos
 
 BAIXA PRIORIDADE
 Readme
 --slowmo
---device
 --video
 --screenshot
-Teste para alterar senha, e outros semelhantes
-Implementar testes de valores inválidos para campos
 Melhorar docs
+'''Não está sendo possível mudar a foto de perfil'''
