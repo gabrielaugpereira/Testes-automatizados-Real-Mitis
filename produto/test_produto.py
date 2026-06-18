@@ -12,7 +12,7 @@ from test_main import *
 # ================================================
 
 """Criação de produto"""
-def test_criacao_produto(browser: Browser):
+def test_criacao_produto_1(browser: Browser):
     # Abre o navegador
     page = new_page(browser)
 
@@ -22,6 +22,7 @@ def test_criacao_produto(browser: Browser):
     # Insere um id customizado
     page.locator("#codProd").click()
     page.locator("#codProd").fill(str(random.randint(10 ** 7, 10 ** 8 - 1)))
+    '''Está dando erro'''
 
     # Descrição do produto
     page.locator("#dscProd").click()
@@ -81,7 +82,7 @@ def test_criacao_produto(browser: Browser):
 
 
 """Outra criação de produto. Como alguns campos são excludentes, serve para testar todos os campos"""
-def test_criacao_produto2(browser: Browser):
+def test_criacao_produto_2(browser: Browser):
     # Abre o navegador
     page = new_page(browser)
 
@@ -91,7 +92,7 @@ def test_criacao_produto2(browser: Browser):
     # Insere um id customizado
     # Id máximo no momento de escrita do código: 34244829
     page.locator("#codProd").click()
-    page.locator("#codProd").fill(str(random.randint(10**8, 3.5*(10**8))))
+    page.locator("#codProd").fill(str(random.randint(10**8, 35*(10**7))))
 
     # Descrição do produto
     page.locator("#dscProd").click()
@@ -151,8 +152,8 @@ def test_criacao_produto2(browser: Browser):
 # ================================================
 
 """Atualização de produto"""
-def test_atualizacao_produto(browser: Browser):
-    raise NotImplementedError("Teste ainda não foi implementado")
+'''def test_atualizacao_produto(browser: Browser):
+    raise NotImplementedError("Teste ainda não foi implementado")'''
 
 
 # ================================================

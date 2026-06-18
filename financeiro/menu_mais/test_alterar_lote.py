@@ -1,12 +1,12 @@
-from playwright.sync_api import Browser, Page, expect
+from playwright.sync_api import Browser, Page, TimeoutError, expect
 import pytest
 import random
 
 from test_main import *
 
 
-"""Mantém a page disponível para todos os testes"""
 class _ModuleVariables:
+    # Mantém a page disponível para todos os testes
     page: Page = None
 
 """Entra na rotina de financeiro e disponibiliza a page"""
@@ -23,14 +23,12 @@ def entra_rotina_financeiro(browser: Browser):
     _ModuleVariables.page.close()
 
 """
-Entra na rotina, seleciona dois financeiros de situações diferentes, 
-entra no menu mais e retorna a page
+Entra na rotina, seleciona dois financeiros de situações diferentes e entra no menu mais
 """
 def seleciona_financeiros(page: Page):
-
-    # Seleciona 1 financeiro do tipo vencido e 1 do tipo aberto
-    page.get_by_text("VENCIDO", exact=True).first.click(modifiers=["ControlOrMeta"])
-    page.get_by_text("ABERTO", exact=True).first.click(modifiers=["ControlOrMeta"])
+    # Seleciona um financeiro de cada tipo
+    page.get_by_text("VENCIDO", exact=True).first.click(modifiers=["ControlOrMeta"], timeout=8000)
+    page.get_by_text("ABERTO", exact=True).first.click(modifiers=["ControlOrMeta"], timeout=8000)
 
     # Entra no menu mais e escolhe a alteração em lote
     page.get_by_title("Mais opções").click()

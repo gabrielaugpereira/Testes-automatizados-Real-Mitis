@@ -1,4 +1,4 @@
-from playwright.sync_api import Browser, Page, expect
+from playwright.sync_api import Browser, Page, TimeoutError, expect
 import pytest
 import os
 
@@ -17,11 +17,11 @@ Senão, realiza login e salva os cookies
 """
 @pytest.fixture(autouse=True, scope='session')
 def login(browser: Browser):
-    # Garante que o caminho do arquivo de autenticação existe
-    if not os.path.exists(AUTH_PATH):
-        # Caminho não existe, e arquivo é criado
+    # Garante que o caminho do arquivo de autenticação existe, e que o arquivo não está vazio
+    if not os.path.exists(AUTH_PATH) or os.path.getsize(AUTH_PATH) == 0:
+        # Se arquivo não existe, é criado; senão, é resetado
         open(AUTH_PATH, 'w')
-        context = browser.new_context(no_viewport=True)
+        context = browser.new_context()
 
     else:
         # Caminho existe, então o conteúdo do arquivo é carregado
@@ -50,6 +50,17 @@ def login(browser: Browser):
 
         # Aperta para entrar
         page.get_by_role("button", name="Entrar").click()
+
+        try:
+            # Verifica se é necessário selecionar a empresa
+            page.get_by_role("heading", name="109").hover(timeout=4000)
+
+            # Seleciona a empresa 109
+            page.get_by_role("textbox", name="Informe a empresa").click()
+            page.get_by_role("textbox", name="Informe a empresa").fill("109")
+            page.get_by_text("Selecione").first.click()
+
+        except TimeoutError: pass
         
     # Valida se entrou
     expect(page).to_have_url(HOME_PAGE_URL, timeout=15000)

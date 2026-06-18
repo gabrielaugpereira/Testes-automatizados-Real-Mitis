@@ -12,7 +12,7 @@ AUTH_URL = 'https://erp-qa.mitis.com.br/#/'
 HOME_PAGE_URL = AUTH_URL + 'in'
 
 """Timeout padrão"""
-DEFAULT_TIMEOUT = 30000
+DEFAULT_TIMEOUT = 15000
 
 """Módulos com testes que sempre devem ser executados"""
 pytest_plugins = ["test_main"]
@@ -22,4 +22,10 @@ pytest_plugins = ["test_main"]
 def browser_type_launch_args():
     return {
         "headless": False,
+    }
+
+@pytest.fixture(scope="session")
+def context_type_launch_args():
+    return {
+        "record_video_dir": "videos/"
     }

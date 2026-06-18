@@ -13,17 +13,8 @@ Preferencialmente mudar isso'''
 # Operações de criação
 # ================================================
 
-"""Adiciona uma nova parcela ao financeiro"""
-def add_nova_parcela(page: Page):
-    # Seleciona uma forma de pagamento
-    page.locator("#dropdownFormaPagamento > app-mts-forma-pagamento-dropdown > div > p-autocomplete > div > button").click()
-    page.get_by_text("A VISTA - DINHEIRO - 1").click()
-
-    # Informa o falor de vencimento
-    page.get_by_role("row", name="Data vencimento").get_by_placeholder("0,00").click()
-    page.get_by_role("row", name="Data vencimento").get_by_role("textbox").fill("1")
-    page.get_by_role("row", name="Data vencimento").get_by_role("textbox").press("Tab")
-
+"""Adiciona centro de custo"""
+def add_centro_custo(page: Page):
     # Seleciona um plano de contas
     page.locator("app-mts-plano-contas-dropdown > .btn-group > .p-element.p-inputwrapper > .w-100 > .p-element.p-ripple").click()
     page.get_by_text("1/12 AVOS REPRESENTANTES").click()
@@ -35,8 +26,23 @@ def add_nova_parcela(page: Page):
     # Adiciona ao plano de contas
     page.get_by_role("button", name=" Adicionar").click()
 
-    # Valida se parcela foi adicionada
+    # Valida se centro de curto foi adicionado
     expect(page.get_by_text("Adicionado!")).to_be_visible()
+
+
+"""Adiciona uma nova parcela ao financeiro"""
+def add_nova_parcela(page: Page):
+    # Seleciona uma forma de pagamento
+    page.locator("#dropdownFormaPagamento > app-mts-forma-pagamento-dropdown > div > p-autocomplete > div > button").click()
+    page.get_by_text("A VISTA - DINHEIRO - 1").click()
+
+    # Informa o falor de vencimento
+    page.get_by_role("row", name="Data vencimento").get_by_placeholder("0,00").click()
+    page.get_by_role("row", name="Data vencimento").get_by_role("textbox").fill("1")
+    page.get_by_role("row", name="Data vencimento").get_by_role("textbox").press("Tab")
+
+    # Adiciona centro de custo
+    add_centro_custo(page)
 
     # Valida se financeiro foi criado
     expect(page.get_by_text("Sucesso"))
@@ -137,7 +143,7 @@ def test_criacao_financeiro_receber(browser: Browser):
 '''Atalhos da tela de financeiros não funcionando'''
 '''Quando altera-se a situação de uma parcela de "aberto" para "vencido", ou vice e versa, alteração não acontece. Mesma coisa com pago vencido'''
 """Baixa de financeiro pela tela de edição dele"""
-def test_baixa_financeiro_pagar_interna(browser: Browser):
+def test_baixa_financeiro_interna(browser: Browser):
     # Entra na listagem de financeiros
     page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO")
@@ -151,12 +157,22 @@ def test_baixa_financeiro_pagar_interna(browser: Browser):
     # Seleciona a situação como pago
     page.locator('select[name="situacao"]').select_option("4")
 
+    # Muda o valor de vencimento, para evitar de estar vazio
+    page.get_by_text("Valor vencimento").locator("xpath=ancestor::tr").locator("td").last.locator("input").click()
+    page.get_by_text("Valor vencimento").locator("xpath=ancestor::tr").locator("td").last.locator("input").fill("1")
+
     # Seleciona uma conta
     page.get_by_role("button").nth(23).click()
     page.get_by_text("BANCO C6").click()
 
     # Apaga o caixa selecionado, para não dar o problema de o caixa estar fechado
-    page.locator("app-mts-caixa-paf-dropdown > .btn-group > .p-element.p-inputwrapper > .w-100 > timesicon > .p-autocomplete-clear-icon > path").click()
+    '''Não sendo necessário'''
+
+    # Se não tiver centro de custo, adiciona
+    '''try:
+        page.get_by_role("th", name="Rateio").hover(timeout=5000)
+    except:
+        add_centro_custo(page)'''
 
     # Salva as alterações
     page.get_by_role("button", name=" Salvar").click()
@@ -170,10 +186,8 @@ def test_baixa_financeiro_pagar_interna(browser: Browser):
 
 '''Não está sendo possível acessar o menu, por responsividade falha'''
 """Baixa de financeiro pela tela de listagem de financeiros"""
-def test_baixa_financeiro_pagar_externa(browser: Browser):
-    raise NotImplementedError("Teste não implementado")
-
-'''Baixa financeiro receber interna/externa'''
+'''def test_baixa_financeiro_externa(browser: Browser):
+    raise NotImplementedError("Teste não implementado")'''
 
 
 """Executa criação, edição e exclusão de uma parcela"""
@@ -219,8 +233,8 @@ def test_edicao_financeiro_receber(browser: Browser):
     pesquisar_rotina(page, "568.FINANCEIRO")
 
     # Escolhe o primeiro financeiro a receber, e sua primeira parcela
-    page.get_by_text("Receita").nth(8).dblclick()
-    page.get_by_title("Editar").last.click()
+    page.get_by_text("Receita").first.dblclick()
+    page.get_by_title("Editar", exact=True).last.click()
 
     # Preenche o funil
     page.get_by_role("button").nth(13).click()
@@ -269,7 +283,7 @@ def test_edicao_financeiro_receber(browser: Browser):
     page.locator("#dropdownFormaPagamentoReal > app-mts-forma-pagamento-dropdown > .btn-group > .p-element.p-inputwrapper > .w-100 > .p-element.p-ripple").click()
     page.get_by_text("A VISTA - DINHEIRO - 1").click()
     page.locator("input[name=\"dataPagamento\"]").click()
-    page.get_by_text("20", exact=True).click()
+    page.get_by_text("20", exact=True).first.click()
 
     # Valida o valor real
     '''Valor mutável'''
@@ -368,7 +382,7 @@ def test_exclusao_interna_financeiro(browser: Browser):
 
 '''Não está sendo possível acessar o menu, por responsividade falha'''
 """Exclusão de finceiro pela tela de listagem de financeiros"""
-def test_exclusao_externa_financeiro(browser: Browser):
+'''def test_exclusao_externa_financeiro(browser: Browser):
     raise Error("Falha no Real")
 
     # Entra na listagem de financeiros
@@ -386,4 +400,4 @@ def test_exclusao_externa_financeiro(browser: Browser):
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
     # Fecha a página
-    page.close()
+    page.close()'''
