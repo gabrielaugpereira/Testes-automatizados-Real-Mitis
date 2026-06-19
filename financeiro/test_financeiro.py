@@ -1,8 +1,8 @@
-from playwright.sync_api import expect, Error
+from playwright.sync_api import Page, Browser, expect
 import random
 import re
 
-from test_main import *
+from auxiliares.default import *
 
 """Fluxo CRUD para financeiros a pagar e a receber"""
 

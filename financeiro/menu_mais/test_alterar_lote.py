@@ -2,7 +2,7 @@ from playwright.sync_api import Browser, Page, TimeoutError, expect
 import pytest
 import random
 
-from test_main import *
+from auxiliares.default import *
 
 
 class _ModuleVariables:
@@ -11,7 +11,7 @@ class _ModuleVariables:
 
 """Entra na rotina de financeiro e disponibiliza a page"""
 @pytest.fixture(scope='module', autouse=True)
-def entra_rotina_financeiro(browser: Browser):
+def fixt_entra_rotina_financeiro(browser: Browser):
     page = new_page(browser)
     _ModuleVariables.page = page
     

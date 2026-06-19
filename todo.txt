@@ -1,5 +1,5 @@
 ALTA PRIORIDADE
-Adicionar o prefixo sem ser test_ (sendo fixture_, ou algo do tipo)
+Checkar forma de escrever documentação de módulo
 
 MEDIA PRIORIDADE
 Colocar funções do test_main em auxiliares

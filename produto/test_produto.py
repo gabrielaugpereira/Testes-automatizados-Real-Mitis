@@ -1,8 +1,8 @@
-from playwright.sync_api import Browser, expect, Error
+from playwright.sync_api import Browser, expect
 import re
 import random
 
-from test_main import *
+from auxiliares.default import *
 
 """Fluxo CRUD para produto"""
 
@@ -20,8 +20,8 @@ def test_criacao_produto_1(browser: Browser):
     pesquisar_rotina(page, "2.PRODUTO", criacao=True)
 
     # Insere um id customizado
-    page.locator("#codProd").click()
-    page.locator("#codProd").fill(str(random.randint(10 ** 7, 10 ** 8 - 1)))
+    '''page.locator("#codProd").click()
+    page.locator("#codProd").fill(str(random.randint(10 ** 7, 10 ** 8 - 1)))'''
     '''Está dando erro'''
 
     # Descrição do produto
@@ -39,7 +39,7 @@ def test_criacao_produto_1(browser: Browser):
 
     # Fornecedor do produto
     page.locator(".p-element.p-inputwrapper.p-autocomplete-clearable.ng-untouched > .w-100 > .p-element.p-ripple").click()
-    page.get_by_text("852 26.867.066 FABIO BASTOS").click()
+    page.get_by_text("25.991.826 WASHINGTON LUIZ BATISTA PEREIRA").click()
 
     # Tipo
     page.locator("select[name=\"tipo\"]").select_option("1")
@@ -91,8 +91,8 @@ def test_criacao_produto_2(browser: Browser):
 
     # Insere um id customizado
     # Id máximo no momento de escrita do código: 34244829
-    page.locator("#codProd").click()
-    page.locator("#codProd").fill(str(random.randint(10**8, 35*(10**7))))
+    '''page.locator("#codProd").click()
+    page.locator("#codProd").fill(str(random.randint(10**8, 35*(10**7))))'''
 
     # Descrição do produto
     page.locator("#dscProd").click()

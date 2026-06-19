@@ -7,6 +7,9 @@
 # Ambiente virtual
 .venv/
 
+# Caminho dos vídeos gravados. Todos os testes que falharem terão um vídeo neste diretório
+video/
+
 # Dados do navegador autenticado. NÃO REMOVER: contém dados sensíveis
 playwright/.auth
 

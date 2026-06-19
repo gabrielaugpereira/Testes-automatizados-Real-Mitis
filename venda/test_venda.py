@@ -1,7 +1,7 @@
 from playwright.sync_api import Browser, expect, Error
 import re
 
-from test_main import *
+from auxiliares.default import *
 
 '''CRUD'''
 

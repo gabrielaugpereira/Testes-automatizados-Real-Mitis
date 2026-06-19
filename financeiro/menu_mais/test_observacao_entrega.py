@@ -1,7 +1,7 @@
 from playwright.sync_api import Browser, Page, expect
 import pytest
 
-from test_main import *
+from auxiliares.default import *
 
 """Fluxo CRUD para observação de entrega"""
 
@@ -13,7 +13,7 @@ class _ModuleVariables:
 
 """Preparação para os testes"""
 @pytest.fixture(scope='module', autouse=True)
-def abrir_tela_observacoes(browser: Browser):
+def fixt_abrir_tela_observacoes(browser: Browser):
     page = new_page(browser)
 
     # Entra na criação de financeiro

@@ -1,6 +1,6 @@
 from playwright.sync_api import Browser
 
-from test_main import *
+from auxiliares.default import *
 from auxiliares.genericos import *
 
 
