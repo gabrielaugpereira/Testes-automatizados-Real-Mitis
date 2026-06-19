@@ -26,7 +26,7 @@ def test_criacao_produto_1(browser: Browser):
 
     # Descrição do produto
     page.locator("#dscProd").click()
-    page.locator("#dscProd").fill("Teste automatizado - GAP")
+    page.locator("#dscProd").fill(DESCRICAO_PADRAO)
 
     # ----- Aba de detalhamento -----
     # Sub-grupo do produto
@@ -96,7 +96,7 @@ def test_criacao_produto_2(browser: Browser):
 
     # Descrição do produto
     page.locator("#dscProd").click()
-    page.locator("#dscProd").fill("Teste automatizado - GAP")
+    page.locator("#dscProd").fill(DESCRICAO_PADRAO)
 
     # ----- Aba de detalhamento -----
     # Sub-grupo do produto

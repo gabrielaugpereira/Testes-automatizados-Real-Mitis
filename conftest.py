@@ -27,7 +27,10 @@ DEFAULT_TIMEOUT = 15000
 
 
 """Módulos com testes que sempre devem ser executados"""
-pytest_plugins = ["test_main", "auxiliares/autenticacao", "auxiliares/limpa_ambiente"]
+pytest_plugins = [
+    "fixtures.autenticacao", 
+    "fixtures.limpa_ambiente"
+    ]
 
 
 """Configuração do browser"""

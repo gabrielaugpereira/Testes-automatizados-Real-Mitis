@@ -1,8 +1,10 @@
 ALTA PRIORIDADE
+Implementar browser, context e page que nem no stack overflow, uma função que retorna uma instância configurada, e depois fecha: https://stackoverflow.com/questions/78512177/playwright-python-retain-on-failure
 Checkar forma de escrever documentação de módulo
+Eliminar decoradores (# ================================================)
+Acelerar cadastros genéricos
 
 MEDIA PRIORIDADE
-Colocar funções do test_main em auxiliares
 Fixtures locais para entrar em rotina
 Device emulation --device
 Many browsers
@@ -17,3 +19,4 @@ Readme
 --screenshot
 Melhorar docs
 '''Não está sendo possível mudar a foto de perfil'''
+

@@ -1,6 +1,5 @@
 """Fixtures e funções para manter o sistema limpo"""
 
-
 import pytest
 import os
 import re

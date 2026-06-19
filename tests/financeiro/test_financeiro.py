@@ -10,7 +10,7 @@ from auxiliares.default import *
 Preferencialmente mudar isso'''
 
 # ================================================
-# Operações de criação
+# Auxiliares
 # ================================================
 
 """Adiciona centro de custo"""
@@ -48,6 +48,10 @@ def add_nova_parcela(page: Page):
     expect(page.get_by_text("Sucesso"))
 
 
+# ================================================
+# Operações de criação
+# ================================================
+
 """Criação de financeiro a pagar"""
 def test_criacao_financeiro_pagar(browser: Browser):
     # Entra na criação de financeiro
@@ -56,7 +60,7 @@ def test_criacao_financeiro_pagar(browser: Browser):
 
     # Escreve uma descrição
     page.wait_for_timeout(800)
-    descricao = "Teste automatizado - GAP"
+    descricao = DESCRICAO_PADRAO
     page.get_by_text("Adicionar descrição").click()
     page.get_by_role("textbox", name="Descrição do lançamento").fill(descricao)
     page.get_by_role("heading", name="Lançamento Teste automatizado").get_by_role("button").click()
@@ -100,7 +104,7 @@ def test_criacao_financeiro_receber(browser: Browser):
 
     # Escreve uma descrição
     page.wait_for_timeout(800)
-    descricao = "Teste automatizado - GAP"
+    descricao = DESCRICAO_PADRAO
     page.get_by_text("Adicionar descrição").click()
     page.get_by_role("textbox", name="Descrição do lançamento").fill(descricao)
     page.get_by_role("heading", name="Lançamento Teste automatizado").get_by_role("button").click()

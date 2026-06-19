@@ -3,10 +3,16 @@ Funções e keywords para serem usadas com frequência,
 minimizando repetição de código
 """
 
-
 from playwright.sync_api import Browser, Page
 
 from conftest import AUTH_PATH, DEFAULT_TIMEOUT, HOME_PAGE_URL
+
+
+"""Valor padrão a ser inserido como descrição em um novo registro"""
+DESCRICAO_PADRAO = "Teste automatizado - GAP"
+
+"""Valor padrão a ser inserido como descrição na edição de um registro"""
+DESCRICAO_EDIT_PADRAO = "Teste automatizado não fui eu - GAP"
 
 
 """Retorna uma página nova na home page, já autenticada e configurada"""

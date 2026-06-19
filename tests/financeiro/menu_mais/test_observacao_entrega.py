@@ -41,7 +41,7 @@ def test_criar_obs():
 
     # Insere conteúdo da observação
     page.get_by_role("textbox", name="Texto da observação").click()
-    page.get_by_role("textbox", name="Texto da observação").fill("Teste automatizado - GAP")
+    page.get_by_role("textbox", name="Texto da observação").fill(DESCRICAO_PADRAO)
 
     # Adiciona a observação
     page.get_by_role("button", name=" Adicionar").click()
@@ -52,7 +52,7 @@ def test_ler_obs():
     page = _ModuleVariables.page
 
     # Valida se observação foi criada
-    expect(page.get_by_role("cell", name="Teste automatizado - GAP")).to_be_visible()
+    expect(page.get_by_role("cell", name=DESCRICAO_PADRAO)).to_be_visible()
 
 
 """Atualização de observação"""

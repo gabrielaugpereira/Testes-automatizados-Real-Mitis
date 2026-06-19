@@ -1,6 +1,6 @@
-"""Fixtures e funções usadas para autenticar no sistema"""
+"""Fixtures usadas para autenticar no sistema"""
 
-from playwright.sync_api import Browser, expect
+from playwright.sync_api import Browser, TimeoutError, expect
 import pytest
 import os
 
@@ -44,7 +44,8 @@ def fixt_login(browser: Browser):
 
         # Login não necessário
     
-    except: 
+    # Possivelmente vai dar erro aqui
+    except TimeoutError: 
         # Realiza o login comum
 
         # Informa o domínio

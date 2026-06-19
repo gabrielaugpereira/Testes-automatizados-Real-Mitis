@@ -1,4 +1,8 @@
-from playwright.sync_api import Browser
+"""
+Funções para fazer um fluxo CRUD genérico, e reduzir repetição de código através do sistema
+"""
+
+from playwright.sync_api import Browser, expect
 from auxiliares.default import *
 
 
@@ -15,7 +19,7 @@ def criacao_generica(browser: Browser, rotina: str, incremento: function = None)
 
     # Insere o nome
     page.locator("form").get_by_role("textbox").click()
-    page.locator("form").get_by_role("textbox").fill("Teste automatizado - GAP")
+    page.locator("form").get_by_role("textbox").fill(DESCRICAO_PADRAO)
 
     # Chama a função passada como parâmetro, para informar campos não previstos
     if incremento: incremento(page)
@@ -47,7 +51,7 @@ def edicao_generica(browser: Browser, rotina: str, incremento: function = None):
 
     # Muda o nome do registro
     page.locator("form").get_by_role("textbox").click()
-    page.locator("form").get_by_role("textbox").fill("Teste automatizado não fui eu - GAP")
+    page.locator("form").get_by_role("textbox").fill(DESCRICAO_EDIT_PADRAO)
 
     # Chama a função passada como parâmetro, para informar campos não previstos
     if incremento: incremento(page)
