@@ -1,8 +1,10 @@
 ALTA PRIORIDADE
+Continuar manutenção do test_edicao_financeiro_receber
 Implementar browser, context e page que nem no stack overflow, uma função que retorna uma instância configurada, e depois fecha: https://stackoverflow.com/questions/78512177/playwright-python-retain-on-failure
 Checkar forma de escrever documentação de módulo
 Eliminar decoradores (# ================================================)
 Acelerar cadastros genéricos
+Separar funções do test_financeiro
 
 MEDIA PRIORIDADE
 Fixtures locais para entrar em rotina

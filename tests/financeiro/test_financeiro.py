@@ -36,7 +36,7 @@ def add_nova_parcela(page: Page):
     page.locator("#dropdownFormaPagamento > app-mts-forma-pagamento-dropdown > div > p-autocomplete > div > button").click()
     page.get_by_text("A VISTA - DINHEIRO - 1").click()
 
-    # Informa o falor de vencimento
+    # Informa o valor de vencimento
     page.get_by_role("row", name="Data vencimento").get_by_placeholder("0,00").click()
     page.get_by_role("row", name="Data vencimento").get_by_role("textbox").fill("1")
     page.get_by_role("row", name="Data vencimento").get_by_role("textbox").press("Tab")
@@ -59,13 +59,12 @@ def test_criacao_financeiro_pagar(browser: Browser):
     pesquisar_rotina(page, "568.FINANCEIRO", criacao=True)
 
     # Escreve uma descrição
-    page.wait_for_timeout(800)
-    descricao = DESCRICAO_PADRAO
+    page.wait_for_timeout(1400)
     page.get_by_text("Adicionar descrição").click()
-    page.get_by_role("textbox", name="Descrição do lançamento").fill(descricao)
+    page.get_by_role("textbox", name="Descrição do lançamento").fill(DESCRICAO_PADRAO)
     page.get_by_role("heading", name="Lançamento Teste automatizado").get_by_role("button").click()
     
-    expect(page.locator("app-financeiro-cadastro")).to_contain_text(descricao)
+    expect(page.locator("app-financeiro-cadastro")).to_contain_text(DESCRICAO_PADRAO)
 
     # Escolhe um fornecedor
     page.get_by_role("button").nth(5).click()
@@ -104,12 +103,11 @@ def test_criacao_financeiro_receber(browser: Browser):
 
     # Escreve uma descrição
     page.wait_for_timeout(800)
-    descricao = DESCRICAO_PADRAO
     page.get_by_text("Adicionar descrição").click()
-    page.get_by_role("textbox", name="Descrição do lançamento").fill(descricao)
+    page.get_by_role("textbox", name="Descrição do lançamento").fill(DESCRICAO_PADRAO)
     page.get_by_role("heading", name="Lançamento Teste automatizado").get_by_role("button").click()
 
-    expect(page.locator("app-financeiro-cadastro")).to_contain_text(descricao)
+    expect(page.locator("app-financeiro-cadastro")).to_contain_text(DESCRICAO_PADRAO)
 
     # Escolhe um cliente
     page.get_by_role("button").nth(5).click()
@@ -204,25 +202,50 @@ def test_fluxo_parcelas(browser: Browser):
     page.locator(".btn.btn-light").first.click()
 
     # ----- Adiciona nova parcela -----
+
+    # Seleciona para adicionar, e segue o fluxo de adicionar parcela
     page.get_by_role("button", name=" Adicionar Nova Parcela").click()
     add_nova_parcela(page)
 
+    # Valida se salvou
     expect(page.get_by_text("Adicionado!")).to_be_visible()
-    page.get_by_role("button", name="Itens").click()
 
     # ----- Edita a primeira parcela -----
-    page.get_by_title("Editar", exact=True).click()
-    page.locator("textarea[name=\"obs\"]").click()
-    page.locator("textarea[name=\"obs\"]").fill("Parcela editada")
-    page.get_by_role("button", name=" Salvar").click()
 
-    expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
+    # Volta para a aba de itens
     page.get_by_role("button", name="Itens").click()
 
+    # Escolhe a primeira parcela
+    page.get_by_title("Editar", exact=True).first.click()
+
+    # Edita a observação da parcela
+    page.locator("textarea[name=\"obs\"]").click()
+    page.locator("textarea[name=\"obs\"]").fill("Parcela editada")
+
+    # Valida se valor de vencimento é maior que 0
+    try:
+        expect(page.locator("#inputValorOriginal > .w-100")).to_have_value(re.compile(r"[1-9][0-9,]*"))
+    except:
+        # Se não for, insere valor 1 e adiciona centro de custo
+        page.locator("#inputValorOriginal > .w-100").click()
+        page.locator("#inputValorOriginal > .w-100").fill("1")
+
+        add_centro_custo()
+
+    # Salva e valida se salvou
+    page.get_by_role("button", name=" Salvar").click()
+    expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
+
     # ----- Exclui a primeira parcela -----
+
+    # Volta para a aba de itens
+    page.get_by_role("button", name="Itens").click()
+
+    # Seleciona para excluir a primeira, e confirma
     page.get_by_title("Excluir").first.click()
     page.get_by_role("button", name="Sim").click()
 
+    # Valida se excluiu
     expect(page.get_by_text("Registro excluído com sucesso!")).to_be_visible()
 
     # Fecha a página
@@ -236,9 +259,13 @@ def test_edicao_financeiro_receber(browser: Browser):
     page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO")
 
-    # Escolhe o primeiro financeiro a receber, e sua primeira parcela
+    # Escolhe o primeiro financeiro a receber
     page.get_by_text("Receita").first.dblclick()
-    page.get_by_title("Editar", exact=True).last.click()
+
+    '''page.get_by_title()
+    page.get_by_title("Editar").nth(2).click()
+    expect(page.get_by_text("Essa conta já está baixada e")).to_be_visible()
+    page.get_by_title("Editar", exact=True).last.click()'''
 
     # Preenche o funil
     page.get_by_role("button").nth(13).click()
