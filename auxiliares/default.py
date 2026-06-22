@@ -5,7 +5,7 @@ minimizando repetição de código
 
 from playwright.sync_api import Browser, Page
 
-from conftest import AUTH_PATH, DEFAULT_TIMEOUT, HOME_PAGE_URL
+from conftest import AUTH_PATH, VIDEO_PATH, DEFAULT_TIMEOUT, HOME_PAGE_URL
 
 
 """Valor padrão a ser inserido como descrição em um novo registro"""
@@ -21,8 +21,9 @@ def new_page(browser: Browser):
     context = browser.new_context(
         no_viewport=True, 
         storage_state=AUTH_PATH, 
-        record_video_dir='video/',
+        record_video_dir=VIDEO_PATH,
         )
+    '''DRY'''
 
     # Muda o tempo padrão de timeout
     context.set_default_timeout(DEFAULT_TIMEOUT)

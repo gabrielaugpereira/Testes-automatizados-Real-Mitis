@@ -3,10 +3,12 @@
 from playwright.sync_api import Browser, TimeoutError, expect
 import pytest
 import os
+from dotenv import load_dotenv
 
 from conftest import AUTH_PATH, HOME_PAGE_URL, VIDEO_PATH
-from vault.credenciais import *
 
+"""Carrega os dados de .dotenv como variáveis de ambiente"""
+load_dotenv()
 
 """
 Realiza a autenticação no sistema.
@@ -31,7 +33,7 @@ def fixt_login(browser: Browser):
         context = browser.new_context(
             no_viewport=True, 
             storage_state=AUTH_PATH, 
-            record_video_dir='video/',
+            record_video_dir=VIDEO_PATH,
             )
         '''DRY'''
 
@@ -49,13 +51,13 @@ def fixt_login(browser: Browser):
         # Realiza o login comum
 
         # Informa o domínio
-        page.get_by_role("textbox", name="Domínio").fill(DOMINIO)
+        page.get_by_role("textbox", name="Domínio").fill(os.environ("DOMINIO"))
 
         # Informa o nome
-        page.get_by_role("textbox", name="Login").fill(LOGIN)
+        page.get_by_role("textbox", name="Login").fill(os.environ("LOGIN"))
 
         # Informa a SENHA (esconder a senha)
-        page.get_by_role("textbox", name="Senha").fill(SENHA)
+        page.get_by_role("textbox", name="Senha").fill(os.environ("SENHA"))
 
         # Aperta para entrar
         page.get_by_role("button", name="Entrar").click()
@@ -75,7 +77,7 @@ def fixt_login(browser: Browser):
     expect(page).to_have_url(HOME_PAGE_URL, timeout=15000)
 
     # Salva os cookies da autenticação
-    context.storage_state(path="playwright/.auth/user.json")
+    context.storage_state(path=AUTH_PATH)
 
     # Fecha o navegador
     page.close()

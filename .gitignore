@@ -8,14 +8,20 @@
 .venv/
 
 # Caminho dos vídeos gravados. Todos os testes que falharem terão um vídeo neste diretório
-video/
+.tests_videos/
 
 # Dados do navegador autenticado. NÃO REMOVER: contém dados sensíveis
-playwright/.auth
+.playwright/.auth
 
 # Informações sensíveis usadas dentro dos testes, como as credenciais para a autenticação.
 # Precisa ser implementado para cada dispositivo, e segue o modelo:
 # .vault/
 #     credenciais.py
 # Mais sobre os arquivos no readme.
-vault/
+.vault/
+
+# Arquivo com as credenciais de autenticação. Credenciais são:
+# DOMINIO: a base a ser acessada;
+# LOGIN: o nome do usuário;
+# SENHA: a senha do usuário.
+.env

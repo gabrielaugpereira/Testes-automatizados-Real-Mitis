@@ -7,14 +7,15 @@ Foi adotado também nesse sistema para configurações de urls, caminhos e parâ
 import os
 import pytest
 
+
 """O caminho do diretório raíz do projeto"""
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 """O caminho do arquivo dos cookies de autenticação"""
-AUTH_PATH = os.path.join(ROOT_DIR, 'playwright/.auth/user.json')
+AUTH_PATH = os.path.join(ROOT_DIR, '.playwright/.auth/user.json')
 
 """O caminho para salvar os vídeos das falhas"""
-VIDEO_PATH = os.path.join(ROOT_DIR, 'video/')
+VIDEO_PATH = os.path.join(ROOT_DIR, '.tests_videos/')
 
 
 """Urls importantes do sistema"""
@@ -32,7 +33,6 @@ pytest_plugins = [
     "fixtures.limpa_ambiente"
     ]
 
-
 """Configuração do browser"""
 @pytest.fixture(scope="session")
 def browser_type_launch_args():
@@ -48,5 +48,5 @@ def browser_context_args():
     return {
         "no_viewport": True,
         "storage_state": AUTH_PATH,
-        "record_video_dir": "video/",
+        "record_video_dir": VIDEO_PATH,
     }
