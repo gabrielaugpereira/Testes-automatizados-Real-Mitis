@@ -1,7 +1,7 @@
-from playwright.sync_api import Browser, expect, Error
+from playwright.sync_api import Browser, Error, TimeoutError, expect
 import re
 
-from auxiliares.default import *
+from auxiliares.default import new_page, pesquisar_rotina
 
 '''CRUD'''
 
@@ -37,7 +37,7 @@ def test_criacao_venda(browser: Browser):
     # Fecha a página
     page.close()
 
-
+'''Responsividade com valor padrão do início da página'''
 """Exclusão de venda"""
 def test_exclusao_venda(browser: Browser):
     page = new_page(browser)
@@ -46,21 +46,21 @@ def test_exclusao_venda(browser: Browser):
     pesquisar_rotina(page, "88.VENDAS")
     
     # Encontra uma venda que pode ser excluída
-    elem = None
     for i in range(3, 10):
         page.get_by_role("cell", name="Nº Nota Fiscal").nth(i).dblclick()
 
-        elem = page.get_by_role("button", name=" Excluir")
-        if elem:
+        try:
+            # Encontrou uma, e clicou para excluir
+            page.get_by_role("button", name=" Excluir").click(timeout=8000)
             break
-        else:
+        except TimeoutError:
+            # Não encontrou, e vai procurar a próxima
             pesquisar_rotina(page, "88.VENDAS")
 
     else:
-        raise Error("Não foi possível encontrar uma venda passível de exclusão")
+        raise Error("Não foi possível encontrar uma venda possível de ser excluída")
 
-    # Exclui a venda
-    elem.click()
+    # Confirma a exclusão da venda
     page.get_by_role("button", name="Sim").click()
 
     # Informa o motivo da exclusão
@@ -69,7 +69,7 @@ def test_exclusao_venda(browser: Browser):
     page.get_by_role("dialog").get_by_role("button", name=" Salvar").click()
 
     # Valida se venda foi excluída
-    expect(page.get_by_text("Novo orçamento")).to_be_visible()
+    expect(page.get_by_text("Novo orçamento")).to_be_visible(timeout=15000)
 
     # Fecha a página
     page.close()

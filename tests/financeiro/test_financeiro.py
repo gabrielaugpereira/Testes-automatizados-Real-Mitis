@@ -1,8 +1,9 @@
-from playwright.sync_api import Page, Browser, expect
+from playwright.sync_api import Page, Browser, TimeoutError, expect
 import random
 import re
+import pytest
 
-from auxiliares.default import *
+from auxiliares.default import new_page, pesquisar_rotina, DESCRICAO_PADRAO
 
 """Fluxo CRUD para financeiros a pagar e a receber"""
 
@@ -13,8 +14,9 @@ Preferencialmente mudar isso'''
 # Auxiliares
 # ================================================
 
-"""Adiciona centro de custo"""
 def add_centro_custo(page: Page):
+    """Adiciona centro de custo"""
+
     # Seleciona um plano de contas
     page.locator("app-mts-plano-contas-dropdown > .btn-group > .p-element.p-inputwrapper > .w-100 > .p-element.p-ripple").click()
     page.get_by_text("1/12 AVOS REPRESENTANTES").click()
@@ -30,8 +32,9 @@ def add_centro_custo(page: Page):
     expect(page.get_by_text("Adicionado!")).to_be_visible()
 
 
-"""Adiciona uma nova parcela ao financeiro"""
 def add_nova_parcela(page: Page):
+    """Adiciona uma nova parcela ao financeiro"""
+
     # Seleciona uma forma de pagamento
     page.locator("#dropdownFormaPagamento > app-mts-forma-pagamento-dropdown > div > p-autocomplete > div > button").click()
     page.get_by_text("A VISTA - DINHEIRO - 1").click()
@@ -52,8 +55,9 @@ def add_nova_parcela(page: Page):
 # Operações de criação
 # ================================================
 
-"""Criação de financeiro a pagar"""
 def test_criacao_financeiro_pagar(browser: Browser):
+    """Criação de financeiro a pagar"""
+
     # Entra na criação de financeiro
     page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO", criacao=True)
@@ -92,8 +96,9 @@ def test_criacao_financeiro_pagar(browser: Browser):
 
 '''Depois de criado, o número do pedido deveria ser informado na linha reservada para isso.
 Porém, quando você acessa o financeiro, a linha não mostra valor algum'''
-"""Criação de financeiro a receber"""
 def test_criacao_financeiro_receber(browser: Browser):
+    """Criação de financeiro a receber"""
+
     # Entra na criação de um financeiro
     page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO", criacao=True)
@@ -144,8 +149,9 @@ def test_criacao_financeiro_receber(browser: Browser):
 '''Baixa de financeiros baixados é permitida'''
 '''Atalhos da tela de financeiros não funcionando'''
 '''Quando altera-se a situação de uma parcela de "aberto" para "vencido", ou vice e versa, alteração não acontece. Mesma coisa com pago vencido'''
-"""Baixa de financeiro pela tela de edição dele"""
 def test_baixa_financeiro_interna(browser: Browser):
+    """Baixa de financeiro pela tela de edição dele"""
+
     # Entra na listagem de financeiros
     page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO")
@@ -186,14 +192,16 @@ def test_baixa_financeiro_interna(browser: Browser):
     page.close()
 
 
-'''Não está sendo possível acessar o menu, por responsividade falha'''
-"""Baixa de financeiro pela tela de listagem de financeiros"""
-'''def test_baixa_financeiro_externa(browser: Browser):
-    raise NotImplementedError("Teste não implementado")'''
+def test_baixa_financeiro_externa(browser: Browser):
+    """Baixa de financeiro pela tela de listagem de financeiros"""
+
+    pytest.skip("Responsividade do Real falhando")
 
 
-"""Executa criação, edição e exclusão de uma parcela"""
+'''Fazer em subtestes'''
 def test_fluxo_parcelas(browser: Browser):
+    """Executa criação, edição e exclusão de uma parcela"""
+
     # Entra na listagem de financeiros
     page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO")
@@ -225,7 +233,7 @@ def test_fluxo_parcelas(browser: Browser):
     # Valida se valor de vencimento é maior que 0
     try:
         expect(page.locator("#inputValorOriginal > .w-100")).to_have_value(re.compile(r"[1-9][0-9,]*"))
-    except:
+    except TimeoutError:
         # Se não for, insere valor 1 e adiciona centro de custo
         page.locator("#inputValorOriginal > .w-100").click()
         page.locator("#inputValorOriginal > .w-100").fill("1")
@@ -253,8 +261,9 @@ def test_fluxo_parcelas(browser: Browser):
 
 
 '''Número de tentativas de login é ilimitado?'''
-"""Edita um financeiro a receber, adicionando valores a maioria dos campos"""
 def test_edicao_financeiro_receber(browser: Browser):
+    """Edita um financeiro a receber, adicionando valores a maioria dos campos"""
+
     # Entra na listagem de financeiros
     page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO")
@@ -379,8 +388,9 @@ def test_edicao_financeiro_receber(browser: Browser):
 # Operações de exclusão
 # ================================================
 
-"""Exclusão de financeiro a partir da exclusão de todas as suas parcelas"""
 def test_exclusao_interna_financeiro(browser: Browser):
+    """Exclusão de financeiro a partir da exclusão de todas as suas parcelas"""
+
     # Entra na listagem de financeiros
     page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO")
@@ -411,12 +421,13 @@ def test_exclusao_interna_financeiro(browser: Browser):
     page.close()
 
 
-'''Não está sendo possível acessar o menu, por responsividade falha'''
-"""Exclusão de finceiro pela tela de listagem de financeiros"""
-'''def test_exclusao_externa_financeiro(browser: Browser):
-    raise Error("Falha no Real")
+def test_exclusao_externa_financeiro(browser: Browser):
+    """Exclusão de finceiro pela tela de listagem de financeiros"""
+    
+    pytest.skip("Responsividade do Real atrapalhando o teste")
 
     # Entra na listagem de financeiros
+    page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO")
 
     # Seleciona o financeiro e clica no menu mais
@@ -431,4 +442,4 @@ def test_exclusao_interna_financeiro(browser: Browser):
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
     # Fecha a página
-    page.close()'''
+    page.close()

@@ -1,4 +1,6 @@
 ALTA PRIORIDADE
+-q, -vv, -r
+Documentação embaixo das funções
 Implementar browser, context e page que nem no stack overflow, uma função que retorna uma instância configurada, e depois fecha: https://stackoverflow.com/questions/78512177/playwright-python-retain-on-failure
 Checkar forma de escrever documentação de módulo
 Eliminar decoradores (# ================================================)
@@ -11,9 +13,15 @@ Device emulation --device
 Many browsers
 Maximizar navegador
 Teste para alterar senha, e outros semelhantes
-Implementar testes de valores inválidos para campos
+Implementar testes de valores inválidos para campos ('" também)
+Fornecedor default?
 
 BAIXA PRIORIDADE
+Instafails
+Pep 8?
+pyflakes
+Managing pytest's output
+Subtests
 Readme
 --slowmo
 --video

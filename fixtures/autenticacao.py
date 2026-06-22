@@ -10,13 +10,14 @@ from conftest import AUTH_PATH, HOME_PAGE_URL, VIDEO_PATH
 """Carrega os dados de .dotenv como variáveis de ambiente"""
 load_dotenv()
 
-"""
-Realiza a autenticação no sistema.
-Se os cookies da sessão anterior ainda forem válidos, autentica usando eles.
-Senão, realiza login e salva os cookies
-"""
 @pytest.fixture(autouse=True, scope='session')
 def fixt_login(browser: Browser):
+    """
+    Realiza a autenticação no sistema.
+    Se os cookies da sessão anterior ainda forem válidos, autentica usando eles.
+    Senão, realiza login e salva os cookies
+    """
+    
     # Garante que o caminho do arquivo de autenticação existe, e que o arquivo não está vazio
     if not os.path.exists(AUTH_PATH) or os.path.getsize(AUTH_PATH) == 0:
         # Se arquivo não existe, é criado; senão, é resetado
@@ -51,13 +52,13 @@ def fixt_login(browser: Browser):
         # Realiza o login comum
 
         # Informa o domínio
-        page.get_by_role("textbox", name="Domínio").fill(os.environ("DOMINIO"))
+        page.get_by_role("textbox", name="Domínio").fill(os.environ["DOMINIO"])
 
         # Informa o nome
-        page.get_by_role("textbox", name="Login").fill(os.environ("LOGIN"))
+        page.get_by_role("textbox", name="Login").fill(os.environ["LOGIN"])
 
         # Informa a SENHA (esconder a senha)
-        page.get_by_role("textbox", name="Senha").fill(os.environ("SENHA"))
+        page.get_by_role("textbox", name="Senha").fill(os.environ["SENHA"])
 
         # Aperta para entrar
         page.get_by_role("button", name="Entrar").click()
@@ -71,7 +72,8 @@ def fixt_login(browser: Browser):
             page.get_by_role("textbox", name="Informe a empresa").fill("109")
             page.get_by_text("Selecione").first.click()
 
-        except TimeoutError: pass
+        except TimeoutError: 
+            pass
         
     # Valida se entrou
     expect(page).to_have_url(HOME_PAGE_URL, timeout=15000)

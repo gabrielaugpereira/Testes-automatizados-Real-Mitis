@@ -1,17 +1,19 @@
-from playwright.sync_api import Browser, Page, TimeoutError, expect
+from playwright.sync_api import Browser, Page, expect
 import pytest
 import random
 
-from auxiliares.default import *
+from auxiliares.default import new_page, pesquisar_rotina
 
 
 class _ModuleVariables:
-    # Mantém a page disponível para todos os testes
+    """Mantém a page disponível para todos os testes"""
     page: Page = None
 
-"""Entra na rotina de financeiro e disponibiliza a page"""
+
 @pytest.fixture(scope='module', autouse=True)
 def fixt_entra_rotina_financeiro(browser: Browser):
+    """Entra na rotina de financeiro e disponibiliza a page"""
+
     page = new_page(browser)
     _ModuleVariables.page = page
     
@@ -22,10 +24,12 @@ def fixt_entra_rotina_financeiro(browser: Browser):
     # Garante que a página seja fechada
     _ModuleVariables.page.close()
 
-"""
-Entra na rotina, seleciona dois financeiros de situações diferentes e entra no menu mais
-"""
+
 def seleciona_financeiros(page: Page):
+    """
+    Entra na rotina, seleciona dois financeiros de situações diferentes e entra no menu mais
+    """
+
     # Seleciona um financeiro de cada tipo
     page.get_by_text("VENCIDO", exact=True).first.click(modifiers=["ControlOrMeta"], timeout=8000)
     page.get_by_text("ABERTO", exact=True).first.click(modifiers=["ControlOrMeta"], timeout=8000)
@@ -35,8 +39,9 @@ def seleciona_financeiros(page: Page):
     page.locator("a").filter(has_text="Alterar em lote").click()
 
 
-"""Altera o valor dos financeiros para outros pré definido"""
 def test_alterar_lote_novo_valor():
+    """Altera o valor dos financeiros para outros pré definido"""
+
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -55,8 +60,9 @@ def test_alterar_lote_novo_valor():
     expect(page.get_by_text("Sucesso!")).to_be_visible()
     
 
-"""Incrementa o valor dos financeiros em valor pré definido"""
 def test_alterar_lote_increm_valor():
+    """Incrementa o valor dos financeiros em valor pré definido"""
+
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -76,8 +82,9 @@ def test_alterar_lote_increm_valor():
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
 
-"""Decrementa o valor dos financeiros em valor pré definido""" 
 def test_alterar_lote_decrem_valor(): 
+    """Decrementa o valor dos financeiros em valor pré definido""" 
+
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -102,8 +109,9 @@ def test_alterar_lote_decrem_valor():
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
 
-"""Altera a data de vencimento dos financeiros"""
 def test_alterar_lote_nova_data():
+    """Altera a data de vencimento dos financeiros"""
+
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -126,8 +134,9 @@ def test_alterar_lote_nova_data():
 
 
 '''Erro na mensagem de confirmação, por conta do input de data vazio'''
-"""Incrementa dias na data de vencimento dos financeiros"""
 def test_alterar_lote_increm_dias():
+    """Incrementa dias na data de vencimento dos financeiros"""
+
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -147,8 +156,9 @@ def test_alterar_lote_increm_dias():
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
 
-"""Decrementa dias na data de vencimento dos financeiros"""
 def test_alterar_lote_decrem_dias():
+    """Decrementa dias na data de vencimento dos financeiros"""
+
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -170,8 +180,9 @@ def test_alterar_lote_decrem_dias():
 
 '''Cada vez que você fecha a confirmação e abre de novo, a quantidade de financeiros disponíveis
 para alteração é incrementada pela quantidade real de financeiros disponível'''
-"""Seleciona duas contas, uma aberta e outra vencida, e usando o filtro, altera somente a aberta"""
 def test_alterar_lote_filtro_aberto():
+    """Seleciona duas contas, uma aberta e outra vencida, e usando o filtro, altera somente a aberta"""
+
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 
@@ -195,8 +206,9 @@ def test_alterar_lote_filtro_aberto():
     expect(page.get_by_text("Sucesso!")).to_be_visible()
 
 
-"""Seleciona duas contas, uma aberta e outra vencida, e usando o filtro, altera somente a vencida"""
 def test_alterar_lote_filtro_vencido():
+    """Seleciona duas contas, uma aberta e outra vencida, e usando o filtro, altera somente a vencida"""
+    
     page = _ModuleVariables.page
     seleciona_financeiros(page)
 

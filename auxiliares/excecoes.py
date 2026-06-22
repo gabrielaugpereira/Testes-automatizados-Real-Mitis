@@ -1,3 +1,5 @@
 """Exceções personalizadas"""
 
-class AuthenticationError(BaseException): pass
+class AuthenticationError(BaseException): 
+    """Erro na autenticação"""
+    pass

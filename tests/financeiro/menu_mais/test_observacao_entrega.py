@@ -1,19 +1,20 @@
 from playwright.sync_api import Browser, Page, expect
 import pytest
 
-from auxiliares.default import *
+from auxiliares.default import new_page, pesquisar_rotina, DESCRICAO_PADRAO
 
 """Fluxo CRUD para observação de entrega"""
 
 '''Relatar bugs com a table'''
 
-"""Mantém a página disponível para todos os testes"""
 class _ModuleVariables:
+    """Mantém a página disponível para todos os testes"""
     page: Page = None
 
-"""Preparação para os testes"""
 @pytest.fixture(scope='module', autouse=True)
 def fixt_abrir_tela_observacoes(browser: Browser):
+    """Preparação para os testes"""
+
     page = new_page(browser)
 
     # Entra na criação de financeiro
@@ -35,8 +36,9 @@ def fixt_abrir_tela_observacoes(browser: Browser):
     _ModuleVariables.page.close()
 
 
-"""Criação de observação"""
 def test_criar_obs():
+    """Criação de observação"""
+
     page = _ModuleVariables.page
 
     # Insere conteúdo da observação
@@ -47,16 +49,18 @@ def test_criar_obs():
     page.get_by_role("button", name=" Adicionar").click()
 
 
-"""Leitura de observação"""
 def test_ler_obs():
+    """Leitura de observação"""
+
     page = _ModuleVariables.page
 
     # Valida se observação foi criada
     expect(page.get_by_role("cell", name=DESCRICAO_PADRAO)).to_be_visible()
 
 
-"""Atualização de observação"""
 def test_atualizar_obs():
+    """Atualização de observação"""
+
     page = _ModuleVariables.page
 
     # Edita e salva conteúdo da observação
@@ -68,8 +72,9 @@ def test_atualizar_obs():
     expect(page.get_by_role("cell", name="Teste automatizado editado - GAP")).to_be_visible()
 
 
-"""Remoção de observação"""
 def test_remover_obs():
+    """Remoção de observação"""
+    
     page = _ModuleVariables.page
 
     # Remove a observação

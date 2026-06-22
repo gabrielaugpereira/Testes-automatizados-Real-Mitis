@@ -7,9 +7,10 @@ import re
 from conftest import VIDEO_PATH
 
 
-"""Fixture para apagar os vídeos no começo de uma nova sessão de testes"""
 @pytest.fixture(scope="session", autouse=True)
 def fixt_apaga_videos_antigos():
+    """Fixture para apagar os vídeos no começo de uma nova sessão de testes"""
+    
     # Itera por todos os arquivos
     for file in os.scandir(VIDEO_PATH):
         

@@ -3,7 +3,7 @@ Funções e keywords para serem usadas com frequência,
 minimizando repetição de código
 """
 
-from playwright.sync_api import Browser, Page
+from playwright.sync_api import Browser, Page, TimeoutError
 
 from conftest import AUTH_PATH, VIDEO_PATH, DEFAULT_TIMEOUT, HOME_PAGE_URL
 
@@ -15,8 +15,9 @@ DESCRICAO_PADRAO = "Teste automatizado - GAP"
 DESCRICAO_EDIT_PADRAO = "Teste automatizado não fui eu - GAP"
 
 
-"""Retorna uma página nova na home page, já autenticada e configurada"""
 def new_page(browser: Browser):
+    """Retorna uma página nova na home page, já autenticada e configurada"""
+
     '''Tentar não fazer isso, apenas usar o context configurado pelo conftest, para DRY'''
     context = browser.new_context(
         no_viewport=True, 
@@ -39,11 +40,12 @@ def new_page(browser: Browser):
     return page
 
 
-"""
-Pesquisa a rotina a partir do código da rotina e/ou nome da rotina. 
-Se estiver no modo de criação, irá clicar no botão "mais", para criar um novo objeto
-"""
 def pesquisar_rotina(page: Page, nome: str, *_, criacao: bool = False) -> None:
+    """
+    Pesquisa a rotina a partir do código da rotina e/ou nome da rotina. 
+    Se estiver no modo de criação, irá clicar no botão "mais", para criar um novo objeto
+    """
+    
     page.get_by_role("combobox", name="Pesquisar rotina").click()
     page.wait_for_selector(".include-new-to-route")
 
@@ -57,7 +59,7 @@ def pesquisar_rotina(page: Page, nome: str, *_, criacao: bool = False) -> None:
             # Clica no "+" dentro do item
             page.get_by_label(nome).first.get_by_role("button").first.click()
 
-    except:
+    except TimeoutError:
         # Se falhar, tenta apenas dar enter para entrar na rotina
         page.locator("input").first.press("Enter")
         

@@ -1,5 +1,5 @@
 from playwright.sync_api import Browser
-from auxiliares.genericos import *
+from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_generica
 
 
 class _ModuleVariables:

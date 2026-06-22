@@ -1,8 +1,3 @@
-from playwright.sync_api import Browser, expect
-
-from auxiliares.default import *
-
-
 '''
 Cadastro não está funcionando
 """Cria um novo tipo de lista"""
