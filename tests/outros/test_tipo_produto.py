@@ -1,23 +1,22 @@
-from playwright.sync_api import Browser
+from playwright.sync_api import Page
 
 from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_generica
 
 
-class _ModuleVariables:
-    """A rotina para tipo de produto"""
-    rotina: str = "371.TIPO DE PRODUTO"
+ROTINA = "371.TIPO DE PRODUTO"
+"""A rotina para tipo de produto"""
 
 
-def test_criacao_tipo_produto(browser: Browser):
+def test_criacao_tipo_produto(page: Page):
     """Cria um novo tipo de produto"""
-    criacao_generica(browser, _ModuleVariables.rotina)
+    criacao_generica(page, ROTINA)
 
 
-def test_edicao_tipo_produto(browser: Browser):
+def test_edicao_tipo_produto(page: Page):
     """Edita um tipo de produto"""
-    edicao_generica(browser, _ModuleVariables.rotina)
+    edicao_generica(page, ROTINA)
 
 
-def test_exclusao_tipo_produto(browser: Browser):
+def test_exclusao_tipo_produto(page: Page):
     """Exclui um tipo de produto"""
-    exclusao_generica(browser, _ModuleVariables.rotina)
+    exclusao_generica(page, ROTINA)

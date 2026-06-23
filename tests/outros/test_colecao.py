@@ -1,14 +1,13 @@
-from playwright.sync_api import Browser, Page
+from playwright.sync_api import Page
 
 from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_generica
 
 
-class _ModuleVariables:
-    """A rotina para coleção"""
-    rotina: str = "464.CADASTRO DE COLEÇÃO"
+ROTINA: str = "464.CADASTRO DE COLEÇÃO"
+"""A rotina de coleção"""
 
 
-def test_criacao_colecao(browser: Browser):
+def test_criacao_colecao(page: Page):
     """Cria uma nova coleção"""
 
     def incremento(page: Page):
@@ -19,10 +18,10 @@ def test_criacao_colecao(browser: Browser):
         # Seleciona a condição
         page.locator("select").select_option("Sempre")
 
-    criacao_generica(browser, _ModuleVariables.rotina, incremento)
+    criacao_generica(page, ROTINA, incremento)
 
 
-def test_edicao_colecao(browser: Browser):
+def test_edicao_colecao(page: Page):
     """Edita uma coleção"""
 
     def incremento(page: Page):
@@ -33,9 +32,9 @@ def test_edicao_colecao(browser: Browser):
         # Seleciona a condição
         page.locator("select").select_option("1")
 
-    edicao_generica(browser, _ModuleVariables.rotina, incremento)
+    edicao_generica(page, ROTINA, incremento)
 
 
-def test_exclusao_colecao(browser: Browser):
+def test_exclusao_colecao(page: Page):
     """Exclui uma coleção"""
-    exclusao_generica(browser, _ModuleVariables.rotina)
+    exclusao_generica(page, ROTINA)

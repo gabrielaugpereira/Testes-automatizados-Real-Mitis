@@ -4,18 +4,15 @@ Funções para fazer um fluxo CRUD genérico, e reduzir repetição de código a
 
 from collections.abc import Callable
 
-from playwright.sync_api import Browser, Page, expect
-from auxiliares.default import new_page, pesquisar_rotina, DESCRICAO_PADRAO, DESCRICAO_EDIT_PADRAO
+from playwright.sync_api import Page, expect
+from auxiliares.default import pesquisar_rotina, DESCRICAO_PADRAO, DESCRICAO_EDIT_PADRAO
 
 
-def criacao_generica(browser: Browser, rotina: str, incremento: Callable[[Page], None] = None):
+def criacao_generica(page: Page, rotina: str, incremento: Callable[[Page], None] = None):
     """
     Criação genérica de registro. 
     Recebe uma função como parâmetro, para incrementar a criação com mais entradas de valores
     """
-
-    # Abre o navegador
-    page = new_page(browser)
 
     # Entra na rotina informada, na parte de criação
     pesquisar_rotina(page, rotina, criacao=True)
@@ -39,14 +36,11 @@ def criacao_generica(browser: Browser, rotina: str, incremento: Callable[[Page],
     page.close()
 
 
-def edicao_generica(browser: Browser, rotina: str, incremento: Callable[[Page], None] = None):
+def edicao_generica(page: Page, rotina: str, incremento: Callable[[Page], None] = None):
     """
     Edição genérica de registro
     Recebe uma função como parâmetro, para incrementar a criação com mais entradas de valores
     """
-
-    # Abre o navegador
-    page = new_page(browser)
 
     # Entra na rotina, na listagem de registros
     pesquisar_rotina(page, rotina)
@@ -70,11 +64,8 @@ def edicao_generica(browser: Browser, rotina: str, incremento: Callable[[Page], 
     page.close()
 
 
-def exclusao_generica(browser: Browser, rotina: str):
+def exclusao_generica(page: Page, rotina: str):
     """Exclusão genérica"""
-    
-    # Abre o navegador
-    page = new_page(browser)
 
     # Entra na rotina, na listagem de registros
     pesquisar_rotina(page, rotina)

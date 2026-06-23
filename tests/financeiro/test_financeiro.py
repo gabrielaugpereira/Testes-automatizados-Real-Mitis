@@ -1,11 +1,11 @@
 """Fluxo CRUD para financeiros a pagar e a receber"""
 
-from playwright.sync_api import Browser, expect
+from playwright.sync_api import Page, expect
 import random
 import re
 import pytest
 
-from auxiliares.default import new_page, pesquisar_rotina, DESCRICAO_PADRAO
+from auxiliares.default import pesquisar_rotina, DESCRICAO_PADRAO
 from test_parcelas import add_nova_parcela
 
 '''Ambas as criações de financeiro estão tendendo ao preenchimento mínimo de informações. 
@@ -16,11 +16,10 @@ Preferencialmente mudar isso'''
 # Operações de criação
 # ================================================
 
-def test_criacao_financeiro_pagar(browser: Browser):
+def test_criacao_financeiro_pagar(page: Page):
     """Criação de financeiro a pagar"""
 
     # Entra na criação de financeiro
-    page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO", criacao=True)
 
     # Escreve uma descrição
@@ -57,11 +56,10 @@ def test_criacao_financeiro_pagar(browser: Browser):
 
 '''Depois de criado, o número do pedido deveria ser informado na linha reservada para isso.
 Porém, quando você acessa o financeiro, a linha não mostra valor algum'''
-def test_criacao_financeiro_receber(browser: Browser):
+def test_criacao_financeiro_receber(page: Page):
     """Criação de financeiro a receber"""
 
-    # Entra na criação de um financeiro
-    page = new_page(browser) 
+    # Entra na criação de financeiro
     pesquisar_rotina(page, "568.FINANCEIRO", criacao=True)
 
     # Informa que é um financeiro a receber
@@ -110,11 +108,10 @@ def test_criacao_financeiro_receber(browser: Browser):
 '''Baixa de financeiros baixados é permitida'''
 '''Atalhos da tela de financeiros não funcionando'''
 '''Quando altera-se a situação de uma parcela de "aberto" para "vencido", ou vice e versa, alteração não acontece. Mesma coisa com pago vencido'''
-def test_baixa_financeiro_interna(browser: Browser):
+def test_baixa_financeiro_interna(page: Page):
     """Baixa de financeiro pela tela de edição dele"""
 
     # Entra na listagem de financeiros
-    page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO")
 
     # Escolhe uma conta vencida
@@ -153,18 +150,17 @@ def test_baixa_financeiro_interna(browser: Browser):
     page.close()
 
 
-def test_baixa_financeiro_externa(browser: Browser):
+def test_baixa_financeiro_externa(page: Page):
     """Baixa de financeiro pela tela de listagem de financeiros"""
 
     pytest.skip("Responsividade do Real falhando")
 
 
 '''Número de tentativas de login é ilimitado?'''
-def test_edicao_financeiro_receber(browser: Browser):
+def test_edicao_financeiro_receber(page: Page):
     """Edita um financeiro a receber, adicionando valores a maioria dos campos"""
 
     # Entra na listagem de financeiros
-    page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO")
 
     # Escolhe o primeiro financeiro a receber
@@ -287,11 +283,10 @@ def test_edicao_financeiro_receber(browser: Browser):
 # Operações de exclusão
 # ================================================
 
-def test_exclusao_interna_financeiro(browser: Browser):
+def test_exclusao_interna_financeiro(page: Page):
     """Exclusão de financeiro a partir da exclusão de todas as suas parcelas"""
 
     # Entra na listagem de financeiros
-    page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO")
 
     # Seleciona o primeiro financeiro
@@ -320,13 +315,12 @@ def test_exclusao_interna_financeiro(browser: Browser):
     page.close()
 
 
-def test_exclusao_externa_financeiro(browser: Browser):
+def test_exclusao_externa_financeiro(page: Page):
     """Exclusão de finceiro pela tela de listagem de financeiros"""
     
     pytest.skip("Responsividade do Real atrapalhando o teste")
 
     # Entra na listagem de financeiros
-    page = new_page(browser) 
     pesquisar_rotina(page, "568.FINANCEIRO")
 
     # Seleciona o financeiro e clica no menu mais

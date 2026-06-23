@@ -47,7 +47,6 @@ def fixt_login(browser: Browser):
 
         # Login não necessário
     
-    # Possivelmente vai dar erro aqui
     except TimeoutError: 
         # Realiza o login comum
 

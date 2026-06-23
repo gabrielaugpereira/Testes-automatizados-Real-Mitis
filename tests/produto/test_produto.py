@@ -1,10 +1,10 @@
 """Fluxo CRUD para produto"""
 
-from playwright.sync_api import Browser, expect
+from playwright.sync_api import Page, expect
 import re
 import pytest
 
-from auxiliares.default import new_page, pesquisar_rotina, DESCRICAO_PADRAO
+from auxiliares.default import pesquisar_rotina, DESCRICAO_PADRAO
 
 
 '''Remover decorator'''
@@ -13,14 +13,11 @@ from auxiliares.default import new_page, pesquisar_rotina, DESCRICAO_PADRAO
 # ================================================
 
 @pytest.mark.skip("Falha no sistema: a geração de código do real está falhando")
-def criacao_produto(browser: Browser, tipo: int):
+def criacao_produto(page: Page, tipo: int):
     """
     Reutilização das criações de produto.
     O parâmetro tipo pode ter valor 1 ou 2.
     """
-
-    # Abre o navegador
-    page = new_page(browser)
 
     # Entra na criação de produto
     pesquisar_rotina(page, "2.PRODUTO", criacao=True)
@@ -93,20 +90,20 @@ def criacao_produto(browser: Browser, tipo: int):
     page.close()
 
 
-def test_criacao_produto_1(browser: Browser):
+def test_criacao_produto_1(page: Page):
     """Primeira criação de produto"""
-    criacao_produto(browser, 1)
+    criacao_produto(page, 1)
 
-def test_criacao_produto_2(browser: Browser):
+def test_criacao_produto_2(page: Page):
     """Segunda criação de produto, informando campos que a primeira não informa"""
-    criacao_produto(browser, 2)
+    criacao_produto(page, 2)
 
 
 # ================================================
 # Operações de edição
 # ================================================
 
-def test_atualizacao_produto(browser: Browser):
+def test_atualizacao_produto(page: Page):
     """Atualização de produto"""
     pytest.skip("Teste ainda não foi implementado")
 
@@ -115,10 +112,8 @@ def test_atualizacao_produto(browser: Browser):
 # Operações de exclusão
 # ================================================
 
-def test_exclusao_produto(browser: Browser):
+def test_exclusao_produto(page: Page):
     """Exclusão de produto"""
-    
-    page = new_page(browser)
 
     # Entra na listagem de produtos
     pesquisar_rotina(page, "2.PRODUTO")

@@ -1,23 +1,22 @@
-from playwright.sync_api import Browser
+from playwright.sync_api import Page
 
 from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_generica
 
 
-class _ModuleVariables:
-    """A rotina para margem"""
-    rotina: str = "315.MARGEM"
+ROTINA = "315.MARGEM"
+"""A rotina para margem"""
 
 
-def test_criacao_margem(browser: Browser):
+def test_criacao_margem(page: Page):
     """Cria uma nova margem"""
-    criacao_generica(browser, _ModuleVariables.rotina)
+    criacao_generica(page, ROTINA)
     
 
-def test_edicao_margem(browser: Browser):
+def test_edicao_margem(page: Page):
     """Edita uma margem"""
-    edicao_generica(browser, _ModuleVariables.rotina)
+    edicao_generica(page, ROTINA)
 
 
-def test_exclusao_margem(browser: Browser):
+def test_exclusao_margem(page: Page):
     """Exclui uma margem"""
-    exclusao_generica(browser, _ModuleVariables.rotina)
+    exclusao_generica(page, ROTINA)

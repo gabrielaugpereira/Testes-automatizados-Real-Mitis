@@ -1,23 +1,22 @@
-from playwright.sync_api import Browser
+from playwright.sync_api import Page
 
 from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_generica
 
 
-class _ModuleVariables:
-    """A rotina para portaria"""
-    rotina: str = "324.PORTARIA DO PRODUTO"
+ROTINA = "324.PORTARIA DO PRODUTO"
+"""A rotina para portaria"""
 
 
-def test_criacao_portaria(browser: Browser):
+def test_criacao_portaria(page: Page):
     """Cria uma nova portaria"""
-    criacao_generica(browser, _ModuleVariables.rotina)
+    criacao_generica(page, ROTINA)
     
 
-def test_edicao_portaria(browser: Browser):
+def test_edicao_portaria(page: Page):
     """Edita uma portaria"""
-    edicao_generica(browser, _ModuleVariables.rotina)
+    edicao_generica(page, ROTINA)
 
 
-def test_exclusao_portaria(browser: Browser):
+def test_exclusao_portaria(page: Page):
     """Exclui uma portaria"""
-    exclusao_generica(browser, _ModuleVariables.rotina)
+    exclusao_generica(page, ROTINA)

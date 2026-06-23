@@ -1,48 +1,17 @@
 """
-Funções e keywords para serem usadas com frequência, 
-minimizando repetição de código
+Funções auxiliares, keywords e valores padrão, usados em todo o código
 """
 
-from playwright.sync_api import Browser, Page, TimeoutError
-from collections.abc import Iterator
+from playwright.sync_api import Page, TimeoutError
 
-from conftest import AUTH_PATH, VIDEO_PATH, DEFAULT_TIMEOUT, HOME_PAGE_URL
+'''Talvez mudar o nome desse módulo'''
 
 
-"""Valor padrão a ser inserido como descrição em um novo registro"""
 DESCRICAO_PADRAO = "Teste automatizado - GAP"
+"""Valor padrão a ser inserido como descrição em um novo registro"""
 
-"""Valor padrão a ser inserido como descrição na edição de um registro"""
 DESCRICAO_EDIT_PADRAO = "Teste automatizado não fui eu - GAP"
-
-
-def page(browser: Browser) -> Iterator[Page]:
-    """Retorna uma página nova na home page, já autenticada e configurada"""
-
-    '''Tentar não fazer isso, apenas usar o context configurado pelo conftest, para DRY'''
-    context = browser.new_context(
-        no_viewport=True, 
-        storage_state=AUTH_PATH, 
-        record_video_dir=VIDEO_PATH,
-        )
-    '''DRY'''
-
-    # Muda o tempo padrão de timeout
-    context.set_default_timeout(DEFAULT_TIMEOUT)
-
-    # Cria uma página e vai até a home page
-    page = context.new_page()
-    page.goto(HOME_PAGE_URL)
-
-    # Garante que tudo esteja carregado
-    page.wait_for_load_state()
-    page.wait_for_timeout(500)
-
-    # Retorna a page
-    yield page
-
-    # Fecha o browser, encerrando todo o contexto interno junto
-    browser.close()
+"""Valor padrão a ser inserido como descrição na edição de um registro"""
 
 
 def pesquisar_rotina(page: Page, nome: str, *_, criacao: bool = False) -> None:

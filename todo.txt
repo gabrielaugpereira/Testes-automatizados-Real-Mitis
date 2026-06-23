@@ -1,5 +1,7 @@
+Estava criando context com scope de módulo, mas aparentemente realmente não é uma boa ideia.
 -q, -vv, -r
 Trace
+dry
 def page, configurando a page para todo o módulo
 new_page como fixture...
 Tirar os page.close()

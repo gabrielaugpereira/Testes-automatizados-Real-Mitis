@@ -4,31 +4,30 @@ import random
 from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_generica
 
 
-class _ModuleVariables:
-    """A rotina para mensagens"""
-    rotina: str = "20.MENSAGENS"
+ROTINA = "20.MENSAGENS"
+"""A rotina para mensagens"""
 
 
-def test_criacao_mensagem(browser: Browser):
+def test_criacao_mensagem(page: Page):
     """Cria uma nova mensagem"""
 
     def incremento(page: Page):
         # Seleciona um tipo de mensagem
         page.locator("select").select_option(str(random.randint(1, 9)))
 
-    criacao_generica(browser, _ModuleVariables.rotina, incremento)
+    criacao_generica(page, ROTINA, incremento)
 
 
-def test_edicao_mensagem(browser: Browser):
+def test_edicao_mensagem(page: Page):
     """Edita uma mensagem"""
 
     def incremento(page: Page):
         # Seleciona um tipo de mensagem
         page.locator("select").select_option(str(random.randint(1, 9)))
 
-    edicao_generica(browser, _ModuleVariables.rotina, incremento)
+    edicao_generica(page, ROTINA, incremento)
 
 
-def test_exclusao_mensagem(browser: Browser):
+def test_exclusao_mensagem(page: Page):
     """Exclui uma mensagem"""
-    exclusao_generica(browser, _ModuleVariables.rotina)
+    exclusao_generica(page, ROTINA)

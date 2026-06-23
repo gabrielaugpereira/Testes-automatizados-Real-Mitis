@@ -1,14 +1,12 @@
-from playwright.sync_api import Browser, Error, TimeoutError, expect
+from playwright.sync_api import Page, Error, TimeoutError, expect
 import re
 
-from auxiliares.default import new_page, pesquisar_rotina
+from auxiliares.default import pesquisar_rotina
 
 '''CRUD'''
 
-def test_criacao_venda(browser: Browser):
+def test_criacao_venda(page: Page):
     """Criação de venda"""
-
-    page = new_page(browser)
     
     # Entra na criação de venda
     pesquisar_rotina(page, "88.VENDAS", criacao=True)
@@ -39,10 +37,8 @@ def test_criacao_venda(browser: Browser):
     page.close()
 
 '''Responsividade com valor padrão do início da página'''
-def test_exclusao_venda(browser: Browser):
+def test_exclusao_venda(page: Page):
     """Exclusão de venda"""
-    
-    page = new_page(browser)
     
     # Entra na criação de venda
     pesquisar_rotina(page, "88.VENDAS")
