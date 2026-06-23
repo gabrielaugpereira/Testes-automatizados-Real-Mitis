@@ -3,20 +3,20 @@ from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_gen
 
 
 class _ModuleVariables:
-    # A rotina para habilidade
+    """A rotina para habilidade"""
     rotina: str = "554.HABILIDADE"
 
 
-"""Cria uma nova habilidade"""
 def test_criacao_habilidade(browser: Browser):
+    """Cria uma nova habilidade"""
     criacao_generica(browser, _ModuleVariables.rotina)
     
 
-"""Edita uma habilidade"""
 def test_edicao_habilidade(browser: Browser):
+    """Edita uma habilidade"""
     edicao_generica(browser, _ModuleVariables.rotina)
 
 
-"""Exclui uma habilidade"""
 def test_exclusao_habilidade(browser: Browser):
+    """Exclui uma habilidade"""
     exclusao_generica(browser, _ModuleVariables.rotina)

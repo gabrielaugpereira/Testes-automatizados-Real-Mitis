@@ -4,6 +4,7 @@ minimizando repetição de código
 """
 
 from playwright.sync_api import Browser, Page, TimeoutError
+from collections.abc import Iterator
 
 from conftest import AUTH_PATH, VIDEO_PATH, DEFAULT_TIMEOUT, HOME_PAGE_URL
 
@@ -15,7 +16,7 @@ DESCRICAO_PADRAO = "Teste automatizado - GAP"
 DESCRICAO_EDIT_PADRAO = "Teste automatizado não fui eu - GAP"
 
 
-def new_page(browser: Browser):
+def page(browser: Browser) -> Iterator[Page]:
     """Retorna uma página nova na home page, já autenticada e configurada"""
 
     '''Tentar não fazer isso, apenas usar o context configurado pelo conftest, para DRY'''
@@ -37,7 +38,11 @@ def new_page(browser: Browser):
     page.wait_for_load_state()
     page.wait_for_timeout(500)
 
-    return page
+    # Retorna a page
+    yield page
+
+    # Fecha o browser, encerrando todo o contexto interno junto
+    browser.close()
 
 
 def pesquisar_rotina(page: Page, nome: str, *_, criacao: bool = False) -> None:

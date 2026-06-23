@@ -5,8 +5,9 @@ from auxiliares.default import new_page, pesquisar_rotina
 
 '''CRUD'''
 
-"""Criação de venda"""
 def test_criacao_venda(browser: Browser):
+    """Criação de venda"""
+
     page = new_page(browser)
     
     # Entra na criação de venda
@@ -38,8 +39,9 @@ def test_criacao_venda(browser: Browser):
     page.close()
 
 '''Responsividade com valor padrão do início da página'''
-"""Exclusão de venda"""
 def test_exclusao_venda(browser: Browser):
+    """Exclusão de venda"""
+    
     page = new_page(browser)
     
     # Entra na criação de venda

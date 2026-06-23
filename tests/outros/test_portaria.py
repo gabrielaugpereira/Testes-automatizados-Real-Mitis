@@ -4,20 +4,20 @@ from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_gen
 
 
 class _ModuleVariables:
-    # A rotina para portaria
+    """A rotina para portaria"""
     rotina: str = "324.PORTARIA DO PRODUTO"
 
 
-"""Cria uma nova portaria"""
 def test_criacao_portaria(browser: Browser):
+    """Cria uma nova portaria"""
     criacao_generica(browser, _ModuleVariables.rotina)
     
 
-"""Edita uma portaria"""
 def test_edicao_portaria(browser: Browser):
+    """Edita uma portaria"""
     edicao_generica(browser, _ModuleVariables.rotina)
 
 
-"""Exclui uma portaria"""
 def test_exclusao_portaria(browser: Browser):
+    """Exclui uma portaria"""
     exclusao_generica(browser, _ModuleVariables.rotina)

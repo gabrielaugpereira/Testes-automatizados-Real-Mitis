@@ -1,24 +1,12 @@
-# Cache do Python
-**/__pycache__/
-
 # Cache do pytest
+**/__pycache__/
 .pytest_cache/
 
-# Ambiente virtual
-.venv/
+# Dados do navegador autenticado. Contém dados sensíveis
+.playwright/.auth
 
 # Caminho dos vídeos gravados. Todos os testes que falharem terão um vídeo neste diretório
 .tests_videos/
-
-# Dados do navegador autenticado. NÃO REMOVER: contém dados sensíveis
-.playwright/.auth
-
-# Informações sensíveis usadas dentro dos testes, como as credenciais para a autenticação.
-# Precisa ser implementado para cada dispositivo, e segue o modelo:
-# .vault/
-#     credenciais.py
-# Mais sobre os arquivos no readme.
-.vault/
 
 # Arquivo com as credenciais de autenticação. Credenciais são:
 # DOMINIO: a base a ser acessada;

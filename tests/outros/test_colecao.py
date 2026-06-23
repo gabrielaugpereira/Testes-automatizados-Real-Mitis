@@ -4,12 +4,13 @@ from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_gen
 
 
 class _ModuleVariables:
-    # A rotina para coleção
+    """A rotina para coleção"""
     rotina: str = "464.CADASTRO DE COLEÇÃO"
 
 
-"""Cria uma nova coleção"""
 def test_criacao_colecao(browser: Browser):
+    """Cria uma nova coleção"""
+
     def incremento(page: Page):
         # Informa o desconto
         page.get_by_role("spinbutton").click()
@@ -21,8 +22,9 @@ def test_criacao_colecao(browser: Browser):
     criacao_generica(browser, _ModuleVariables.rotina, incremento)
 
 
-"""Edita uma coleção"""
 def test_edicao_colecao(browser: Browser):
+    """Edita uma coleção"""
+
     def incremento(page: Page):
         # Informa o desconto
         page.get_by_role("spinbutton").click()
@@ -34,6 +36,6 @@ def test_edicao_colecao(browser: Browser):
     edicao_generica(browser, _ModuleVariables.rotina, incremento)
 
 
-"""Exclui uma coleção"""
 def test_exclusao_colecao(browser: Browser):
+    """Exclui uma coleção"""
     exclusao_generica(browser, _ModuleVariables.rotina)

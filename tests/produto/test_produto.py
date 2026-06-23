@@ -1,12 +1,13 @@
+"""Fluxo CRUD para produto"""
+
 from playwright.sync_api import Browser, expect
 import re
 import pytest
 
 from auxiliares.default import new_page, pesquisar_rotina, DESCRICAO_PADRAO
 
-"""Fluxo CRUD para produto"""
 
-
+'''Remover decorator'''
 # ================================================
 # Operações de criação
 # ================================================
@@ -44,7 +45,7 @@ def criacao_produto(browser: Browser, tipo: int):
 
     # Fornecedor do produto
     page.locator(".p-element.p-inputwrapper.p-autocomplete-clearable.ng-untouched > .w-100 > .p-element.p-ripple").click()
-    page.get_by_text("29.405.751 MARIA LUCIA MIRANDA JACINTO").click()
+    page.get_by_text("37.545.280 WILSON SILVERIO DOS SANTOS JUNIOR").click()
 
     # Tipo
     page.locator("select[name=\"tipo\"]").select_option(str(tipo))
@@ -105,8 +106,8 @@ def test_criacao_produto_2(browser: Browser):
 # Operações de edição
 # ================================================
 
-"""Atualização de produto"""
 def test_atualizacao_produto(browser: Browser):
+    """Atualização de produto"""
     pytest.skip("Teste ainda não foi implementado")
 
 
@@ -114,8 +115,9 @@ def test_atualizacao_produto(browser: Browser):
 # Operações de exclusão
 # ================================================
 
-"""Exclusão de produto"""
 def test_exclusao_produto(browser: Browser):
+    """Exclusão de produto"""
+    
     page = new_page(browser)
 
     # Entra na listagem de produtos

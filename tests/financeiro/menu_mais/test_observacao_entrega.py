@@ -1,9 +1,9 @@
+"""Fluxo CRUD para observação de entrega"""
+
 from playwright.sync_api import Browser, Page, expect
 import pytest
 
 from auxiliares.default import new_page, pesquisar_rotina, DESCRICAO_PADRAO
-
-"""Fluxo CRUD para observação de entrega"""
 
 '''Relatar bugs com a table'''
 

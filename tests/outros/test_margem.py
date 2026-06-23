@@ -4,20 +4,20 @@ from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_gen
 
 
 class _ModuleVariables:
-    # A rotina para margem
+    """A rotina para margem"""
     rotina: str = "315.MARGEM"
 
 
-"""Cria uma nova margem"""
 def test_criacao_margem(browser: Browser):
+    """Cria uma nova margem"""
     criacao_generica(browser, _ModuleVariables.rotina)
     
 
-"""Edita uma margem"""
 def test_edicao_margem(browser: Browser):
+    """Edita uma margem"""
     edicao_generica(browser, _ModuleVariables.rotina)
 
 
-"""Exclui uma margem"""
 def test_exclusao_margem(browser: Browser):
+    """Exclui uma margem"""
     exclusao_generica(browser, _ModuleVariables.rotina)
