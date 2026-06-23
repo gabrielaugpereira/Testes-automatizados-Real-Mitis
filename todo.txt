@@ -1,4 +1,5 @@
 -q, -vv, -r
+Trace
 def page, configurando a page para todo o módulo
 new_page como fixture...
 Tirar os page.close()
