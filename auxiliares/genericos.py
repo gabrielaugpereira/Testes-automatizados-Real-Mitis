@@ -8,7 +8,7 @@ from playwright.sync_api import Page, expect
 from auxiliares.default import pesquisar_rotina, DESCRICAO_PADRAO, DESCRICAO_EDIT_PADRAO
 
 
-def criacao_generica(page: Page, rotina: str, incremento: Callable[[Page], None] = None):
+def criacao_generica(page: Page, rotina: str, incremento: Callable[[Page], None] = None) -> None:
     """
     Criação genérica de registro. 
     Recebe uma função como parâmetro, para incrementar a criação com mais entradas de valores
@@ -36,7 +36,7 @@ def criacao_generica(page: Page, rotina: str, incremento: Callable[[Page], None]
     page.close()
 
 
-def edicao_generica(page: Page, rotina: str, incremento: Callable[[Page], None] = None):
+def edicao_generica(page: Page, rotina: str, incremento: Callable[[Page], None] = None) -> None:
     """
     Edição genérica de registro
     Recebe uma função como parâmetro, para incrementar a criação com mais entradas de valores
@@ -64,7 +64,7 @@ def edicao_generica(page: Page, rotina: str, incremento: Callable[[Page], None] 
     page.close()
 
 
-def exclusao_generica(page: Page, rotina: str):
+def exclusao_generica(page: Page, rotina: str) -> None:
     """Exclusão genérica"""
 
     # Entra na rotina, na listagem de registros

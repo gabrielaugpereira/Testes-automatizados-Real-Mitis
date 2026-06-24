@@ -3,7 +3,7 @@ from playwright.sync_api import Page
 from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_generica
 
 
-ROTINA = "324.PORTARIA DO PRODUTO"
+ROTINA = "PORTARIA DO PRODUTO"
 """A rotina para portaria"""
 
 

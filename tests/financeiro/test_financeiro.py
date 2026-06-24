@@ -16,11 +16,10 @@ Preferencialmente mudar isso'''
 # Operações de criação
 # ================================================
 
-def test_criacao_financeiro_pagar(page: Page):
+def test_criacao_financeiro_pagar(new_fin_page: Page):
     """Criação de financeiro a pagar"""
 
-    # Entra na criação de financeiro
-    pesquisar_rotina(page, "568.FINANCEIRO", criacao=True)
+    page = new_fin_page
 
     # Escreve uma descrição
     page.wait_for_timeout(1400)
@@ -56,11 +55,10 @@ def test_criacao_financeiro_pagar(page: Page):
 
 '''Depois de criado, o número do pedido deveria ser informado na linha reservada para isso.
 Porém, quando você acessa o financeiro, a linha não mostra valor algum'''
-def test_criacao_financeiro_receber(page: Page):
+def test_criacao_financeiro_receber(new_fin_page: Page):
     """Criação de financeiro a receber"""
 
-    # Entra na criação de financeiro
-    pesquisar_rotina(page, "568.FINANCEIRO", criacao=True)
+    page = new_fin_page
 
     # Informa que é um financeiro a receber
     page.get_by_role("radio", name="Receber").check()
@@ -108,8 +106,10 @@ def test_criacao_financeiro_receber(page: Page):
 '''Baixa de financeiros baixados é permitida'''
 '''Atalhos da tela de financeiros não funcionando'''
 '''Quando altera-se a situação de uma parcela de "aberto" para "vencido", ou vice e versa, alteração não acontece. Mesma coisa com pago vencido'''
-def test_baixa_financeiro_interna(page: Page):
+def test_baixa_financeiro_interna(fin_page: Page):
     """Baixa de financeiro pela tela de edição dele"""
+
+    page = fin_page
 
     # Entra na listagem de financeiros
     pesquisar_rotina(page, "568.FINANCEIRO")
@@ -150,15 +150,19 @@ def test_baixa_financeiro_interna(page: Page):
     page.close()
 
 
-def test_baixa_financeiro_externa(page: Page):
+def test_baixa_financeiro_externa(fin_page: Page):
     """Baixa de financeiro pela tela de listagem de financeiros"""
 
     pytest.skip("Responsividade do Real falhando")
 
+    page = fin_page
+
 
 '''Número de tentativas de login é ilimitado?'''
-def test_edicao_financeiro_receber(page: Page):
+def test_edicao_financeiro_receber(fin_page: Page):
     """Edita um financeiro a receber, adicionando valores a maioria dos campos"""
+
+    page = fin_page
 
     # Entra na listagem de financeiros
     pesquisar_rotina(page, "568.FINANCEIRO")
@@ -283,8 +287,10 @@ def test_edicao_financeiro_receber(page: Page):
 # Operações de exclusão
 # ================================================
 
-def test_exclusao_interna_financeiro(page: Page):
+def test_exclusao_interna_financeiro(fin_page: Page):
     """Exclusão de financeiro a partir da exclusão de todas as suas parcelas"""
+
+    page = fin_page
 
     # Entra na listagem de financeiros
     pesquisar_rotina(page, "568.FINANCEIRO")
@@ -315,10 +321,12 @@ def test_exclusao_interna_financeiro(page: Page):
     page.close()
 
 
-def test_exclusao_externa_financeiro(page: Page):
+def test_exclusao_externa_financeiro(fin_page: Page):
     """Exclusão de finceiro pela tela de listagem de financeiros"""
     
     pytest.skip("Responsividade do Real atrapalhando o teste")
+
+    page = fin_page
 
     # Entra na listagem de financeiros
     pesquisar_rotina(page, "568.FINANCEIRO")

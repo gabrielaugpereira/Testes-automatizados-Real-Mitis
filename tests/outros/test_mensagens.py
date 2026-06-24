@@ -4,7 +4,7 @@ import random
 from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_generica
 
 
-ROTINA = "20.MENSAGENS"
+ROTINA = "MENSAGENS"
 """A rotina para mensagens"""
 
 

@@ -3,7 +3,7 @@ from playwright.sync_api import Browser, Page
 from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_generica
 
 
-ROTINA = "44.MARCA / MODELO DO PRODUTO"
+ROTINA = "MARCA / MODELO DO PRODUTO"
 """A rotina para marca / modelo de produto"""
 
 

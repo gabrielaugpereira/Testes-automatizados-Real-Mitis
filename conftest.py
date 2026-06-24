@@ -33,7 +33,8 @@ DEFAULT_TIMEOUT = 15000
 
 pytest_plugins = [
     "fixtures.autenticacao", 
-    "fixtures.limpa_ambiente"
+    "fixtures.limpa_ambiente",
+    "fixtures.paginas_customizadas",
     ]
 """Módulos com fixtures que sempre devem ser executadas"""
 
@@ -43,30 +44,44 @@ def browser_type_launch_args():
     """Configuração do browser"""
 
     return {
-        # "headless": False,
+        "headless": False,
         "args": ["--start-maximized"],
     }
 
 
 @pytest.fixture
 def context(browser: Browser):
-    """Configuração do context"""
+    """
+    Configuração do context.
+    Se o arquivo de cookies não existir, será criado; se existir mas estiver vazio, será reiniciado.
+    Em ambas, o context não usará o arquivo, e será necessário autenticar
+    """
 
-    # Cria um contexto sem viewport, com o caminho dos cookies e o caminho dos vídeos de feedback
-    context = browser.new_context(
-        no_viewport = True, 
-        storage_state = AUTH_PATH, 
-        record_video_dir = VIDEO_PATH,
-    )
+    # Parâmetros que serão passados para criar um context.
+    # no_viewport: para abrir em tela cheia;
+    # record_video_dir: o diretório de vídeos gravados.
+    kwargs = {
+        "no_viewport": True, 
+        "record_video_dir": VIDEO_PATH,
+    }
 
-    # Muda o tempo padrão de timeout
-    context.set_default_timeout(DEFAULT_TIMEOUT)
+    # Se não existir, ou se estiver vazio
+    if not os.path.exists(AUTH_PATH) or os.path.getsize(AUTH_PATH) == 0:
+        # Cria se não existir, reinicia se existir
+        open(AUTH_PATH, 'w')
+    else:
+        # Adiciona o caminho dos cookies como parâmetro
+        kwargs["storage_state"] = AUTH_PATH
+
+    # Cria um contexto e configura
+    _context = browser.new_context(**kwargs)
+    _context.set_default_timeout(DEFAULT_TIMEOUT)
 
     # Retorna o context
-    yield context
+    yield _context
 
     # Fecha o context
-    context.close()
+    _context.close()
 
 
 @pytest.fixture
@@ -77,12 +92,12 @@ def page(context: BrowserContext) -> Iterator[Page]:
     """
 
     # Cria uma página e vai até a home page
-    page = context.new_page()
-    page.goto(HOME_PAGE_URL)
+    _page = context.new_page()
+    _page.goto(HOME_PAGE_URL)
 
     # Garante que tudo esteja carregado
-    page.wait_for_load_state()
-    page.wait_for_timeout(500)
+    _page.wait_for_load_state()
+    _page.wait_for_timeout(500)
 
     # Retorna a page
-    yield page
+    yield _page

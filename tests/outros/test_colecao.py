@@ -3,8 +3,15 @@ from playwright.sync_api import Page
 from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_generica
 
 
-ROTINA: str = "464.CADASTRO DE COLEÇÃO"
+ROTINA: str = "CADASTRO DE COLEÇÃO"
 """A rotina de coleção"""
+
+
+'''
+Em outros lugares, a página é recebida da fixture, já na rotina desejada.
+Para manter a consistência, seria melhor fazer isso aqui também, ao invés de passar a rotina
+para o genérico.
+'''
 
 
 def test_criacao_colecao(page: Page):

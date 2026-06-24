@@ -3,10 +3,12 @@ import re
 
 from auxiliares.default import pesquisar_rotina
 
-'''CRUD'''
+'''Terminar CRUD'''
 
-def test_criacao_venda(page: Page):
+def test_criacao_venda(new_vend_page: Page):
     """Criação de venda"""
+
+    page = new_vend_page
     
     # Entra na criação de venda
     pesquisar_rotina(page, "88.VENDAS", criacao=True)
@@ -37,8 +39,10 @@ def test_criacao_venda(page: Page):
     page.close()
 
 '''Responsividade com valor padrão do início da página'''
-def test_exclusao_venda(page: Page):
+def test_exclusao_venda(vend_page: Page):
     """Exclusão de venda"""
+
+    page = vend_page
     
     # Entra na criação de venda
     pesquisar_rotina(page, "88.VENDAS")

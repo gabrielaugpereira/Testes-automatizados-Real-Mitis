@@ -3,7 +3,7 @@ from playwright.sync_api import Page
 from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_generica
 
 
-ROTINA = "371.TIPO DE PRODUTO"
+ROTINA = "TIPO DE PRODUTO"
 """A rotina para tipo de produto"""
 
 

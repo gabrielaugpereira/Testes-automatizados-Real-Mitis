@@ -19,9 +19,6 @@ def criacao_produto(page: Page, tipo: int):
     O parâmetro tipo pode ter valor 1 ou 2.
     """
 
-    # Entra na criação de produto
-    pesquisar_rotina(page, "2.PRODUTO", criacao=True)
-
     # Insere um id customizado
     # Id máximo no momento de escrita do código: 34244829
     '''page.locator("#codProd").click()
@@ -90,20 +87,20 @@ def criacao_produto(page: Page, tipo: int):
     page.close()
 
 
-def test_criacao_produto_1(page: Page):
+def test_criacao_produto_1(new_prod_page: Page):
     """Primeira criação de produto"""
-    criacao_produto(page, 1)
+    criacao_produto(new_prod_page, 1)
 
-def test_criacao_produto_2(page: Page):
+def test_criacao_produto_2(new_prod_page: Page):
     """Segunda criação de produto, informando campos que a primeira não informa"""
-    criacao_produto(page, 2)
+    criacao_produto(new_prod_page, 2)
 
 
 # ================================================
 # Operações de edição
 # ================================================
 
-def test_atualizacao_produto(page: Page):
+def test_atualizacao_produto(prod_page: Page):
     """Atualização de produto"""
     pytest.skip("Teste ainda não foi implementado")
 
@@ -112,11 +109,10 @@ def test_atualizacao_produto(page: Page):
 # Operações de exclusão
 # ================================================
 
-def test_exclusao_produto(page: Page):
+def test_exclusao_produto(prod_page: Page):
     """Exclusão de produto"""
 
-    # Entra na listagem de produtos
-    pesquisar_rotina(page, "2.PRODUTO")
+    page = prod_page
 
     # Ordena pelo código interno, para pegar o último
     page.get_by_role("columnheader", name="Cód. Interno").click()
