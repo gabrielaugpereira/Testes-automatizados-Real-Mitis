@@ -1,11 +1,11 @@
 """Fixtures usadas para autenticar no sistema"""
 
-from playwright.sync_api import BrowserContext, Page, TimeoutError, expect
+from playwright.sync_api import Browser, Page, TimeoutError, expect
 import pytest
 import os
 from dotenv import load_dotenv
 
-from conftest import AUTH_PATH, HOME_PAGE_URL
+from conftest import AUTH_PATH, AUTH_URL, HOME_PAGE_URL
 
 """Carrega os dados de .dotenv como variáveis de ambiente"""
 load_dotenv()
@@ -38,26 +38,26 @@ def login(page: Page):
         pass
 
 
-@pytest.fixture(autouse=True, scope='session')
-def autenticacao(context: BrowserContext):
+@pytest.fixture(scope='session', autouse=True)
+def autenticacao(browser: Browser) -> None:
     """
     Realiza a autenticação no sistema.
     Se os cookies da sessão anterior ainda forem válidos, autentica usando eles.
     Senão, realiza login e salva os cookies
     """
 
+    context = browser.new_context()
     page = context.new_page()
     page.goto(HOME_PAGE_URL)
-    
+
     try:
         page.wait_for_timeout(1000)
-        page.wait_for_url(HOME_PAGE_URL, timeout=6500)
+        page.wait_for_url(AUTH_URL, timeout=6500)
 
         # Se chegou até aqui, os cookies funcionaram, e autenticação foi bem sucedida
     
     except TimeoutError: 
         # Se chegou aqui, os cookies não funcionaram, ou não foram usados, e login é necessário
-
         login(page)
         
     # Valida se entrou
@@ -66,5 +66,4 @@ def autenticacao(context: BrowserContext):
     # Salva os cookies da autenticação
     context.storage_state(path=AUTH_PATH)
 
-    # Fecha o navegador
-    page.close()
+    context.close()

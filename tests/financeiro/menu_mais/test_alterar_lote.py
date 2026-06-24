@@ -15,12 +15,14 @@ def alt_page(fin_page: Page):
     page = fin_page
 
     # Seleciona um financeiro de cada tipo
-    page.get_by_text("VENCIDO", exact=True).first.click(modifiers=["ControlOrMeta"], timeout=8000)
-    page.get_by_text("ABERTO", exact=True).first.click(modifiers=["ControlOrMeta"], timeout=8000)
+    page.get_by_text("VENCIDO", exact=True).first.click(modifiers=["ControlOrMeta"])
+    page.get_by_text("ABERTO", exact=True).first.click(modifiers=["ControlOrMeta"])
 
     # Entra no menu mais e escolhe a alteração em lote
     page.get_by_title("Mais opções").click()
     page.locator("a").filter(has_text="Alterar em lote").click()
+
+    yield page
 
 
 def test_alterar_lote_novo_valor(alt_page: Page):

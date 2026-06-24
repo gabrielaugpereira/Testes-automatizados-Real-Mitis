@@ -5,8 +5,8 @@
 # Dados do navegador autenticado. Contém dados sensíveis
 .playwright/.auth
 
-# Caminho dos vídeos gravados. Todos os testes que falharem terão um vídeo neste diretório
-.tests_videos/
+# Caminho do feedback dos testes. Todos os testes que falharem terão vídeo e trace neste diretório
+.tests_results/
 
 # Arquivo com as credenciais de autenticação. Credenciais são:
 # DOMINIO: a base a ser acessada;

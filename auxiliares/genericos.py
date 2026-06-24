@@ -32,9 +32,6 @@ def criacao_generica(page: Page, rotina: str, incremento: Callable[[Page], None]
     page.get_by_role("button", name="  Salvar").click()
     expect(page.get_by_text("Registro salvo com sucesso")).to_be_visible()
 
-    # Fecha a página
-    page.close()
-
 
 def edicao_generica(page: Page, rotina: str, incremento: Callable[[Page], None] = None) -> None:
     """
@@ -60,9 +57,6 @@ def edicao_generica(page: Page, rotina: str, incremento: Callable[[Page], None] 
     page.get_by_role("button", name="  Salvar").click()
     expect(page.get_by_text("Registro salvo com sucesso")).to_be_visible()
 
-    # Fecha a página
-    page.close()
-
 
 def exclusao_generica(page: Page, rotina: str) -> None:
     """Exclusão genérica"""
@@ -79,6 +73,3 @@ def exclusao_generica(page: Page, rotina: str) -> None:
 
     # Valida se houve a exclusão
     expect(page.get_by_text("Registro excluído com sucesso")).to_be_visible()
-
-    # Fecha a página
-    page.close()

@@ -49,9 +49,6 @@ def test_criacao_financeiro_pagar(new_fin_page: Page):
     # Valida se foi criado
     expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
 
-    # Fecha a página
-    page.close()
-
 
 '''Depois de criado, o número do pedido deveria ser informado na linha reservada para isso.
 Porém, quando você acessa o financeiro, a linha não mostra valor algum'''
@@ -94,9 +91,6 @@ def test_criacao_financeiro_receber(new_fin_page: Page):
     
     # Valida se foi criado
     expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
-
-    # Fecha a página
-    page.close()
 
 
 # ================================================
@@ -145,9 +139,6 @@ def test_baixa_financeiro_interna(fin_page: Page):
 
     # Valida se alterações foram recebidas
     expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
-
-    # Fecha a página
-    page.close()
 
 
 def test_baixa_financeiro_externa(fin_page: Page):
@@ -279,9 +270,6 @@ def test_edicao_financeiro_receber(fin_page: Page):
     page.get_by_role("button", name=" Salvar").click()
     expect(page.get_by_text("Salvo com sucesso!")).to_be_visible()
 
-    # Fecha a página
-    page.close()
-
 
 # ================================================
 # Operações de exclusão
@@ -317,9 +305,6 @@ def test_exclusao_interna_financeiro(fin_page: Page):
         # Espera até que a página recarregue
         page.wait_for_selector(".btn-success")
 
-    # Fecha a página
-    page.close()
-
 
 def test_exclusao_externa_financeiro(fin_page: Page):
     """Exclusão de finceiro pela tela de listagem de financeiros"""
@@ -341,6 +326,3 @@ def test_exclusao_externa_financeiro(fin_page: Page):
 
     # Valida se financeiro foi excluído
     expect(page.get_by_text("Sucesso!")).to_be_visible()
-
-    # Fecha a página
-    page.close()

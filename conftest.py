@@ -5,6 +5,7 @@ Foi adotado também nesse sistema para configurações de urls, caminhos e parâ
 
 from playwright.sync_api import Browser, BrowserContext, Page
 
+from datetime import datetime
 import os
 import pytest
 from collections.abc import Iterator
@@ -16,8 +17,11 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 AUTH_PATH = os.path.join(ROOT_DIR, '.playwright/.auth/user.json')
 """O caminho do arquivo dos cookies de autenticação"""
 
-VIDEO_PATH = os.path.join(ROOT_DIR, '.tests_videos/')
-"""O caminho para salvar os vídeos das falhas"""
+RESULTS_PATH = os.path.join(ROOT_DIR, '.tests_results/')
+"""O caminho para os feedbacks de testes"""
+
+VIDEO_PATH = os.path.join(RESULTS_PATH, 'videos/')
+"""O caminho para os vídeos dos testes"""
 
 
 AUTH_URL = 'https://erp-qa.mitis.com.br/#/'
@@ -32,7 +36,7 @@ DEFAULT_TIMEOUT = 15000
 
 
 pytest_plugins = [
-    "fixtures.autenticacao", 
+    "fixtures.autenticacao",
     "fixtures.limpa_ambiente",
     "fixtures.paginas_customizadas",
     ]
@@ -49,6 +53,7 @@ def browser_type_launch_args():
     }
 
 
+'''Modularizar para fixtures'''
 @pytest.fixture
 def context(browser: Browser):
     """
@@ -77,10 +82,27 @@ def context(browser: Browser):
     _context = browser.new_context(**kwargs)
     _context.set_default_timeout(DEFAULT_TIMEOUT)
 
+    # Configura o rastreamento do context
+    _context.tracing.start(
+        screenshots=True, 
+        snapshots=True, 
+        # sources=True
+    )
+
     # Retorna o context
     yield _context
 
-    # Fecha o context
+    # Formato da data a ser usada como nome para o trace
+    format = r"%Y-%m-%d-%H-%M-%S"
+
+    # Caminho relativo do arquivo
+    path = os.path.join(RESULTS_PATH, f"{datetime.now().strftime(format)}.zip")
+
+    # Caminho absoluto do arquivo
+    path = os.path.join(ROOT_DIR, path)
+
+    # Encerra o tracing e fecha o context
+    _context.tracing.stop(path=path)
     _context.close()
 
 

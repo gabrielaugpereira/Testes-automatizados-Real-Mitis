@@ -99,6 +99,3 @@ def test_exclusao_parcela(first_fin_page: Page):
 
     # Valida se excluiu
     expect(page.get_by_text("Registro excluído com sucesso!")).to_be_visible()
-
-    # Fecha a página
-    page.close()

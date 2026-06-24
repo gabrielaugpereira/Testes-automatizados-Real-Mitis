@@ -14,7 +14,7 @@ DESCRICAO_EDIT_PADRAO = "Teste automatizado não fui eu - GAP"
 """Valor padrão a ser inserido como descrição na edição de um registro"""
 
 
-def pesquisar_rotina(page: Page, nome: str, *_, criacao: bool = False) -> None:
+def pesquisar_rotina(page: Page, nome: str, *, criacao: bool = False) -> None:
     """
     Pesquisa a rotina a partir do código da rotina e/ou nome da rotina. 
     Se estiver no modo de criação, irá clicar no botão "mais", para criar um novo objeto

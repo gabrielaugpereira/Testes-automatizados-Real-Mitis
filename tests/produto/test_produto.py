@@ -83,9 +83,6 @@ def criacao_produto(page: Page, tipo: int):
     # Validação
     expect(page.get_by_text("Produto salvo com sucesso!")).to_be_visible(timeout=9000)
 
-    # Fecha a página
-    page.close()
-
 
 def test_criacao_produto_1(new_prod_page: Page):
     """Primeira criação de produto"""
@@ -127,6 +124,3 @@ def test_exclusao_produto(prod_page: Page):
 
     # Validação
     expect(page.get_by_text("Produto excluído com sucesso.")).to_be_visible()
-
-    # Fecha a página
-    page.close()

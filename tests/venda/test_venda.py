@@ -35,8 +35,6 @@ def test_criacao_venda(new_vend_page: Page):
     # Valida se salvou
     expect(page.get_by_text("Pedido salvo com sucesso!")).to_be_visible()
 
-    # Fecha a página
-    page.close()
 
 '''Responsividade com valor padrão do início da página'''
 def test_exclusao_venda(vend_page: Page):
@@ -72,6 +70,3 @@ def test_exclusao_venda(vend_page: Page):
 
     # Valida se venda foi excluída
     expect(page.get_by_text("Novo orçamento")).to_be_visible(timeout=15000)
-
-    # Fecha a página
-    page.close()
