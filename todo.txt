@@ -1,4 +1,6 @@
--q, -vv, -r
+Testar numprocesses de novo
+-r
+Eliminar todo da nuvem
 Excluir trace antigo
 100% do código em inglês
 Eliminar decoradores (# ================================================)
@@ -13,12 +15,13 @@ Implementar testes de valores inválidos para campos ('" também)
 Fornecedor padrão para todo o sistema?
 Readme
 Melhorar docs
+Testar em versões menores de Python
+'''Reclamar do funcionamento atual do token, onde apenas uma página pode ser aberta por usuário ao mesmo tempo'''
 
 APRENDIZADOS
 Instafails
 Subtests
 --slowmo
---video
 --screenshot
 traceback
 logging
