@@ -1,6 +1,6 @@
 -q, -vv, -r
+Excluir trace antigo
 100% do código em inglês
-Trace
 Eliminar decoradores (# ================================================)
 Acelerar cadastros genéricos
 Separar funções do test_financeiro
@@ -22,3 +22,9 @@ Subtests
 --screenshot
 traceback
 logging
+
+
+# Se não existir, ou se estiver vazio
+if not os.path.exists(AUTH_PATH) or os.path.getsize(AUTH_PATH) == 0:
+    # Cria se não existir, reinicia se existir
+    open(AUTH_PATH, 'w')

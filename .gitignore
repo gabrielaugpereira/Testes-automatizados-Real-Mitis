@@ -6,7 +6,7 @@
 .playwright/.auth
 
 # Caminho do feedback dos testes. Todos os testes que falharem terão vídeo e trace neste diretório
-.tests_results/
+test-results/
 
 # Arquivo com as credenciais de autenticação. Credenciais são:
 # DOMINIO: a base a ser acessada;
