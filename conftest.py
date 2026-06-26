@@ -35,7 +35,6 @@ DEFAULT_TIMEOUT = 15000
 
 pytest_plugins = [
     "fixtures.autenticacao",
-    "fixtures.limpa_ambiente",
     "fixtures.paginas_customizadas",
     ]
 """Módulos com fixtures que sempre devem ser executadas"""
