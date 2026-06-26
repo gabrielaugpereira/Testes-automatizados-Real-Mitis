@@ -24,27 +24,27 @@ O objetivo do projeto é reduzir o esforço manual para garantir a qualidade do 
 ## Estrutura do projeto
 
 Testes-automatizados-Real-Mitis/        
-├─ .playwright/                     # Diretório usado pelo Playwright
-|  └─ .auth/                            # Dados da autenticação
-|     └─ cookies.json                       # Armazenamento dos cookies da autenticação
-├─ auxiliares/                      # Funcionalidades auxiliares, como se fosse uma biblioteca interna
-|  ├─ excecoes.py                       # Exceções personalizadas
-|  ├─ funcoes.py                        # Funcionalidades úteis na forma de função
-|  ├─ genericos.py                      # Fluxos de criação, atualização e remoção genéricos
-|  └─ valores_padrao.py                 # Valores para serem usados padronizadamente pelo sistema, como descrição para informar nos inputs
-├─ fixtures/                        # Diretório para fixtures (funções para preparação do ambiente)
-|  ├─ autenticacao.py                   # Fixtures para entrar no sistema
-|  └─ paginas_customizadas.py           # Fixtures ornecem páginas personalizadas, principalmente usadas para já receber a página na rotina
-├─ test-results/                    # Feedback em vídeo/tracing dos testes, para descobrir onde deu erro
-|  └─ conteudo-interno                  # Dividido por diretórios com o nome do teste executado
-├─ tests/                           # Todos os testes do sistema. Separado por diretórios, majoritariamente agrupando por rotina
-├─ .env                             # Credenciais de login. Tudo o que está nesse arquivo é tratado como variáveis de ambiente
-├─ .gitignore                       # Nomes dos arquivos e diretórios a serem ignorados
-├─ conftest.py                      # Configuração do sistema, do Pytest e do Playwright. Contém também constantes de caminho e url
-├─ lista_comandos.md                # Comandos importantes para usar na criação de novos testes
-├─ pytest.ini                       # Arquivo de preferências do pytest. Principalmente usado para adicionar flags permanentemente
-├─ README.md                        # Documentação geral do sistema. Você está aqui
-└─ requirements.txt                 # Dependências do projeto, necessárias para a execução ou para utilizar certos recursos
+├─ .playwright/                 # Diretório usado pelo Playwright
+|  └─ .auth/                        # Dados da autenticação
+|     └─ cookies.json                   # Armazenamento dos cookies da autenticação
+├─ auxiliares/                  # Funcionalidades auxiliares, como se fosse uma biblioteca interna
+|  ├─ excecoes.py                   # Exceções personalizadas
+|  ├─ funcoes.py                    # Funcionalidades úteis na forma de função
+|  ├─ genericos.py                  # Fluxos de criação, atualização e remoção genéricos
+|  └─ valores_padrao.py             # Valores para serem usados padronizadamente pelo sistema, como descrição para informar nos inputs
+├─ fixtures/                    # Diretório para fixtures (funções para preparação do ambiente)
+|  ├─ autenticacao.py               # Fixtures para entrar no sistema
+|  └─ paginas_customizadas.py       # Fixtures ornecem páginas personalizadas, principalmente usadas para já receber a página na rotina
+├─ test-results/                # Feedback em vídeo/tracing dos testes, para descobrir onde deu erro
+|  └─ conteudo-interno              # Dividido por diretórios com o nome do teste executado
+├─ tests/                       # Todos os testes do sistema. Separado por diretórios, majoritariamente agrupando por rotina
+├─ .env                         # Credenciais de login. Tudo o que está nesse arquivo é tratado como variáveis de ambiente
+├─ .gitignore                   # Nomes dos arquivos e diretórios a serem ignorados
+├─ conftest.py                  # Configuração do sistema, do Pytest e do Playwright. Contém também constantes de caminho e url
+├─ lista_comandos.md            # Comandos importantes para usar na criação de novos testes
+├─ pytest.ini                   # Arquivo de preferências do pytest. Principalmente usado para adicionar flags permanentemente
+├─ README.md                    # Documentação geral do sistema. Você está aqui
+└─ requirements.txt             # Dependências do projeto, necessárias para a execução ou para utilizar certos recursos
 
 No momento de instalação, o diretório ".playwright" ainda não existirá no projeto; isso porque ele é criado pelo próprio sistema após a primeira autenticação. Além disso, outros diretórios serão criados dentro do projeto, mas de forma diferente para cada dispositivo. Esses diretórios incluem cache de diversas camadas, o ambiente virtual (venv), e outros.
 
@@ -85,13 +85,28 @@ Quando você entra no terminal para executar os testes, você pode adicionar fla
 
 Para criar novos testes, o processo é relativamente simples, inclusive por conta da ferramenta de gravação do playwright. Porém, alguns padrões precisam ser observados.
 
-Primeiro, encontre o diretório ideal para o seu teste. Testes relacionados a registros maiores, como de produto, financeiro ou faturamento, recebem seus próprios diretórios, agrupados por rotina. Algumas vezes, inclusive, os testes são colocados dentro de diretórios dentro de diretórios. Um exemplo desse segundo é o "menu_mais/", que agrupa várias funcionalidades que estão dentro da rotina de financeiro.
+- Primeiro, encontre o diretório ideal para o seu teste. Testes relacionados a registros maiores, como de produto, financeiro ou faturamento, recebem seus próprios diretórios, agrupados por rotina. Algumas vezes, inclusive, os testes são colocados dentro de diretórios dentro de diretórios. Um exemplo desse segundo é o "menu_mais/", que agrupa várias funcionalidades que estão dentro da rotina de financeiro.
 Quando um teste é relacionado a registros muito pequenos, por outro lado, eles podem ser agrupados dentro do diretório "outros/", que diz respeito justamente a registros menores, e CRUDs simples e genéricos.
-Lembre-se que todos os testes são colocados dentro do diretório "tests/".
+Lembre-se que todos os testes são colocados dentro do diretório "tests/", e que você pode sempre criar novos diretórios para colocar seus testes, se não houver um lugar ideal para colocar ele ainda.
 
-Falar sobre padrão test_*
+- Segundo, encontre o arquivo ideal. Quando você está criando testes de fluxo CRUD, por exemplo, se o objeto for muito simples, todo o fluxo pode ser feito em um único arquivo. Quando o objeto for maior, pode ser melhor separar cada etapa em um arquivo diferente, especialmente se houver mais de uma única forma para uma mesma etapa (2 cadastros diferentes, por exemplo). Novamente, sempre que for necessário, crie um arquivo para escrever seus testes de forma modularizada, e com independência de responsabilidade. Note, porém, que todos os arquivos de testes devem iniciar com "test_".
 
-## Depurando o teste
+- Terceiro, escreva o cabeçalho do teste. O cabeçalho deve, também, iniciar com "test_". Recomenda-se usar nomes descritivos, porém não excessivamente longos.
+
+- Quarto, grave seu teste. Usando o comando `playwright codegen http://url_do_sistema`, o Playwright irá abrir duas janelas: uma com o navegador, para você interagir enquanto ele grava seus cliques, e uma com os passos que você tomou, transformados em código. Ao final da gravação, copie o código da segunda janela para o seu teste. Lembre-se de copiar o conteúdo, porque se o navegador for fechado, a janela também será.
+Recomendo estudar um pouco sobre o codegen, para poder usar bem os recursos que ele oferece, uma vez que ele está substituindo a escrita manual do teste.
+
+- Quinto, verifique o teste está funcionando. O codegen agiliza bastante o processo, mas ele não é 100% assertivo na escrita do código, e alguns elementos da tela podem não ser encontrados, ou misturados, na hora de rodar seu teste. Assim, execute seu teste pelo terminal, e execute manutenções nele, até que ele faça exatamente o que você espera, e dê sucesso. Para a manutenção do teste, recomendo estudos sobre escrita de testes com Playwright, para que você saiba quais são as principais funções usadas para escrever um teste, e possa executar uma boa manutenção do teste.
+
+## Depurando os testes
+
+A forma mais prática de depurar os testes é ver quais deram falhas, e abrir o tracing correspondente ao teste. O tracing fornece um vídeo interativo, com o qual é muito fácil de saber exatamente onde o teste falhou. Todos os tracings de falhas são automaticamente gravados e armazenados em "test_results/", através de uma flag no pytest.ini. Para abrir o tracing, use o comando `playwright show-trace nome_do_tracing.zip`. Uma janela interativa será aberta, e então é só usar o recurso para saber em qual etapa ocorreu a falha.
+
+## Troubleshooting(mudar nome para português)
+
+## Decisões internas de escrita de código
+
+Uma escolha totalmente arbitrária na escrita dos testes foi o uso de três aspas simples para escrever coisas para fazer pelo código, onde elas aparecem ou perto do que elas se referem. Essa decisão não está dentro da pep8, nem de outra documentação de boas práticas (não até onde eu saiba).
 
 ## Resultados
 
