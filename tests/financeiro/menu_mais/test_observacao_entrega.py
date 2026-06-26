@@ -4,7 +4,7 @@ from playwright.sync_api import Page, expect
 import pytest
 from collections.abc import Iterator
 
-from auxiliares.default import DESCRICAO_PADRAO
+from auxiliares import DESCRICAO_PADRAO
 
 '''Relatar bugs com a table'''
 

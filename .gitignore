@@ -13,3 +13,6 @@ test-results/
 # LOGIN: o nome do usuário;
 # SENHA: a senha do usuário.
 .env
+
+# Arquivo opcional, sendo uma lista de coisas para implementar
+todo.txt

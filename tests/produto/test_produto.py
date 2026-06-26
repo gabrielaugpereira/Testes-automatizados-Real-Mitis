@@ -4,7 +4,7 @@ from playwright.sync_api import Page, expect
 import re
 import pytest
 
-from auxiliares.default import pesquisar_rotina, DESCRICAO_PADRAO
+from auxiliares import DESCRICAO_PADRAO
 
 
 '''Remover decorator'''

@@ -1,7 +1,7 @@
 from playwright.sync_api import Page, Error, TimeoutError, expect
 import re
 
-from auxiliares.default import pesquisar_rotina
+from auxiliares import pesquisar_rotina
 
 '''Terminar CRUD'''
 

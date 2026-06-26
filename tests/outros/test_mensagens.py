@@ -1,7 +1,7 @@
-from playwright.sync_api import Browser, Page
+from playwright.sync_api import Page
 import random
 
-from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_generica
+from auxiliares import criacao_generica, edicao_generica, exclusao_generica
 
 
 ROTINA = "MENSAGENS"

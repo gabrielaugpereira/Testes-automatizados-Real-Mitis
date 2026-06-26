@@ -5,7 +5,7 @@ import random
 import re
 import pytest
 
-from auxiliares.default import pesquisar_rotina, DESCRICAO_PADRAO
+from auxiliares import pesquisar_rotina, DESCRICAO_PADRAO
 from test_parcelas import add_nova_parcela
 
 '''Ambas as criações de financeiro estão tendendo ao preenchimento mínimo de informações. 

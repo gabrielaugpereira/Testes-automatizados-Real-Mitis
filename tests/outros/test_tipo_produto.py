@@ -1,6 +1,6 @@
 from playwright.sync_api import Page
 
-from auxiliares.genericos import criacao_generica, edicao_generica, exclusao_generica
+from auxiliares import criacao_generica, edicao_generica, exclusao_generica
 
 
 ROTINA = "TIPO DE PRODUTO"

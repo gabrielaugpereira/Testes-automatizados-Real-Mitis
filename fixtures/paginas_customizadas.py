@@ -7,7 +7,7 @@ from playwright.sync_api import Page
 import pytest
 from collections.abc import Iterator
 
-from auxiliares.default import pesquisar_rotina
+from auxiliares import pesquisar_rotina
 
 
 @pytest.fixture

@@ -2,10 +2,11 @@
 Funções para fazer um fluxo CRUD genérico, e reduzir repetição de código através do sistema
 """
 
+from playwright.sync_api import Page, expect
 from collections.abc import Callable
 
-from playwright.sync_api import Page, expect
-from auxiliares.default import pesquisar_rotina, DESCRICAO_PADRAO, DESCRICAO_EDIT_PADRAO
+from auxiliares import DESCRICAO_PADRAO, DESCRICAO_EDIT_PADRAO
+from auxiliares import pesquisar_rotina
 
 
 def criacao_generica(page: Page, rotina: str, incremento: Callable[[Page], None] = None) -> None:

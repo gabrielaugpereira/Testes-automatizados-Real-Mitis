@@ -23,20 +23,30 @@ O objetivo do projeto é reduzir o esforço manual para garantir a qualidade do 
 
 ## Estrutura do projeto
 
-Testes-automatizados-Real-Mitis/
-├─.playwright/
-├─auxiliares/
-├─fixtures/
-├─test-results/
-├─tests/
-├─.env
-├─.gitignore
-├─conftest.py
-├─lista_comandos.md
-├─pytest.ini
-├─README.md
-└─requirements.txt
+Testes-automatizados-Real-Mitis/        
+├─ .playwright/                     # Diretório usado pelo Playwright
+|  └─ .auth/                            # Dados da autenticação
+|     └─ cookies.json                       # Armazenamento dos cookies da autenticação
+├─ auxiliares/                      # Funcionalidades auxiliares, como se fosse uma biblioteca interna
+|  ├─ excecoes.py                       # Exceções personalizadas
+|  ├─ funcoes.py                        # Funcionalidades úteis na forma de função
+|  ├─ genericos.py                      # Fluxos de criação, atualização e remoção genéricos
+|  └─ valores_padrao.py                 # Valores para serem usados padronizadamente pelo sistema, como descrição para informar nos inputs
+├─ fixtures/                        # Diretório para fixtures (funções para preparação do ambiente)
+|  ├─ autenticacao.py                   # Fixtures para entrar no sistema
+|  └─ paginas_customizadas.py           # Fixtures ornecem páginas personalizadas, principalmente usadas para já receber a página na rotina
+├─ test-results/                    # Feedback em vídeo/tracing dos testes, para descobrir onde deu erro
+|  └─ conteudo-interno                  # Dividido por diretórios com o nome do teste executado
+├─ tests/                           # Todos os testes do sistema. Separado por diretórios, majoritariamente agrupando por rotina
+├─ .env                             # Credenciais de login. Tudo o que está nesse arquivo é tratado como variáveis de ambiente
+├─ .gitignore                       # Nomes dos arquivos e diretórios a serem ignorados
+├─ conftest.py                      # Configuração do sistema, do Pytest e do Playwright. Contém também constantes de caminho e url
+├─ lista_comandos.md                # Comandos importantes para usar na criação de novos testes
+├─ pytest.ini                       # Arquivo de preferências do pytest. Principalmente usado para adicionar flags permanentemente
+├─ README.md                        # Documentação geral do sistema. Você está aqui
+└─ requirements.txt                 # Dependências do projeto, necessárias para a execução ou para utilizar certos recursos
 
+No momento de instalação, o diretório ".playwright" ainda não existirá no projeto; isso porque ele é criado pelo próprio sistema após a primeira autenticação. Além disso, outros diretórios serão criados dentro do projeto, mas de forma diferente para cada dispositivo. Esses diretórios incluem cache de diversas camadas, o ambiente virtual (venv), e outros.
 
 ## Configurando o sistema
 
@@ -52,6 +62,8 @@ Quando você entra no terminal para executar os testes, você pode adicionar fla
 
 ## Executando testes
 
+Para rodar os testes, abra o terminal no diretório principal. Então, use o comando pytest para executar os testes. Por padrão, o pytest irá rodar todos eles, mas você pode
+
 Todos / só um / por diretório
 
 ## Criando testes
@@ -59,7 +71,6 @@ Todos / só um / por diretório
 Falar sobre padrão test_*
 
 ## Depurando o teste
-
 
 ## Resultados
 

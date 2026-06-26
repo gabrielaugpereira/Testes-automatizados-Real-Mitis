@@ -1,17 +1,8 @@
 """
-Funções auxiliares, keywords e valores padrão, usados em todo o código
+Funções auxiliares e keywords
 """
 
 from playwright.sync_api import Page, TimeoutError
-
-'''Talvez mudar o nome desse módulo'''
-
-
-DESCRICAO_PADRAO = "Teste automatizado - GAP"
-"""Valor padrão a ser inserido como descrição em um novo registro"""
-
-DESCRICAO_EDIT_PADRAO = "Teste automatizado não fui eu - GAP"
-"""Valor padrão a ser inserido como descrição na edição de um registro"""
 
 
 def pesquisar_rotina(page: Page, nome: str, *, criacao: bool = False) -> None:
